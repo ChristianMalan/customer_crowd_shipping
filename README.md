@@ -4,16 +4,15 @@
 [![Last Commit](https://img.shields.io/github/last-commit/iRB-Lab/py-ga-VRPTW.svg)][commit]
 
 # Customer crowdshipping model
-A project aimed to simulate the customer crowdshipping scenario. 
-The agent-based model is built in AnyLogic, while data preparation and vehicle routing is performed using Python. 
-Pypeline library is used to enable communication between AnyLogic and Python.
+A project aimed to simulate the customer crowd-shipping scenario. 
+The agent-based model is built in AnyLogic, while data preparation, vehicle routing and data analysis is performed using Python. 
+The Pypeline library is used to enable communication between AnyLogic and Python.
 ## Important Notes
 ### Project Origin (Backstory)
 This project forms part of a Master's Thesis in Industrial Engineering.
 
 
 #### Some Outstanding Forks:
-- [paulliwali/**py-ga-VRPTW**](https://github.com/paulliwali/py-ga-VRPTW)
 
 ## Contents
 - [Installation](#installation)
