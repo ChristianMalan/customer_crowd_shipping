@@ -306,23 +306,12 @@ text2json(customize=False)
 ## Further Reading
 **Distributed Evolutionary Algorithms in Python (DEAP)**
 
-- [Docs][deap-docs]
-- [GitHub][deap-github]
-- [PyPI][deap-pypi]
-
 ## References
 1. [Solomon's VRPTW Benchmark Problems][solomon]
 2. [100 Customers Instance Definitions][100-customers]
 3. [Distributed Evolutionary Algorithms in Python (DEAP)][deap-pypi]
 
 ## License
-[MIT License][license]
-
-[repository]: https://github.com/iRB-Lab/py-ga-VRPTW "iRB-Lab/py-ga-VRPTW"
-[license]: https://github.com/iRB-Lab/py-ga-VRPTW/blob/master/LICENSE "License"
-[commit]: https://github.com/iRB-Lab/py-ga-VRPTW/commits/master "Last Commit"
-[travis-ci]: https://travis-ci.org/iRB-Lab/py-ga-VRPTW "Travis CI"
-
 [python]: https://docs.python.org/ "Python"
 [pip]: https://pypi.python.org/pypi/pip "Pip"
 [virtualenv]: https://virtualenv.pypa.io/en/stable/ "Virtualenv"
