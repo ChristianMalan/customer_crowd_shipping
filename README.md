@@ -1,8 +1,3 @@
-[![Build Status](https://travis-ci.org/iRB-Lab/py-ga-VRPTW.svg)][travis-ci]
-[![Python](https://img.shields.io/badge/python-3.6%20%7C%203.7%20%7C%203.8%20%7C%203.9-blue.svg)][python]
-[![License](https://img.shields.io/github/license/iRB-Lab/py-ga-VRPTW.svg)][license]
-[![Last Commit](https://img.shields.io/github/last-commit/iRB-Lab/py-ga-VRPTW.svg)][commit]
-
 # Customer crowdshipping model
 A project aimed to simulate the customer crowd-shipping scenario. 
 The agent-based model is built in AnyLogic, while data preparation, vehicle routing and data analysis is performed using Python. 
@@ -11,8 +6,6 @@ The Pypeline library is used to enable communication between AnyLogic and Python
 ### Project Origin (Backstory)
 This project forms part of a Master's Thesis in Industrial Engineering.
 
-
-#### Some Outstanding Forks:
 
 ## Contents
 - [Installation](#installation)
@@ -29,15 +22,9 @@ This project forms part of a Master's Thesis in Industrial Engineering.
             - [Directory Set-up](#directory-set-up)
             - [Convert `*.txt` to `*.json`](#convert-txt-to-json)
 - [GA Implementation](#ga-implementation)
-   
-- [API Reference](#api-reference)
-    - [Module: `gavrptw`](#module-gavrptw)
-    - [Module: `gavrptw.core`](#module-gavrptwcore)
-    - [Module: `gavrptw.utils`](#module-gavrptwutils)
-- [File Structure](#file-structure)
-- [Further Reading](#further-reading)
+
 - [References](#references)
-- [License](#license)
+
 
 ## Installation
 ### Requirements
@@ -223,88 +210,7 @@ Run the `text2json_customize.py` script to convert `*.txt` file containing custo
 python text2json_customize.py
 ```
 
-## GA Implementation
 
-
-
-## API Reference
-### Module: `gavrptw`
-Excerpt from `gavrptw/__init__.py`:
-
-```python
-BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-```
-
-### Module: `gavrptw.core`
-```python
-route = ind2route(individual, instance)
-```
-```python
-print_route(route, merge=False)
-```
-```python
-eval_vrptw(individual, instance, unit_cost=1.0, init_cost=0, wait_cost=0, delay_cost=0)
-```
-```python
-ind1, ind2 = cx_partialy_matched(ind1, ind2)
-```
-```python
-individual, = mut_inverse_indexes(individual)
-```
-```python
-run_gavrptw(instance_name, unit_cost, init_cost, wait_cost, delay_cost, ind_size, pop_size, \
-    cx_pb, mut_pb, n_gen, export_csv=False, customize_data=False)
-```
-
-### Module: `gavrptw.utils`
-```python
-make_dirs_for_file(path)
-```
-```python
-exist(path, overwrite=False, display_info=True)
-```
-```python
-load_instance(json_file)
-```
-```python
-text2json(customize=False)
-```
-
-## File Structure
-```
-├── data/
-│   ├── json/
-│   │   ├── <Instance name>.json
-│   │   └── ...
-│   ├── json_customize/
-│   │   ├── <Customized instance name>.json
-│   │   └── ...
-│   ├── text/
-│   │   ├── <Instance name>.txt
-│   │   └── ...
-│   └── text_customize/
-│       ├── <Customized instance name>.txt
-│       └── ...
-├── results/
-│   └── ...
-├── gavrptw/
-│   ├── __init__.py
-│   ├── core.py
-│   └── utils.py
-├── text2json.py
-├── text2json_customize.py
-├── sample_R101.py
-├── sample_C204.py
-├── sample_customized_data.py
-├── requirements.txt
-├── README.md
-├── LICENSE
-├── .travis.yml
-└── .gitignore
-```
-
-## Further Reading
-**Distributed Evolutionary Algorithms in Python (DEAP)**
 
 ## References
 1. [Solomon's VRPTW Benchmark Problems][solomon]
