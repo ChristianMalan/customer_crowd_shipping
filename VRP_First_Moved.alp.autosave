@@ -24,6 +24,7 @@
 add_OD_agents();
 //String currentDirectory = System.getProperty("user.dir");
 //System.out.println("The current working directory is " + currentDirectory);]]></StartupCode>
+			<DestroyCode><![CDATA[capture_run_results();]]></DestroyCode>
 			<Generic>false</Generic>
 			<GenericParameter>
 				<Id>1594817290081</Id>
@@ -101,17 +102,17 @@ add_OD_agents();
 			<ScaleRuler>
 				<Id>1594817290074</Id>
 				<Name><![CDATA[scale]]></Name>
-				<X>0</X><Y>-70</Y>
-				<PublicFlag>false</PublicFlag>
-				<PresentationFlag>false</PresentationFlag>
+				<X>0</X><Y>0</Y>
+				<PublicFlag>true</PublicFlag>
+				<PresentationFlag>true</PresentationFlag>
 				<ShowLabel>false</ShowLabel>
 				<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-				<Length>9</Length>
+				<Length>100</Length>
 				<Rotation>0</Rotation>
-				<ScaleType>BASED_ON_LENGTH</ScaleType>
+				<ScaleType>EXPLICITLY_DEFINED</ScaleType>
 				<ModelLength>10</ModelLength>
-				<LengthUnits>METER</LengthUnits>
-				<Scale>5</Scale>
+				<LengthUnits>KILOMETER</LengthUnits>
+				<Scale>10</Scale>
 				<InheritedFromParentAgentType>true</InheritedFromParentAgentType>
 			</ScaleRuler>
 			<CurrentLevel>1603867916501</CurrentLevel>
@@ -174,7 +175,7 @@ add_OD_agents();
 				<Variable Class="PlainVariable">
 					<Id>1616156158919</Id>
 					<Name><![CDATA[congestion]]></Name>
-					<X>-810</X><Y>320</Y>
+					<X>-806.881</X><Y>420.316</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -216,7 +217,7 @@ add_OD_agents();
 				<Variable Class="PlainVariable">
 					<Id>1618832203021</Id>
 					<Name><![CDATA[variable]]></Name>
-					<X>-800</X><Y>490</Y>
+					<X>-810</X><Y>590</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -228,7 +229,7 @@ add_OD_agents();
 				<Variable Class="PlainVariable">
 					<Id>1625815083905</Id>
 					<Name><![CDATA[temp_original_route_cost]]></Name>
-					<X>40</X><Y>300</Y>
+					<X>40</X><Y>680</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -240,7 +241,7 @@ add_OD_agents();
 				<Variable Class="PlainVariable">
 					<Id>1625815112408</Id>
 					<Name><![CDATA[temp_new_route_cost]]></Name>
-					<X>42</X><Y>330</Y>
+					<X>42</X><Y>710</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -390,7 +391,7 @@ add_OD_agents();
 				<Variable Class="Parameter">
 					<Id>1618318745373</Id>
 					<Name><![CDATA[minimum_value_of_time]]></Name>
-					<X>-810</X><Y>290</Y>
+					<X>-806.881</X><Y>390.316</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -414,7 +415,7 @@ add_OD_agents();
 				<Variable Class="Parameter">
 					<Id>1618383844340</Id>
 					<Name><![CDATA[cost_per_distance]]></Name>
-					<X>-512</X><Y>640</Y>
+					<X>-512</X><Y>670</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -435,7 +436,7 @@ add_OD_agents();
 				<Variable Class="Parameter">
 					<Id>1618476686381</Id>
 					<Name><![CDATA[deliveries_per_day]]></Name>
-					<X>-800</X><Y>210</Y>
+					<X>-800</X><Y>290</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -459,7 +460,7 @@ add_OD_agents();
 				<Variable Class="Parameter">
 					<Id>1621947315997</Id>
 					<Name><![CDATA[base_online_rate]]></Name>
-					<X>-810</X><Y>390</Y>
+					<X>-806.881</X><Y>490.316</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -480,7 +481,7 @@ add_OD_agents();
 				<Variable Class="Parameter">
 					<Id>1621947354880</Id>
 					<Name><![CDATA[base_OD_rate]]></Name>
-					<X>-810</X><Y>360</Y>
+					<X>-806.881</X><Y>460.316</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -498,10 +499,106 @@ add_OD_agents();
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1628054249290</Id>
+					<Name><![CDATA[loss_aversion_parameter]]></Name>
+					<X>-800</X><Y>320</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[double]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[1]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1628054249288</Id>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1629100028971</Id>
+					<Name><![CDATA[incentive_max]]></Name>
+					<X>-800</X><Y>150</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[double]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[10]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1629100028969</Id>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1631259873379</Id>
+					<Name><![CDATA[days_run]]></Name>
+					<X>-240</X><Y>820</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[double]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[14]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1631259873377</Id>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1631786185983</Id>
+					<Name><![CDATA[routing_heuristic]]></Name>
+					<X>-800</X><Y>170</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[int]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1631786185981</Id>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1605184407961</Id>
 					<Name><![CDATA[temp_route_collection]]></Name>
-					<X>-490</X><Y>280</Y>
+					<X>-490</X><Y>310</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -533,7 +630,7 @@ add_OD_agents();
 				<Event>
 					<Id>1615449046597</Id>
 					<Name><![CDATA[perform_deliveries]]></Name>
-					<X>-490</X><Y>420</Y>
+					<X>-490</X><Y>470</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -550,7 +647,7 @@ add_OD_agents();
 						<OccurrenceAtTime>true</OccurrenceAtTime>
 						<OccurrenceDate>1615449600000</OccurrenceDate>
 						<OccurrenceTime Class="CodeUnitValue">
-							<Code><![CDATA[1]]></Code>
+							<Code><![CDATA[9 - ((12/deliveries_per_day)*(deliveries_per_day-1))]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[HOUR]]></Unit>
 						</OccurrenceTime>
 						<RecurrenceCode Class="CodeUnitValue">
@@ -562,12 +659,52 @@ add_OD_agents();
 					<Action><![CDATA[//perform only during working hours
 if(depot_open.getValue() == true)	
 {	
+	
+	if (routing_heuristic == 0){
+		traceln("Sweep heuristic");
+		temp_original_route_cost = run_cvrp_Sweep(cvrp_data_preprocessing_saving())*cost_per_distance;
+		temp_new_route_cost = run_cvrp_Sweep(cvrp_data_preprocessing())*cost_per_distance;
+		}
+	else{
+		traceln("Savings heuristic");
+		temp_original_route_cost = run_cvrp_Savings(cvrp_data_preprocessing_saving())*cost_per_distance;
+		temp_new_route_cost = run_cvrp_Savings(cvrp_data_preprocessing())*cost_per_distance;
+		}	
 
-	temp_original_route_cost = run_cvrp_Sweep(cvrp_data_preprocessing_saving())*cost_per_distance;
-	temp_new_route_cost = run_cvrp_Sweep(cvrp_data_preprocessing())*cost_per_distance;
-	double company_savings = temp_original_route_cost-temp_new_route_cost;
-	delivery_savings_dataset.add(time(), company_savings);
 
+	
+	traceln("Original cost: " + temp_original_route_cost);
+	traceln("New cost: " + temp_new_route_cost );
+	
+	double company_delivery_reduction = temp_original_route_cost-temp_new_route_cost;
+	double incentives_paid = temp_incentives_stats.sum();
+	double absolute_savings = company_delivery_reduction-incentives_paid;
+	
+	
+	traceln("Incentives: " + incentives_paid);
+	traceln("Absolute savings: " + (absolute_savings) );
+	
+	if(temp_original_route_cost==0)
+	{	traceln("Percentage savings: " + 0);
+		delivery_original_cost_dataset.add(time(), 0);
+		
+		}
+	else{
+		traceln("Percentage savings: " + (absolute_savings)/temp_original_route_cost);
+		delivery_original_cost_dataset.add(time(), temp_original_route_cost);
+		
+	}
+		
+	delivery_savings_dataset.add(time(), (absolute_savings));
+	delivery_savings_hist_data.add((absolute_savings));
+	
+	
+	
+		
+	complete_deliveries_dataset.add(time(), temp_new_route_cost);
+	
+	temp_incentives_stats.reset();
+	
 
 	
 	assignVehicleRoute();
@@ -577,7 +714,7 @@ if(depot_open.getValue() == true)
 				<Event>
 					<Id>1616149368345</Id>
 					<Name><![CDATA[reassign_customers]]></Name>
-					<X>-512</X><Y>580</Y>
+					<X>-512</X><Y>610</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -594,12 +731,12 @@ if(depot_open.getValue() == true)
 						<OccurrenceAtTime>true</OccurrenceAtTime>
 						<OccurrenceDate>1616227200000</OccurrenceDate>
 						<OccurrenceTime Class="CodeUnitValue">
-							<Code><![CDATA[10]]></Code>
-							<Unit Class="TimeUnits"><![CDATA[WEEK]]></Unit>
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[DAY]]></Unit>
 						</OccurrenceTime>
 						<RecurrenceCode Class="CodeUnitValue">
-							<Code><![CDATA[30]]></Code>
-							<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[DAY]]></Unit>
 						</RecurrenceCode>
 						<Condition><![CDATA[false]]></Condition>
 					</Properties>
@@ -628,7 +765,7 @@ if(depot_open.getValue())
 				<Event>
 					<Id>1618324946702</Id>
 					<Name><![CDATA[fix_delivery_routes]]></Name>
-					<X>-490</X><Y>390</Y>
+					<X>-490</X><Y>440</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -645,7 +782,7 @@ if(depot_open.getValue())
 						<OccurrenceAtTime>true</OccurrenceAtTime>
 						<OccurrenceDate>1618387200000</OccurrenceDate>
 						<OccurrenceTime Class="CodeUnitValue">
-							<Code><![CDATA[0.75]]></Code>
+							<Code><![CDATA[8.5 - (12/deliveries_per_day)*(deliveries_per_day-1)]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[HOUR]]></Unit>
 						</OccurrenceTime>
 						<RecurrenceCode Class="CodeUnitValue">
@@ -662,7 +799,7 @@ deliverToAllAgentsInside("Assign to route");
 				<Event>
 					<Id>1620824233451</Id>
 					<Name><![CDATA[capture_run_results_event]]></Name>
-					<X>190</X><Y>560</Y>
+					<X>-240</X><Y>860</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -677,9 +814,9 @@ deliverToAllAgentsInside("Assign to route");
 							<Unit Class="RateUnits"><![CDATA[PER_MINUTE]]></Unit>
 						</Rate>
 						<OccurrenceAtTime>true</OccurrenceAtTime>
-						<OccurrenceDate>1614556798000</OccurrenceDate>
+						<OccurrenceDate>1644274798000</OccurrenceDate>
 						<OccurrenceTime Class="CodeUnitValue">
-							<Code><![CDATA[50]]></Code>
+							<Code><![CDATA[days_run - 0.01]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[DAY]]></Unit>
 						</OccurrenceTime>
 						<RecurrenceCode Class="CodeUnitValue">
@@ -688,12 +825,13 @@ deliverToAllAgentsInside("Assign to route");
 						</RecurrenceCode>
 						<Condition><![CDATA[false]]></Condition>
 					</Properties>
-					<Action><![CDATA[capture_run_results();]]></Action>
+					<Action><![CDATA[capture_run_results();
+]]></Action>
 				</Event>
 				<Event>
 					<Id>1625750865132</Id>
 					<Name><![CDATA[capture_run_results_event1]]></Name>
-					<X>190</X><Y>590</Y>
+					<X>-240</X><Y>920</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -721,6 +859,105 @@ deliverToAllAgentsInside("Assign to route");
 					</Properties>
 					<Action><![CDATA[capture_run_results();
 getEngine().finish();]]></Action>
+				</Event>
+				<Event>
+					<Id>1627576621581</Id>
+					<Name><![CDATA[place_order]]></Name>
+					<X>310</X><Y>670</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties TriggerType="rate" Mode="occuresOnce">
+						<Timeout Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+						</Timeout>
+						<Rate Class="CodeUnitValue">
+							<Code><![CDATA[2.4*customers.size()*base_online_rate*daily_demand_schedule.getValue()*weekly_demand_schedule.getValue()]]></Code>
+							<Unit Class="RateUnits"><![CDATA[PER_DAY]]></Unit>
+						</Rate>
+						<OccurrenceAtTime>true</OccurrenceAtTime>
+						<OccurrenceDate>1627632000000</OccurrenceDate>
+						<OccurrenceTime Class="CodeUnitValue">
+							<Code><![CDATA[0]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+						</OccurrenceTime>
+						<RecurrenceCode Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+						</RecurrenceCode>
+						<Condition><![CDATA[false]]></Condition>
+					</Properties>
+					<Action><![CDATA[Customer cust = randomWhere(customers, c -> c.inState(Customer.statechart_state.latent));
+
+traceln(cust);
+
+if (cust != null){
+	send("Place order", cust);
+	}]]></Action>
+				</Event>
+				<Event>
+					<Id>1627619433920</Id>
+					<Name><![CDATA[update_order_rate]]></Name>
+					<X>314</X><Y>636</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties TriggerType="timeout" Mode="cyclic">
+						<Timeout Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+						</Timeout>
+						<Rate Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="RateUnits"><![CDATA[PER_MINUTE]]></Unit>
+						</Rate>
+						<OccurrenceAtTime>true</OccurrenceAtTime>
+						<OccurrenceDate>1627632000000</OccurrenceDate>
+						<OccurrenceTime Class="CodeUnitValue">
+							<Code><![CDATA[0.1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+						</OccurrenceTime>
+						<RecurrenceCode Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[HOUR]]></Unit>
+						</RecurrenceCode>
+						<Condition><![CDATA[false]]></Condition>
+					</Properties>
+					<Action><![CDATA[onChange();]]></Action>
+				</Event>
+				<Event>
+					<Id>1631259922991</Id>
+					<Name><![CDATA[terminate_model]]></Name>
+					<X>-240</X><Y>890</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties TriggerType="timeout" Mode="occuresOnce">
+						<Timeout Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+						</Timeout>
+						<Rate Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="RateUnits"><![CDATA[PER_MINUTE]]></Unit>
+						</Rate>
+						<OccurrenceAtTime>true</OccurrenceAtTime>
+						<OccurrenceDate>1631260800000</OccurrenceDate>
+						<OccurrenceTime Class="CodeUnitValue">
+							<Code><![CDATA[days_run + 0.1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[DAY]]></Unit>
+						</OccurrenceTime>
+						<RecurrenceCode Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+						</RecurrenceCode>
+						<Condition><![CDATA[false]]></Condition>
+					</Properties>
+					<Action><![CDATA[getEngine().finish();]]></Action>
 				</Event>
 			</Events>
 			<Functions>
@@ -776,14 +1013,14 @@ DistanceMatrixVar = DistanceMatrix;
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1595320282406</Id>
 					<Name><![CDATA[assignVehicleRoute]]></Name>
-					<X>-490</X><Y>360</Y>
+					<X>-490</X><Y>410</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[int i = 0;	//This is a counter to keep track of the customer list. We use i to run through the entire list of customers
 
-int v = 0; // this counter keeps track of the delivery vehicle  
+//int v = 0; // this counter keeps track of the delivery vehicle  
 
 //verification for
 traceln("All customers to route: ");
@@ -799,18 +1036,20 @@ for(int[] r : temp_route_collection)
 	traceln(r);
 	System.out.println("Route length: " + r.length);
 	
+	Delivery_Vehicle current_vehicle = randomWhere(delivery_Vehicles, vehicle -> vehicle.inState(Delivery_Vehicle.statechart_state.atDepot) && vehicle.customersToBeVisited.isEmpty());
+	
+	
 	//this for loop runs through the current route's customers.
 	for  (i = 1; i < r.length-1; i++)  
 {		
 		//Add the current customer to the current delivery vehicle route. 
-		delivery_Vehicles(v).customersToBeVisited.addLast(customers(r[i]));
-		System.out.println("I'm adding Customer " + (customers(r[i])) + " to vehicle " + v);	
+		current_vehicle.customersToBeVisited.addLast(customers(r[i]));
+		System.out.println("I'm adding Customer " + (customers(r[i]).getIndex()) + " to vehicle " + current_vehicle.getIndex());	
 		
 		// Go to the next customer
 		
 	}
-	v++;										// Go to the next Vehicle
-	System.out.println("Move to vehicle " + v);			
+		
 }
 System.out.println("Out of for loop");
 
@@ -1180,7 +1419,7 @@ double total_route_distance = 0;
 for (HashMap<String, Object> data : sweep_result_hashmap) {
 	// To convert to correct type, use type-casting
 	int route_number = (int)data.get("route_number"); //gets route number
-	double route_distance = (double)data.get("route_distance");
+	double route_distance = scale.toLengthUnits((double)data.get("route_distance") , LENGTH_UNIT_KILOMETER);
 	
 	total_route_distance += route_distance;
 	
@@ -1219,7 +1458,7 @@ for (HashMap<String, Object> data : sweep_result_hashmap) {
 	}
 
 //traceln(temp_route_collection.get(1));
-traceln("Total route distance (in run_CVRP)= " + total_route_distance);
+traceln("Total route distance (in run_CVRP)= " + total_route_distance + "km");
 
 
 
@@ -1389,6 +1628,7 @@ String customer_json = pyCommunicator.toJson(customers);
 //String vehicleJSON = pyCommunicator.toJson(delivery_Vehicles, true);  //for heterogeneous vehicles
 String depot_json = pyCommunicator.toJson(depot, true);
 String vehicle_capacity_json= pyCommunicator.toJson(vehicle_capacity, true);
+String routing_heuristic_json= pyCommunicator.toJson(routing_heuristic, true);
 //filtered customers to json 
 String routing_sub_population_json =  pyCommunicator.toJson(routing_sub_population);
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1415,11 +1655,12 @@ String customer_json_parsed = pyCommunicator.runResults(String.class, String.for
 
 /*Return (output) section*/
 ////////////////////////////////////////////////////////
-String[] return_String = new String[3];
+String[] return_String = new String[4];
 
 return_String[0] = customer_json_parsed;
 return_String[1] = vehicle_capacity_json;
 return_String[2] = depot_json;
+return_String[3] = routing_heuristic_json;
 ////////////////////////////////////////////////////////
 
 
@@ -1449,7 +1690,7 @@ return return_String;]]></Body>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1615797452294</Id>
 					<Name><![CDATA[calculate_cost_to_serve_args]]></Name>
-					<X>-512</X><Y>610</Y>
+					<X>-512</X><Y>640</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1464,13 +1705,16 @@ return return_String;]]></Body>
 String customer_json = routing_args[0];
 String vehicle_capacity_json = routing_args[1];
 String depot_json = routing_args[2];
+String routing_heuristic_json = routing_args[3];
+
+traceln("Running cost-to-serve");
 
 /*##################################################################
 #	Function section
 ###################################################################*/
 
 pyCommunicator.run("from calculate_cost2serve import calculate_distance_to_serve");
-String distance_to_serve_result = pyCommunicator.runResults(String.class, String.format("calculate_distance_to_serve(%s,%s,%s)", customer_json, vehicle_capacity_json, depot_json));
+String distance_to_serve_result = pyCommunicator.runResults(String.class, String.format("calculate_distance_to_serve(%s,%s,%s,%s)", customer_json, vehicle_capacity_json, depot_json, routing_heuristic_json));
 
 
 /*##################################################################
@@ -1487,7 +1731,7 @@ for (HashMap<String, Object> data : distance_to_serve_result_hashmap) {
 	
 	//traceln("Changing customer id: " + temp_index + " cost to serve: " + cost_to_serve);
 	
-	customers(customer_index).cost_to_serve = distance_to_serve*cost_per_distance;		
+	customers(customer_index).cost_to_serve = scale.toLengthUnits(distance_to_serve,  LENGTH_UNIT_KILOMETER) *cost_per_distance;		
 	}
 
 
@@ -1554,7 +1798,7 @@ return return_String;]]></Body>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1615876262468</Id>
 					<Name><![CDATA[calculate_incentive]]></Name>
-					<X>-800</X><Y>150</Y>
+					<X>-800</X><Y>190</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1580,7 +1824,7 @@ return incentive;]]></Body>
 					<ReturnType><![CDATA[String[]]]></ReturnType>
 					<Id>1618396972309</Id>
 					<Name><![CDATA[trip_evaluation_data]]></Name>
-					<X>-520</X><Y>730</Y>
+					<X>-520</X><Y>750</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1613,6 +1857,8 @@ String od_json = pyCommunicator.toJson(current_od);
 String depot_json = pyCommunicator.toJson(depot, true);
 String fixed_incentive_json = pyCommunicator.toJson(incentive_fixed_cost);
 String variable_incentive_json = pyCommunicator.toJson(incentive_variable_rate);
+String max_incentive_json = pyCommunicator.toJson(incentive_max);
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1624,13 +1870,14 @@ String cs_candidates_json_parsed = pyCommunicator.runResults(String.class, Strin
 
 /*Return (output) section*/
 ////////////////////////////////////////////////////////
-String[] return_String = new String[5];
+String[] return_String = new String[6];
 
 return_String[0] = cs_candidates_json_parsed;
 return_String[1] = od_json_parsed;
 return_String[2] = depot_json;
 return_String[3] = fixed_incentive_json;
 return_String[4] = variable_incentive_json;
+return_String[5] = max_incentive_json;
 
 ////////////////////////////////////////////////////////
 
@@ -1656,7 +1903,7 @@ return return_String;]]></Body>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1618402711323</Id>
 					<Name><![CDATA[trip_evaluation]]></Name>
-					<X>-520</X><Y>760</Y>
+					<X>-520</X><Y>780</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1673,13 +1920,15 @@ String current_od_json = trip_evaluation_args[1];
 String depot_json = trip_evaluation_args[2];
 String fixed_incentive_json = trip_evaluation_args[3];
 String variable_incentive_json = trip_evaluation_args[4];
+String max_incentive_json = trip_evaluation_args[5];
+
 
 /*##################################################################
 #	Function run section		
 ###################################################################*/
 
 pyCommunicator.run("from od_trip_evaluation import evaluate_od_candidates");
-String trip_evaluation_result = pyCommunicator.runResults(String.class, String.format("evaluate_od_candidates(%s,%s,%s,%s,%s)", od_candidates_json, current_od_json, depot_json, fixed_incentive_json, variable_incentive_json));
+String trip_evaluation_result = pyCommunicator.runResults(String.class, String.format("evaluate_od_candidates(%s,%s,%s,%s,%s,%s)", od_candidates_json, current_od_json, depot_json, fixed_incentive_json, variable_incentive_json, max_incentive_json));
 
 traceln(trip_evaluation_result);
 
@@ -1712,7 +1961,7 @@ if(perceived_gain > 0 )
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1620824127951</Id>
 					<Name><![CDATA[capture_run_results]]></Name>
-					<X>190</X><Y>530</Y>
+					<X>-240</X><Y>760</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1722,36 +1971,48 @@ pyCommunicator.run("from capture_results import capture_run_results");
 
 
 //Run input parameters
+String data_path_string_json = pyCommunicator.toJson(fullDataPath);
 String fixed_incentive_json = pyCommunicator.toJson(incentive_fixed_cost);
 String variable_incentive_json = pyCommunicator.toJson(incentive_variable_rate);
 String deliv_per_day_json = pyCommunicator.toJson(deliveries_per_day);
 String od_percentage_json = pyCommunicator.toJson(percentage_occasional_drivers);
 String customer_order_rate_json = pyCommunicator.toJson(base_online_rate);
-//String value_of_time_json = pyCommunicator.toJson(minimum_value_of_time);
+String OD_arrival_rate_json = pyCommunicator.toJson(base_OD_rate);
+String cost_per_distance_json = pyCommunicator.toJson(cost_per_distance);
+String loss_aversion_parameter_json = pyCommunicator.toJson(loss_aversion_parameter);
+String min_value_of_time_json = pyCommunicator.toJson(minimum_value_of_time);
 
 //Run output
 
 String run_duration_json = pyCommunicator.toJson(getEngine().getRunTimeMillis());
 String OD_value_of_time_data_json = pyCommunicator.toJson(OD_value_of_time_dataset);
-String savings_data_json = pyCommunicator.toJson(savings_dataset);
-String delivery_data_json = pyCommunicator.toJson(deliveries_dataset);
+String savings_data_json = pyCommunicator.toJson(delivery_savings_dataset);
+String delivery_original_cost_data_json = pyCommunicator.toJson(delivery_original_cost_dataset);
+String delivery_data_json = pyCommunicator.toJson(complete_deliveries_dataset);
 String incentive_data_json = pyCommunicator.toJson(accepted_incentive_dataset);
 String waiting_time_data_json = pyCommunicator.toJson(waiting_time_dataset);
 
 
 
-traceln("Delivery data:" + delivery_data_json);
-traceln("Incentives data:" + incentive_data_json);
-traceln("Savings data:" + savings_data_json);
-traceln("Waiting time data:" + waiting_time_data_json);
-traceln("OD population base value of time:" + OD_value_of_time_data_json);
-traceln("OD Percentage:" + od_percentage_json);
-traceln("Base customer order rate:" + customer_order_rate_json);
+traceln("Delivery data: " + delivery_data_json);
+traceln("Original delivery data: " + delivery_original_cost_data_json);
+traceln("Incentives data: " + incentive_data_json);
+traceln("Savings data: " + savings_data_json);
+traceln("Waiting time data: " + waiting_time_data_json);
+traceln("OD population base value of time: " + OD_value_of_time_data_json);
+traceln("OD Percentage: " + od_percentage_json);
+traceln("Base customer order rate: " + customer_order_rate_json);
+traceln("Base OD arrival rate: " + OD_arrival_rate_json);
+traceln("Minimum value of time: " + min_value_of_time_json);
+traceln("Data path json: " + data_path_string_json);
 
 
-pyCommunicator.run(String.format("capture_run_results(%s, %s, %s, %s, %s, '%s', '%s','%s','%s','%s',%s)", 
-							fixed_incentive_json, variable_incentive_json, deliv_per_day_json, od_percentage_json, customer_order_rate_json,
-							OD_value_of_time_data_json, delivery_data_json, incentive_data_json, savings_data_json, waiting_time_data_json, 
+
+
+pyCommunicator.run(String.format("capture_run_results(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '%s', '%s','%s','%s','%s','%s',%s)", 
+							data_path_string_json, fixed_incentive_json, variable_incentive_json, deliv_per_day_json, od_percentage_json, min_value_of_time_json,
+							customer_order_rate_json, OD_arrival_rate_json, cost_per_distance_json,loss_aversion_parameter_json,
+							OD_value_of_time_data_json, delivery_data_json, incentive_data_json, savings_data_json, delivery_original_cost_data_json, waiting_time_data_json, 
 							run_duration_json));
 
 ]]></Body>
@@ -1761,7 +2022,7 @@ pyCommunicator.run(String.format("capture_run_results(%s, %s, %s, %s, %s, '%s', 
 					<ReturnType><![CDATA[String[]]]></ReturnType>
 					<Id>1625647908333</Id>
 					<Name><![CDATA[cvrp_data_preprocessing_saving]]></Name>
-					<X>-520</X><Y>840</Y>
+					<X>-520</X><Y>860</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1845,12 +2106,203 @@ traceln("Json string of all customers: " + customerJSON);
 
 return return_String;]]></Body>
 				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnModificator>VOID</ReturnModificator>
+					<ReturnType><![CDATA[double]]></ReturnType>
+					<Id>1627576621578</Id>
+					<Name><![CDATA[function1]]></Name>
+					<X>310</X><Y>710</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Body><![CDATA[Customer cust = randomWhere(customers, c -> c.inState(Customer.statechart_state.latent));
+
+traceln(cust);
+
+send("Place order", cust);]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnModificator>RETURNS_VALUE</ReturnModificator>
+					<ReturnType><![CDATA[double]]></ReturnType>
+					<Id>1631785807241</Id>
+					<Name><![CDATA[run_cvrp_Savings]]></Name>
+					<X>-490</X><Y>280</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Parameter>
+						<Name><![CDATA[routing_strings]]></Name>
+						<Type><![CDATA[String[]]]></Type>
+					</Parameter>
+					<Body><![CDATA[/* March 8 2021
+
+At the moment I can use this function to run the Python VRP 
+on the subset of customers received from pre_processing
+*/
+/*
+This function should strictly implement the Sweep algorithm. 
+It should be possible to replace with any heuristic/metaheuristic.
+Everything before this should be done as preprocessing and passed in as json Strings
+
+It should take as arguments: a customer list, vehicle capacity and depot (as json STRINGS)
+*/
+
+pyCommunicator.run("from vrp_algorithms.savings import run_vehicle_routing_savings");
+
+String customerJSON = routing_strings[0];
+String vehicle_capacityJSON = routing_strings[1];
+String depotJSON = routing_strings[2];
+
+
+/*Verification section*/
+///////////////////////////////
+traceln(customerJSON);
+/*//traceln(vehicleJSON);*/
+//traceln(vehicle_capacityJSON);
+//traceln(depotJSON);
+///////////////////////////////
+
+
+
+/*
+Converting the vrp output json into useable format for anylogic
+Input: Json string. Output: multiple integer arrays representing the routes (int[])
+*To-do: int[] arrays to be combined into a arraylist (collection) containing all the routes.
+*/
+
+//get the result from py script (json type dictionary) as a json String. 
+//Then convert this into a List of Hashmaps.
+String savings_result = pyCommunicator.runResults(String.class, String.format("run_vehicle_routing_savings(%s,%s,%s)", customerJSON, vehicle_capacityJSON, depotJSON));
+List<HashMap<String, Object>> savings_result_hashmap = pyCommunicator.fromJson(savings_result, List.class);
+
+temp_route_collection.clear();
+
+double total_route_distance = 0;
+
+// The hashmap is then 'decoded' and the data is extracted
+for (HashMap<String, Object> data : savings_result_hashmap) {
+	// To convert to correct type, use type-casting
+	int route_number = (int)data.get("route_number"); //gets route number
+	double route_distance = scale.toLengthUnits((double)data.get("route_distance") , LENGTH_UNIT_KILOMETER);
+	
+	total_route_distance += route_distance;
+	
+	
+	// get from hashmap and store as a Arraylist of objects
+	java.util.ArrayList customer_indices_arraylist = (java.util.ArrayList)data.get("customer_indices");
+	
+	// now convert the arraylist of objects into an array of objects
+	Object[] customer_indices_array = customer_indices_arraylist.toArray();
+	
+	//convert the object array into an integer array of correct size
+	int length = customer_indices_array.length;
+    Integer intArray[] = new Integer[length];
+    
+    
+    System.arraycopy(customer_indices_array, 0, intArray, 0, length);
+	
+	
+	int[] pls_wrk = new int[length];
+	
+	for (int i=0; i < length; i++)
+    {
+        pls_wrk[i] = (int) intArray[i];
+    }
+    
+	//traceln("Local route: " + route_number + ". First customer: " + pls_wrk[1]);
+	
+	
+	
+	/*Verify routes are correct*/
+	//traceln("Local route: " + route_number + ". Customer indices: " + intArray.getClass());
+	//traceln("Element 2 is: " + intArray[1] + " of type " + intArray[1].getClass());
+	
+	temp_route_collection.add(route_number, pls_wrk);
+	
+	}
+
+//traceln(temp_route_collection.get(1));
+traceln("Total route distance (in run_CVRP)= " + total_route_distance + "km");
+
+
+
+return total_route_distance;
+
+
+
+]]></Body>
+				</Function>
 			</Functions>
+			<CustomDistributions>
+				<CustomDistribution>
+					<Id>1633880077578</Id>
+					<Name><![CDATA[population_vot_distribution]]></Name>
+					<X>-810</X><Y>370</Y>
+					<Label><X>15</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<InterpolationMethod>NONE</InterpolationMethod>
+					<Type>DISCRETE</Type>
+					<DefinitionType>HISTOGRAM</DefinitionType>
+					<Static>false</Static>
+					<LoadFromDatabase><![CDATA[false]]></LoadFromDatabase>
+					<RangesQuery>
+					<TableReference>
+					</TableReference>
+						<StartColumnReference>
+						</StartColumnReference>
+						<EndColumnReference>
+						</EndColumnReference>
+						<NumberOfObservationColumnReference>
+						</NumberOfObservationColumnReference>
+					</RangesQuery>
+					<FrequencyQuery>
+					<TableReference>
+					</TableReference>
+						<ValueColumnReference>
+						</ValueColumnReference>
+						<WeightColumnReference>
+						</WeightColumnReference>
+					</FrequencyQuery>
+					<SampleQuery>
+					<TableReference>
+					</TableReference>
+						<ValueColumnReference>
+						</ValueColumnReference>
+					</SampleQuery>
+					<OptionQuery>
+					<TableReference>
+					</TableReference>
+						<OptionColumnReference>
+						</OptionColumnReference>
+						<NumberOfObservationColumnReference>
+						</NumberOfObservationColumnReference>
+					</OptionQuery>					
+					<Argument><![CDATA[0.0]]></Argument>
+					<Argument><![CDATA[1.0]]></Argument>
+					<Argument><![CDATA[2.0]]></Argument>
+					<Argument><![CDATA[3.0]]></Argument>
+					<Value><![CDATA[10.0]]></Value>
+					<Value><![CDATA[10.0]]></Value>
+					<Value><![CDATA[10.0]]></Value>
+					<Value><![CDATA[0.0]]></Value>					
+					<OptionListID><![CDATA[0]]></OptionListID>
+					<OptionValues>				
+					</OptionValues>
+					<Argument><![CDATA[0.0]]></Argument>
+					<Argument><![CDATA[1.0]]></Argument>
+					<Argument><![CDATA[2.0]]></Argument>
+					<Argument><![CDATA[3.0]]></Argument>				
+				</CustomDistribution>		
+			</CustomDistributions>
 			<Schedules>
 				<Schedule>
 					<Id>1618410694355</Id>
 					<Name><![CDATA[depot_open]]></Name>
-					<X>-800</X><Y>529</Y>
+					<X>-810</X><Y>629</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1881,8 +2333,8 @@ return return_String;]]></Body>
 					</IntervalsQuery>
 					<Intervals>
 						<Interval>
-							<Start>28800000</Start>
-							<End>61200000</End>
+							<Start>26940000</Start>
+							<End>61260000</End>
 							<Value>true</Value>
 						</Interval>
 					</Intervals>
@@ -1892,7 +2344,7 @@ return return_String;]]></Body>
 				<Schedule>
 					<Id>1618825318447</Id>
 					<Name><![CDATA[daily_demand_schedule]]></Name>
-					<X>-800</X><Y>560</Y>
+					<X>-810</X><Y>660</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1925,12 +2377,12 @@ return return_String;]]></Body>
 						<Interval>
 							<Start>25200000</Start>
 							<End>61200000</End>
-							<Value>1.0</Value>
+							<Value>0.5</Value>
 						</Interval>
 						<Interval>
 							<Start>61200000</Start>
 							<End>79200000</End>
-							<Value>1.0</Value>
+							<Value>1.2</Value>
 						</Interval>
 						<Interval>
 							<Start>79200000</Start>
@@ -1944,7 +2396,7 @@ return return_String;]]></Body>
 				<Schedule>
 					<Id>1618825449543</Id>
 					<Name><![CDATA[weekly_demand_schedule]]></Name>
-					<X>-800</X><Y>590</Y>
+					<X>-810</X><Y>690</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1977,17 +2429,17 @@ return return_String;]]></Body>
 						<Interval>
 							<Start>518400000</Start>
 							<End>604740000</End>
-							<Value>1.5</Value>
+							<Value>1.0</Value>
 						</Interval>
 						<Interval>
 							<Start>0</Start>
 							<End>86340000</End>
-							<Value>1.1</Value>
+							<Value>1.0</Value>
 						</Interval>
 						<Interval>
 							<Start>432000000</Start>
 							<End>518340000</End>
-							<Value>1.1</Value>
+							<Value>1.0</Value>
 						</Interval>
 					</Intervals>
 					<Exceptions>
@@ -1996,7 +2448,7 @@ return return_String;]]></Body>
 				<Schedule>
 					<Id>1621409657973</Id>
 					<Name><![CDATA[congestion_schedule]]></Name>
-					<X>-800</X><Y>620</Y>
+					<X>-810</X><Y>720</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -2045,7 +2497,7 @@ return return_String;]]></Body>
     			<HistogramData>
 					<Id>1618314058569</Id>
 					<Name><![CDATA[data_OD_value_of_time_hist]]></Name>
-					<X>790</X><Y>540</Y>
+					<X>880</X><Y>860</Y>
 					<Label><X>15</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -2168,80 +2620,6 @@ return return_String;]]></Body>
 					</RecurrenceCode>
 					<Discrete>true</Discrete>
 				</Statistics>
-    			<Statistics>
-					<Id>1618822099992</Id>
-					<Name><![CDATA[savings_statistics]]></Name>
-					<X>2130</X><Y>150</Y>
-					<Label><X>15</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<AutoUpdate>true</AutoUpdate>
-					<OccurrenceAtTime>true</OccurrenceAtTime>
-					<OccurrenceDate>1618905600000</OccurrenceDate>
-					<OccurrenceTime Class="CodeUnitValue">
-						<Code><![CDATA[0]]></Code>
-						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
-					</OccurrenceTime>
-					<RecurrenceCode Class="CodeUnitValue">
-						<Code><![CDATA[1]]></Code>
-						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
-					</RecurrenceCode>
-					<Discrete>true</Discrete>
-				</Statistics>
-    			<DataSet>
-					<Id>1618832545810</Id>
-					<Name><![CDATA[savings_dataset]]></Name>
-					<X>2130</X><Y>120</Y>
-					<Label><X>15</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<AutoUpdate>false</AutoUpdate>
-					<OccurrenceAtTime>true</OccurrenceAtTime>
-					<OccurrenceDate>1618387200000</OccurrenceDate>
-					<OccurrenceTime Class="CodeUnitValue">
-						<Code><![CDATA[1]]></Code>
-						<Unit Class="TimeUnits"><![CDATA[YEAR]]></Unit>
-					</OccurrenceTime>
-					<RecurrenceCode Class="CodeUnitValue">
-						<Code><![CDATA[1]]></Code>
-						<Unit Class="TimeUnits"><![CDATA[YEAR]]></Unit>
-					</RecurrenceCode>
-					<FreezeXAxis>false</FreezeXAxis>
-					<SamplesToKeep>100000</SamplesToKeep>
-				</DataSet>
-    			<HistogramData>
-					<Id>1620135874612</Id>
-					<Name><![CDATA[savings_hist_data]]></Name>
-					<X>2130</X><Y>180</Y>
-					<Label><X>15</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<AutoUpdate>true</AutoUpdate>
-					<OccurrenceAtTime>true</OccurrenceAtTime>
-					<OccurrenceDate>1618387200000</OccurrenceDate>
-					<OccurrenceTime Class="CodeUnitValue">
-						<Code><![CDATA[0]]></Code>
-						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
-					</OccurrenceTime>
-					<RecurrenceCode Class="CodeUnitValue">
-						<Code><![CDATA[1]]></Code>
-						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
-					</RecurrenceCode>
-					<Value><![CDATA[]]></Value>
-					<NumberOfIntervals>10</NumberOfIntervals>
-					<MinMaxAutodetect>true</MinMaxAutodetect>
-					<RangeMinExpression><![CDATA[0]]></RangeMinExpression>
-					<RangeMaxExpression><![CDATA[1]]></RangeMaxExpression>
-					<InitialIntervalSize><![CDATA[0.1]]></InitialIntervalSize>
-					<CalculateCDF>true</CalculateCDF>
-					<CalculatePercentiles>false</CalculatePercentiles>
-					<LowPercent>10</LowPercent>
-					<HighPercent>10</HighPercent>
-					<Title><![CDATA[]]></Title>
-				</HistogramData>
     			<DataSet>
 					<Id>1620808177693</Id>
 					<Name><![CDATA[deliveries_dataset]]></Name>
@@ -2320,7 +2698,7 @@ return return_String;]]></Body>
     			<DataSet>
 					<Id>1625815307234</Id>
 					<Name><![CDATA[delivery_savings_dataset]]></Name>
-					<X>40</X><Y>360</Y>
+					<X>40</X><Y>740</Y>
 					<Label><X>15</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -2342,7 +2720,7 @@ return return_String;]]></Body>
     			<DataSet>
 					<Id>1626864175200</Id>
 					<Name><![CDATA[OD_value_of_time_dataset]]></Name>
-					<X>790</X><Y>570</Y>
+					<X>880</X><Y>890</Y>
 					<Label><X>15</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -2361,6 +2739,102 @@ return return_String;]]></Body>
 					<Logging>false</Logging>
 					<FreezeXAxis>true</FreezeXAxis>
 					<SamplesToKeep>100</SamplesToKeep>
+				</DataSet>
+    			<Statistics>
+					<Id>1627329560082</Id>
+					<Name><![CDATA[temp_incentives_stats]]></Name>
+					<X>40</X><Y>770</Y>
+					<Label><X>15</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<AutoUpdate>true</AutoUpdate>
+					<OccurrenceAtTime>true</OccurrenceAtTime>
+					<OccurrenceDate>1627372800000</OccurrenceDate>
+					<OccurrenceTime Class="CodeUnitValue">
+						<Code><![CDATA[0]]></Code>
+						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+					</OccurrenceTime>
+					<RecurrenceCode Class="CodeUnitValue">
+						<Code><![CDATA[1]]></Code>
+						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+					</RecurrenceCode>
+					<Discrete>true</Discrete>
+				</Statistics>
+    			<HistogramData>
+					<Id>1628171651366</Id>
+					<Name><![CDATA[delivery_savings_hist_data]]></Name>
+					<X>40</X><Y>800</Y>
+					<Label><X>15</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<AutoUpdate>true</AutoUpdate>
+					<OccurrenceAtTime>true</OccurrenceAtTime>
+					<OccurrenceDate>1628236800000</OccurrenceDate>
+					<OccurrenceTime Class="CodeUnitValue">
+						<Code><![CDATA[0]]></Code>
+						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+					</OccurrenceTime>
+					<RecurrenceCode Class="CodeUnitValue">
+						<Code><![CDATA[1]]></Code>
+						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+					</RecurrenceCode>
+					<Value><![CDATA[]]></Value>
+					<NumberOfIntervals>10</NumberOfIntervals>
+					<MinMaxAutodetect>true</MinMaxAutodetect>
+					<RangeMinExpression><![CDATA[0]]></RangeMinExpression>
+					<RangeMaxExpression><![CDATA[1]]></RangeMaxExpression>
+					<InitialIntervalSize><![CDATA[0.1]]></InitialIntervalSize>
+					<CalculateCDF>true</CalculateCDF>
+					<CalculatePercentiles>false</CalculatePercentiles>
+					<LowPercent>10</LowPercent>
+					<HighPercent>10</HighPercent>
+					<Title><![CDATA[]]></Title>
+				</HistogramData>
+    			<DataSet>
+					<Id>1628755105463</Id>
+					<Name><![CDATA[complete_deliveries_dataset]]></Name>
+					<X>1780</X><Y>150</Y>
+					<Label><X>15</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<AutoUpdate>false</AutoUpdate>
+					<OccurrenceAtTime>true</OccurrenceAtTime>
+					<OccurrenceDate>1620892800000</OccurrenceDate>
+					<OccurrenceTime Class="CodeUnitValue">
+						<Code><![CDATA[0]]></Code>
+						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+					</OccurrenceTime>
+					<RecurrenceCode Class="CodeUnitValue">
+						<Code><![CDATA[1]]></Code>
+						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+					</RecurrenceCode>
+					<FreezeXAxis>false</FreezeXAxis>
+					<SamplesToKeep>10000</SamplesToKeep>
+				</DataSet>
+    			<DataSet>
+					<Id>1631873740442</Id>
+					<Name><![CDATA[delivery_original_cost_dataset]]></Name>
+					<X>40</X><Y>880</Y>
+					<Label><X>15</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<AutoUpdate>false</AutoUpdate>
+					<OccurrenceAtTime>true</OccurrenceAtTime>
+					<OccurrenceDate>1618387200000</OccurrenceDate>
+					<OccurrenceTime Class="CodeUnitValue">
+						<Code><![CDATA[1]]></Code>
+						<Unit Class="TimeUnits"><![CDATA[YEAR]]></Unit>
+					</OccurrenceTime>
+					<RecurrenceCode Class="CodeUnitValue">
+						<Code><![CDATA[1]]></Code>
+						<Unit Class="TimeUnits"><![CDATA[YEAR]]></Unit>
+					</RecurrenceCode>
+					<FreezeXAxis>false</FreezeXAxis>
+					<SamplesToKeep>100000</SamplesToKeep>
 				</DataSet>
 			</AnalysisData>
 			<AgentLinks>
@@ -2834,7 +3308,7 @@ return return_String;]]></Body>
 					<LineMaterial>null</LineMaterial>
 					<LineStyle>SOLID</LineStyle>
 					<Width>260</Width>
-					<Height>460</Height>
+					<Height>500</Height>
 					<Rotation>0.0</Rotation>
 					<FillColor>-1</FillColor>
 					<FillMaterial>null</FillMaterial>
@@ -2876,8 +3350,10 @@ return return_String;]]></Body>
 					<EmbeddedIcon>false</EmbeddedIcon>
 					<Z>1</Z>
 					<Rotation>180.0</Rotation>
+					<ScaleXCode><![CDATA[.1]]></ScaleXCode>
+					<ScaleYCode><![CDATA[.1]]></ScaleYCode>
 					<DrawingMode>AGENT_CURRENT_POSITION</DrawingMode>
-					<ScaleType>AUTOMATICALLY_CALCULATED</ScaleType>
+					<ScaleType>DEFINED_EXPLICITLY</ScaleType>
 					<GISScaleForRealEmbeddedObjectPresentationSize>1000</GISScaleForRealEmbeddedObjectPresentationSize>
 					<GISScaleForFixedEmbeddedObjectPresentationSize>10000</GISScaleForFixedEmbeddedObjectPresentationSize>
 					<Latitude>-33.92740054042443</Latitude>
@@ -2895,8 +3371,10 @@ return return_String;]]></Body>
 					<EmbeddedIcon>false</EmbeddedIcon>
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
+					<ScaleXCode><![CDATA[.1]]></ScaleXCode>
+					<ScaleYCode><![CDATA[.1]]></ScaleYCode>
 					<DrawingMode>AGENT_CURRENT_POSITION</DrawingMode>
-					<ScaleType>AUTOMATICALLY_CALCULATED</ScaleType>
+					<ScaleType>DEFINED_EXPLICITLY</ScaleType>
 					<GISScaleForRealEmbeddedObjectPresentationSize>1000</GISScaleForRealEmbeddedObjectPresentationSize>
 					<GISScaleForFixedEmbeddedObjectPresentationSize>1000000000</GISScaleForFixedEmbeddedObjectPresentationSize>
 					<Latitude>-33.936193301347984</Latitude>
@@ -2914,8 +3392,10 @@ return return_String;]]></Body>
 					<EmbeddedIcon>false</EmbeddedIcon>
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
+					<ScaleXCode><![CDATA[0.1]]></ScaleXCode>
+					<ScaleYCode><![CDATA[0.1]]></ScaleYCode>
 					<DrawingMode>AGENT_CURRENT_POSITION</DrawingMode>
-					<ScaleType>AUTOMATICALLY_CALCULATED</ScaleType>
+					<ScaleType>DEFINED_EXPLICITLY</ScaleType>
 					<GISScaleForRealEmbeddedObjectPresentationSize>1000</GISScaleForRealEmbeddedObjectPresentationSize>
 					<GISScaleForFixedEmbeddedObjectPresentationSize>1000000000</GISScaleForFixedEmbeddedObjectPresentationSize>
 					<Latitude>0.0</Latitude>
@@ -2959,8 +3439,10 @@ traceln(SavingsMatrixVar);]]></ActionCode>
 					<EmbeddedIcon>false</EmbeddedIcon>
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
+					<ScaleXCode><![CDATA[1]]></ScaleXCode>
+					<ScaleYCode><![CDATA[1]]></ScaleYCode>
 					<DrawingMode>AGENT_CURRENT_POSITION</DrawingMode>
-					<ScaleType>AUTOMATICALLY_CALCULATED</ScaleType>
+					<ScaleType>DEFINED_EXPLICITLY</ScaleType>
 					<GISScaleForRealEmbeddedObjectPresentationSize>1000</GISScaleForRealEmbeddedObjectPresentationSize>
 					<GISScaleForFixedEmbeddedObjectPresentationSize>1000000000</GISScaleForFixedEmbeddedObjectPresentationSize>
 					<Latitude>0.0</Latitude>
@@ -3145,7 +3627,7 @@ traceln(customerJSON);
 					<LineMaterial>null</LineMaterial>
 					<LineStyle>SOLID</LineStyle>
 					<Width>223</Width>
-					<Height>91</Height>
+					<Height>128</Height>
 					<Rotation>0.0</Rotation>
 					<FillColor>-4144960</FillColor>
 					<FillMaterial>null</FillMaterial>
@@ -3178,7 +3660,7 @@ traceln(customerJSON);
 				<Group>
 					<Id>1620199183438</Id>
 					<Name><![CDATA[group23]]></Name>
-					<X>-410</X><Y>450</Y>
+					<X>-410</X><Y>500</Y>
 					<Label><X>18.623</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -3267,9 +3749,316 @@ traceln(customerJSON);
 
 			<Presentation>
 				<Group>
+					<Id>1627996689236</Id>
+					<Name><![CDATA[group29]]></Name>
+					<X>900</X><Y>160</Y>
+					<Label><X>18.623</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+
+			<Presentation>
+				<RoundedRectangle>
+					<Id>1627996689238</Id>
+					<Name><![CDATA[roundRectangle30]]></Name>
+					<X>-105</X><Y>-140</Y>
+					<Label><X>10</X><Y>10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<ZHeight>10</ZHeight>
+					<LineWidth>1</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineMaterial>null</LineMaterial>
+					<LineStyle>SOLID</LineStyle>
+					<Width>295</Width>
+					<Height>270</Height>
+					<Rotation>0.0</Rotation>
+					<FillColor>-1</FillColor>
+					<FillMaterial>null</FillMaterial>
+					<ArcRadius>10</ArcRadius>
+				</RoundedRectangle>
+				<Text>
+					<Id>1627996689240</Id>
+					<Name><![CDATA[text30]]></Name>
+					<X>-93.119</X><Y>-130.316</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[(F) Company savings distribution]]></Text>
+					<Font>
+						<Name>SansSerif</Name>
+						<Size>10</Size>
+						<Style>1</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
+				</Text>
+			</Presentation>
+
+				</Group>
+				<Group>
+					<Id>1627996547595</Id>
+					<Name><![CDATA[group28]]></Name>
+					<X>590</X><Y>160</Y>
+					<Label><X>18.623</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+
+			<Presentation>
+				<RoundedRectangle>
+					<Id>1627996547597</Id>
+					<Name><![CDATA[roundRectangle29]]></Name>
+					<X>-110</X><Y>-140</Y>
+					<Label><X>10</X><Y>10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<ZHeight>10</ZHeight>
+					<LineWidth>1</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineMaterial>null</LineMaterial>
+					<LineStyle>SOLID</LineStyle>
+					<Width>300</Width>
+					<Height>270</Height>
+					<Rotation>0.0</Rotation>
+					<FillColor>-1</FillColor>
+					<FillMaterial>null</FillMaterial>
+					<ArcRadius>10</ArcRadius>
+				</RoundedRectangle>
+				<Text>
+					<Id>1627996547599</Id>
+					<Name><![CDATA[text29]]></Name>
+					<X>-93.119</X><Y>-130.316</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[(E) Value of time distribution]]></Text>
+					<Font>
+						<Name>SansSerif</Name>
+						<Size>10</Size>
+						<Style>1</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
+				</Text>
+			</Presentation>
+
+				</Group>
+				<Group>
+					<Id>1627996514557</Id>
+					<Name><![CDATA[group27]]></Name>
+					<X>900</X><Y>460</Y>
+					<Label><X>18.623</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+
+			<Presentation>
+				<RoundedRectangle>
+					<Id>1627996514559</Id>
+					<Name><![CDATA[roundRectangle28]]></Name>
+					<X>-105</X><Y>-140</Y>
+					<Label><X>10</X><Y>10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<ZHeight>10</ZHeight>
+					<LineWidth>1</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineMaterial>null</LineMaterial>
+					<LineStyle>SOLID</LineStyle>
+					<Width>295</Width>
+					<Height>270</Height>
+					<Rotation>0.0</Rotation>
+					<FillColor>-1</FillColor>
+					<FillMaterial>null</FillMaterial>
+					<ArcRadius>10</ArcRadius>
+				</RoundedRectangle>
+				<Text>
+					<Id>1627996514561</Id>
+					<Name><![CDATA[text28]]></Name>
+					<X>-93.119</X><Y>-130.316</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[(H) Waiting time distribution]]></Text>
+					<Font>
+						<Name>SansSerif</Name>
+						<Size>10</Size>
+						<Style>1</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
+				</Text>
+			</Presentation>
+
+				</Group>
+				<Group>
+					<Id>1627393331373</Id>
+					<Name><![CDATA[group26]]></Name>
+					<X>130</X><Y>760</Y>
+					<Label><X>18.623</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+
+			<Presentation>
+				<RoundedRectangle>
+					<Id>1627393331375</Id>
+					<Name><![CDATA[roundRectangle27]]></Name>
+					<X>-114.018</X><Y>-135.098</Y>
+					<Label><X>10</X><Y>10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<ZHeight>10</ZHeight>
+					<LineWidth>1</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineMaterial>null</LineMaterial>
+					<LineStyle>SOLID</LineStyle>
+					<Width>294.018</Width>
+					<Height>345.098</Height>
+					<Rotation>0.0</Rotation>
+					<FillColor>-1</FillColor>
+					<FillMaterial>null</FillMaterial>
+					<ArcRadius>10</ArcRadius>
+				</RoundedRectangle>
+				<Text>
+					<Id>1627393331377</Id>
+					<Name><![CDATA[text27]]></Name>
+					<X>-93.119</X><Y>-130.316</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[Delivery vehicle parameters
+(defined from json dataset)]]></Text>
+					<Font>
+						<Name>SansSerif</Name>
+						<Size>10</Size>
+						<Style>1</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
+				</Text>
+			</Presentation>
+
+				</Group>
+				<Group>
+					<Id>1627393238841</Id>
+					<Name><![CDATA[group25]]></Name>
+					<X>-150</X><Y>800</Y>
+					<Label><X>18.623</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+
+			<Presentation>
+				<RoundedRectangle>
+					<Id>1627393238843</Id>
+					<Name><![CDATA[roundRectangle26]]></Name>
+					<X>-114.018</X><Y>-135.098</Y>
+					<Label><X>10</X><Y>10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<ZHeight>10</ZHeight>
+					<LineWidth>1</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineMaterial>null</LineMaterial>
+					<LineStyle>SOLID</LineStyle>
+					<Width>223.486</Width>
+					<Height>295.098</Height>
+					<Rotation>0.0</Rotation>
+					<FillColor>-1</FillColor>
+					<FillMaterial>null</FillMaterial>
+					<ArcRadius>10</ArcRadius>
+				</RoundedRectangle>
+				<Text>
+					<Id>1627393238845</Id>
+					<Name><![CDATA[text26]]></Name>
+					<X>-93.119</X><Y>-130.316</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[Delivery vehicle parameters
+(defined from json dataset)]]></Text>
+					<Font>
+						<Name>SansSerif</Name>
+						<Size>10</Size>
+						<Style>1</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
+				</Text>
+			</Presentation>
+
+				</Group>
+				<Group>
 					<Id>1620136208406</Id>
 					<Name><![CDATA[group19]]></Name>
-					<X>1470</X><Y>780</Y>
+					<X>76.425</X><Y>386.922</Y>
 					<Label><X>18.623</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -3283,7 +4072,7 @@ traceln(customerJSON);
 				<RoundedRectangle>
 					<Id>1620136208408</Id>
 					<Name><![CDATA[roundRectangle20]]></Name>
-					<X>-40</X><Y>-40</Y>
+					<X>-40</X><Y>-236.922</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -3296,8 +4085,8 @@ traceln(customerJSON);
 					<LineColor>-16777216</LineColor>
 					<LineMaterial>null</LineMaterial>
 					<LineStyle>SOLID</LineStyle>
-					<Width>660</Width>
-					<Height>450</Height>
+					<Width>418.552</Width>
+					<Height>442.986</Height>
 					<Rotation>0.0</Rotation>
 					<FillColor>-1</FillColor>
 					<FillMaterial>null</FillMaterial>
@@ -3306,7 +4095,7 @@ traceln(customerJSON);
 				<Text>
 					<Id>1620136208410</Id>
 					<Name><![CDATA[text20]]></Name>
-					<X>0</X><Y>-30</Y>
+					<X>-26.425</X><Y>-226.922</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -3316,7 +4105,7 @@ traceln(customerJSON);
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
-					<Text><![CDATA[Incentives payed data]]></Text>
+					<Text><![CDATA[(D) Delivery cost data]]></Text>
 					<Font>
 						<Name>SansSerif</Name>
 						<Size>10</Size>
@@ -3358,7 +4147,7 @@ traceln(customerJSON);
 					<LineMaterial>null</LineMaterial>
 					<LineStyle>SOLID</LineStyle>
 					<Width>240</Width>
-					<Height>230</Height>
+					<Height>330</Height>
 					<Rotation>0.0</Rotation>
 					<FillColor>-1</FillColor>
 					<FillMaterial>null</FillMaterial>
@@ -3794,7 +4583,7 @@ pyCommunicator.run(String.format("printJson(%s)",
 				<Group>
 					<Id>1615369364760</Id>
 					<Name><![CDATA[group9]]></Name>
-					<X>-422</X><Y>660</Y>
+					<X>-422</X><Y>690</Y>
 					<Label><X>16.9</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -3883,7 +4672,7 @@ pyCommunicator.run(String.format("printJson(%s)",
 					<LineMaterial>null</LineMaterial>
 					<LineStyle>SOLID</LineStyle>
 					<Width>220</Width>
-					<Height>137.098</Height>
+					<Height>170</Height>
 					<Rotation>0.0</Rotation>
 					<FillColor>-4144960</FillColor>
 					<FillMaterial>null</FillMaterial>
@@ -3961,7 +4750,7 @@ pyCommunicator.run(String.format("printJson(%s)",
     			<Histogram>
 					<Id>1618313478336</Id>
 					<Name><![CDATA[chart]]></Name>
-					<X>740</X><Y>300</Y>
+					<X>500</X><Y>60</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4024,7 +4813,7 @@ pyCommunicator.run(String.format("printJson(%s)",
 				<Group>
 					<Id>1618317025127</Id>
 					<Name><![CDATA[group12]]></Name>
-					<X>-620</X><Y>390</Y>
+					<X>-620</X><Y>490</Y>
 					<Label><X>18.623</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4061,7 +4850,7 @@ pyCommunicator.run(String.format("printJson(%s)",
 				<Text>
 					<Id>1618317025131</Id>
 					<Name><![CDATA[text13]]></Name>
-					<X>-193.119</X><Y>-130.316</Y>
+					<X>-190</X><Y>-50</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4207,7 +4996,7 @@ pyCommunicator.run(String.format("printJson(%s)",
     			<TimePlot>
 					<Id>1618323699703</Id>
 					<Name><![CDATA[plot]]></Name>
-					<X>1440</X><Y>950</Y>
+					<X>50</X><Y>210</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4225,15 +5014,15 @@ pyCommunicator.run(String.format("printJson(%s)",
 						<Unit Class="TimeUnits"><![CDATA[HOUR]]></Unit>
 					</RecurrenceCode>
 					<EmbeddedIcon>false</EmbeddedIcon>
-					<Width>640</Width>
-					<Height>210</Height>
+					<Width>370.4305106658048</Width>
+					<Height>170.789</Height>
 					<BackgroundColor/>
 					<BorderColor/>
 					<ChartArea>
 						<XOffset>50</XOffset>
-						<YOffset>30</YOffset>
-						<Width>560</Width>
-						<Height>120</Height>
+						<YOffset>10</YOffset>
+						<Width>290.4305106658048</Width>
+						<Height>100.78899999999999</Height>
 						<BackgroundColor>-1</BackgroundColor>
 						<BorderColor>-16777216</BorderColor>
 						<GridColor>-12566464</GridColor>
@@ -4250,7 +5039,7 @@ pyCommunicator.run(String.format("printJson(%s)",
 					</Labels>
 					<ShowLegend>true</ShowLegend>
 					<TimeWindowsMovementType>MOVEMENT_WITH_TIME</TimeWindowsMovementType>		
-					<TimeWindowUnits>WEEK</TimeWindowUnits>
+					<TimeWindowUnits>MONTH</TimeWindowUnits>
 					<VerScaleFromExpression><![CDATA[0]]></VerScaleFromExpression>
 					<VerScaleToExpression><![CDATA[1]]></VerScaleToExpression>
 					<VerScaleType>AUTO</VerScaleType>
@@ -4266,7 +5055,7 @@ pyCommunicator.run(String.format("printJson(%s)",
 						<LineWidth>1.0</LineWidth>
 					</DatasetExpression>
 					<DatasetExpression>  
-						<Title><![CDATA[Incentives Payed]]></Title>
+						<Title><![CDATA[Incentives paid]]></Title>
 					<Expression><![CDATA[my_dataset1]]></Expression>
 					<Color>-14774017</Color>
 					<Expression2><![CDATA[accepted_incentives_statistics.sum()]]></Expression2>
@@ -4277,12 +5066,12 @@ pyCommunicator.run(String.format("printJson(%s)",
 					<SamplesToKeep>10000</SamplesToKeep>
 					<TimeWindowExpression><![CDATA[1]]></TimeWindowExpression>
 					<FillAreaUnderLine>false</FillAreaUnderLine>
-					<LabelFormat>MODEL_DATE_DATE_AND_TIME</LabelFormat>
+					<LabelFormat>MODEL_DATE_DATE_ONLY</LabelFormat>
     			</TimePlot>
     			<TimeStackChart>
 					<Id>1618323802871</Id>
 					<Name><![CDATA[chart2]]></Name>
-					<X>1440</X><Y>750</Y>
+					<X>50</X><Y>400</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4300,15 +5089,15 @@ pyCommunicator.run(String.format("printJson(%s)",
 						<Unit Class="TimeUnits"><![CDATA[HOUR]]></Unit>
 					</RecurrenceCode>
 					<EmbeddedIcon>false</EmbeddedIcon>
-					<Width>640</Width>
-					<Height>210</Height>
+					<Width>370.4305106658048</Width>
+					<Height>170</Height>
 					<BackgroundColor/>
 					<BorderColor/>
 					<ChartArea>
 						<XOffset>50</XOffset>
-						<YOffset>30</YOffset>
-						<Width>560</Width>
-						<Height>120</Height>
+						<YOffset>10</YOffset>
+						<Width>289.9995106658048</Width>
+						<Height>100</Height>
 						<BackgroundColor>-1</BackgroundColor>
 						<BorderColor>-16777216</BorderColor>
 						<GridColor>-12566464</GridColor>
@@ -4332,14 +5121,14 @@ pyCommunicator.run(String.format("printJson(%s)",
 					<Color>-32944</Color>
 					<Expression2><![CDATA[delivery_route_distances_statistics.sum()]]></Expression2>
 					<Expression2Flag>true</Expression2Flag>  
-							<Title><![CDATA[Cumulative delivery cost]]></Title>
+							<Title><![CDATA[Delivery cost]]></Title>
 					</DatasetExpression>
 					<DatasetExpression>
 					<Expression><![CDATA[my_dataset]]></Expression>
 					<Color>-14774017</Color>
 					<Expression2><![CDATA[accepted_incentives_statistics.sum()]]></Expression2>
 					<Expression2Flag>true</Expression2Flag>  
-							<Title><![CDATA[Cumulative incentives ]]></Title>
+							<Title><![CDATA[Incentives paid]]></Title>
 					</DatasetExpression>
 					<SamplesToKeep>1000</SamplesToKeep>
 					<VerScaleToExpression><![CDATA[1]]></VerScaleToExpression>
@@ -4383,34 +5172,13 @@ pyCommunicator.run(String.format("printJson(%s)",
 					<FillMaterial>null</FillMaterial>
 					<ArcRadius>10</ArcRadius>
 				</RoundedRectangle>
-				<Text>
-					<Id>1618822040084</Id>
-					<Name><![CDATA[text16]]></Name>
-					<X>-93.119</X><Y>-130.316</Y>
-					<Label><X>0</X><Y>-10</Y></Label>
-					<PublicFlag>true</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<DrawMode>SHAPE_DRAW_2D</DrawMode>
-					<EmbeddedIcon>false</EmbeddedIcon>
-					<Z>0</Z>
-					<Rotation>0.0</Rotation>
-					<Color>-16777216</Color>
-					<Text><![CDATA[Savings data]]></Text>
-					<Font>
-						<Name>SansSerif</Name>
-						<Size>10</Size>
-						<Style>1</Style>
-					</Font>
-					<Alignment>LEFT</Alignment>
-				</Text>
 			</Presentation>
 
 				</Group>
 				<Group>
 					<Id>1618832170264</Id>
 					<Name><![CDATA[group16]]></Name>
-					<X>-610</X><Y>580</Y>
+					<X>-620</X><Y>680</Y>
 					<Label><X>18.623</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4438,7 +5206,7 @@ pyCommunicator.run(String.format("printJson(%s)",
 					<LineMaterial>null</LineMaterial>
 					<LineStyle>SOLID</LineStyle>
 					<Width>240</Width>
-					<Height>240</Height>
+					<Height>200</Height>
 					<Rotation>0.0</Rotation>
 					<FillColor>-1</FillColor>
 					<FillMaterial>null</FillMaterial>
@@ -4471,7 +5239,7 @@ pyCommunicator.run(String.format("printJson(%s)",
 				<Group>
 					<Id>1620135912593</Id>
 					<Name><![CDATA[group17]]></Name>
-					<X>1540</X><Y>370</Y>
+					<X>590</X><Y>460</Y>
 					<Label><X>18.623</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4485,7 +5253,7 @@ pyCommunicator.run(String.format("printJson(%s)",
 				<RoundedRectangle>
 					<Id>1620135912595</Id>
 					<Name><![CDATA[roundRectangle18]]></Name>
-					<X>-110</X><Y>-135.098</Y>
+					<X>-110</X><Y>-140</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4499,7 +5267,7 @@ pyCommunicator.run(String.format("printJson(%s)",
 					<LineMaterial>null</LineMaterial>
 					<LineStyle>SOLID</LineStyle>
 					<Width>300</Width>
-					<Height>485.098</Height>
+					<Height>270</Height>
 					<Rotation>0.0</Rotation>
 					<FillColor>-1</FillColor>
 					<FillMaterial>null</FillMaterial>
@@ -4518,7 +5286,7 @@ pyCommunicator.run(String.format("printJson(%s)",
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
-					<Text><![CDATA[Incentives payed plots]]></Text>
+					<Text><![CDATA[(G) Incentives paid distribution]]></Text>
 					<Font>
 						<Name>SansSerif</Name>
 						<Size>10</Size>
@@ -4532,7 +5300,7 @@ pyCommunicator.run(String.format("printJson(%s)",
     			<Histogram>
 					<Id>1618322527401</Id>
 					<Name><![CDATA[chart1]]></Name>
-					<X>1450</X><Y>280</Y>
+					<X>500</X><Y>360</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4589,7 +5357,7 @@ pyCommunicator.run(String.format("printJson(%s)",
 						<ColorHighPercent>-4565549</ColorHighPercent>
 						<ColorMean>-13447886</ColorMean>
 						<LineWidth>1</LineWidth>						
-						<Title><![CDATA[Incentives payed distribution]]></Title>							
+						<Title><![CDATA[Incentives paid distribution]]></Title>							
 					</HistogramDataExpression>
     			</Histogram>
 				<Group>
@@ -4721,7 +5489,7 @@ pyCommunicator.run(String.format("printJson(%s)",
     			<Histogram>
 					<Id>1620136101455</Id>
 					<Name><![CDATA[savings_histogram]]></Name>
-					<X>2120</X><Y>270</Y>
+					<X>810</X><Y>60</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4771,7 +5539,7 @@ pyCommunicator.run(String.format("printJson(%s)",
 						<RelativeWidth>0.8</RelativeWidth>
 					</Bars>
 					<HistogramDataExpression>
-					<Expression><![CDATA[savings_hist_data]]></Expression>
+					<Expression><![CDATA[delivery_savings_hist_data]]></Expression>
 						<ColorPDF>-16744448</ColorPDF>
 						<ColorCDF>-2354116</ColorCDF>
 						<ColorLowPercent>-32944</ColorLowPercent>
@@ -4781,136 +5549,10 @@ pyCommunicator.run(String.format("printJson(%s)",
 						<Title><![CDATA[Company savings distribution]]></Title>							
 					</HistogramDataExpression>
     			</Histogram>
-    			<TimePlot>
-					<Id>1618822334069</Id>
-					<Name><![CDATA[plot2]]></Name>
-					<X>2120</X><Y>510</Y>
-					<Label><X>0</X><Y>-10</Y></Label>
-					<PublicFlag>true</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-					<AutoUpdate>true</AutoUpdate>
-					<OccurrenceAtTime>true</OccurrenceAtTime>
-					<OccurrenceDate>1618905600000</OccurrenceDate>
-					<OccurrenceTime Class="CodeUnitValue">
-						<Code><![CDATA[0]]></Code>
-						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
-					</OccurrenceTime>
-					<RecurrenceCode Class="CodeUnitValue">
-						<Code><![CDATA[1]]></Code>
-						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
-					</RecurrenceCode>
-					<EmbeddedIcon>false</EmbeddedIcon>
-					<Width>260</Width>
-					<Height>210</Height>
-					<BackgroundColor/>
-					<BorderColor/>
-					<ChartArea>
-						<XOffset>50</XOffset>
-						<YOffset>30</YOffset>
-						<Width>180</Width>
-						<Height>120</Height>
-						<BackgroundColor>-1</BackgroundColor>
-						<BorderColor>-16777216</BorderColor>
-						<GridColor>-12566464</GridColor>
-					</ChartArea>
-					<Legend>
-						<Place>SOUTH</Place>
-						<TextColor>-16777216</TextColor>
-						<Size>30</Size>
-					</Legend>
-					<Labels>
-						<HorLabelsPosition>DEFAULT</HorLabelsPosition>
-						<VerLabelsPosition>DEFAULT</VerLabelsPosition>
-						<TextColor>-12566464</TextColor>
-					</Labels>
-					<ShowLegend>true</ShowLegend>
-					<TimeWindowsMovementType>MOVEMENT_WITH_TIME</TimeWindowsMovementType>		
-					<TimeWindowUnits>WEEK</TimeWindowUnits>
-					<VerScaleFromExpression><![CDATA[0]]></VerScaleFromExpression>
-					<VerScaleToExpression><![CDATA[1]]></VerScaleToExpression>
-					<VerScaleType>AUTO</VerScaleType>
-					<DrawLine>true</DrawLine>
-					<Interpolation>LINEAR</Interpolation>
-					<DatasetExpression>  
-						<Title><![CDATA[Company savings]]></Title>
-					<Expression><![CDATA[savings_dataset]]></Expression>
-					<Color>-16744448</Color>
-					<Expression2><![CDATA[savings_data.]]></Expression2>
-					<Expression2Flag>false</Expression2Flag>
-						<PointStyle>SQUARE</PointStyle>
-						<LineWidth>0.0</LineWidth>
-					</DatasetExpression>
-					<SamplesToKeep>500</SamplesToKeep>
-					<TimeWindowExpression><![CDATA[4]]></TimeWindowExpression>
-					<FillAreaUnderLine>false</FillAreaUnderLine>
-					<LabelFormat>MODEL_DATE_DATE_ONLY</LabelFormat>
-    			</TimePlot>
-    			<TimeStackChart>
-					<Id>1618822286301</Id>
-					<Name><![CDATA[chart3]]></Name>
-					<X>2120</X><Y>740</Y>
-					<Label><X>0</X><Y>-10</Y></Label>
-					<PublicFlag>true</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-					<AutoUpdate>true</AutoUpdate>
-					<OccurrenceAtTime>true</OccurrenceAtTime>
-					<OccurrenceDate>1618905600000</OccurrenceDate>
-					<OccurrenceTime Class="CodeUnitValue">
-						<Code><![CDATA[1]]></Code>
-						<Unit Class="TimeUnits"><![CDATA[DAY]]></Unit>
-					</OccurrenceTime>
-					<RecurrenceCode Class="CodeUnitValue">
-						<Code><![CDATA[1]]></Code>
-						<Unit Class="TimeUnits"><![CDATA[DAY]]></Unit>
-					</RecurrenceCode>
-					<EmbeddedIcon>false</EmbeddedIcon>
-					<Width>260</Width>
-					<Height>210</Height>
-					<BackgroundColor/>
-					<BorderColor/>
-					<ChartArea>
-						<XOffset>50</XOffset>
-						<YOffset>30</YOffset>
-						<Width>180</Width>
-						<Height>120</Height>
-						<BackgroundColor>-1</BackgroundColor>
-						<BorderColor>-16777216</BorderColor>
-						<GridColor>-12566464</GridColor>
-					</ChartArea>
-					<Legend>
-						<Place>SOUTH</Place>
-						<TextColor>-16777216</TextColor>
-						<Size>30</Size>
-					</Legend>
-					<Labels>
-						<HorLabelsPosition>DEFAULT</HorLabelsPosition>
-						<VerLabelsPosition>DEFAULT</VerLabelsPosition>
-						<TextColor>-12566464</TextColor>
-					</Labels>
-					<ShowLegend>true</ShowLegend>
-					<TimeWindowsMovementType>MOVEMENT_WITH_TIME</TimeWindowsMovementType>		
-					<TimeWindowUnits>WEEK</TimeWindowUnits>
-					<TimeWindowExpression><![CDATA[4]]></TimeWindowExpression>
-					<DatasetExpression>
-					<Expression><![CDATA[my_dataset]]></Expression>
-					<Color>-16744448</Color>
-					<Expression2><![CDATA[savings_statistics.sum()]]></Expression2>
-					<Expression2Flag>true</Expression2Flag>  
-							<Title><![CDATA[Cummulative Company Savings]]></Title>
-					</DatasetExpression>
-					<SamplesToKeep>1000</SamplesToKeep>
-					<VerScaleToExpression><![CDATA[1]]></VerScaleToExpression>
-					<VerScaleType>AUTO</VerScaleType>
-					<LabelFormat>MODEL_DATE_DATE_ONLY</LabelFormat>
-    			</TimeStackChart>
 				<Group>
 					<Id>1620198831530</Id>
 					<Name><![CDATA[group20]]></Name>
-					<X>-430</X><Y>810</Y>
+					<X>-430</X><Y>830</Y>
 					<Label><X>16.9</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4995,76 +5637,11 @@ pyCommunicator.run(String.format("print('%s'[1])", data_collected));
 						<LabelText><![CDATA[button]]></LabelText>
 					</ExtendedProperties>
 				</Control>
-    			<Plot>
-					<Id>1620734650128</Id>
-					<Name><![CDATA[plot3]]></Name>
-					<X>2500</X><Y>520</Y>
-					<Label><X>0</X><Y>-10</Y></Label>
-					<PublicFlag>true</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-					<AutoUpdate>true</AutoUpdate>
-					<OccurrenceAtTime>true</OccurrenceAtTime>
-					<OccurrenceDate>1620806400000</OccurrenceDate>
-					<OccurrenceTime Class="CodeUnitValue">
-						<Code><![CDATA[0]]></Code>
-						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
-					</OccurrenceTime>
-					<RecurrenceCode Class="CodeUnitValue">
-						<Code><![CDATA[1]]></Code>
-						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
-					</RecurrenceCode>
-					<EmbeddedIcon>false</EmbeddedIcon>
-					<Width>260</Width>
-					<Height>210</Height>
-					<BackgroundColor/>
-					<BorderColor/>
-					<ChartArea>
-						<XOffset>50</XOffset>
-						<YOffset>30</YOffset>
-						<Width>180</Width>
-						<Height>120</Height>
-						<BackgroundColor>-1</BackgroundColor>
-						<BorderColor>-16777216</BorderColor>
-						<GridColor>-12566464</GridColor>
-					</ChartArea>
-					<Legend>
-						<Place>SOUTH</Place>
-						<TextColor>-16777216</TextColor>
-						<Size>30</Size>
-					</Legend>
-					<Labels>
-						<HorLabelsPosition>DEFAULT</HorLabelsPosition>
-						<VerLabelsPosition>DEFAULT</VerLabelsPosition>
-						<TextColor>-12566464</TextColor>
-					</Labels>
-					<ShowLegend>true</ShowLegend>
-					<VerScaleFromExpression><![CDATA[0]]></VerScaleFromExpression>
-					<VerScaleToExpression><![CDATA[1]]></VerScaleToExpression>
-					<VerScaleType>AUTO</VerScaleType>
-					<DrawLine>true</DrawLine>
-					<Interpolation>LINEAR</Interpolation>
-					<DatasetExpression>  
-						<Title><![CDATA[Dataset Title]]></Title>
-					<Expression><![CDATA[savings_dataset]]></Expression>
-					<Color>-16744448</Color>
-					<Expression2><![CDATA[0]]></Expression2>
-					<Expression2Flag>false</Expression2Flag>
-						<PointStyle>CIRCLE</PointStyle>
-						<LineWidth>1.0</LineWidth>
-						<HorizontalAxisExpression><![CDATA[0]]></HorizontalAxisExpression>
-					</DatasetExpression>
-					<SamplesToKeep>500</SamplesToKeep>
-					<HorScaleFromExpression><![CDATA[0]]></HorScaleFromExpression>
-					<HorScaleToExpression><![CDATA[1]]></HorScaleToExpression>
-					<HorScaleType>AUTO</HorScaleType>
-    			</Plot>
 				<Control Type="Button">
 				 	<EmbeddedIcon>false</EmbeddedIcon>				
 					<Id>1620736174061</Id>
 					<Name><![CDATA[button4]]></Name>
-					<X>100</X><Y>400</Y>
+					<X>310</X><Y>840</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5074,19 +5651,7 @@ pyCommunicator.run(String.format("print('%s'[1])", data_collected));
                         <EmbeddedIcon>false</EmbeddedIcon>	
 						<TextColor/>
 						<Enabled>true</Enabled>
-						<ActionCode><![CDATA[pyCommunicator.run("import json");
-pyCommunicator.run("from capture_results import capture_run_results");
-
-
-traceln("Waiting dataset:" + waiting_time_dataset);
-traceln("Capacity: " + waiting_time_dataset.getCapacity());
-traceln("Size: " + waiting_time_dataset.size());
-traceln("Size: " + waiting_time_dataset.toString());
-
-
-String waiting_time_data_json = pyCommunicator.toJson(waiting_time_dataset);
-
-traceln("Waiting time data:" + waiting_time_data_json);
+						<ActionCode><![CDATA[traceln("Scale" + scale.toLengthUnits(10,  LENGTH_UNIT_KILOMETER));
 
 
 ]]></ActionCode>
@@ -5160,7 +5725,7 @@ traceln("Waiting time data:" + waiting_time_data_json);
     			<Histogram>
 					<Id>1620992090337</Id>
 					<Name><![CDATA[savings_histogram1]]></Name>
-					<X>1780</X><Y>470</Y>
+					<X>820</X><Y>360</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5224,7 +5789,7 @@ traceln("Waiting time data:" + waiting_time_data_json);
 				 	<EmbeddedIcon>false</EmbeddedIcon>				
 					<Id>1625814621731</Id>
 					<Name><![CDATA[button5]]></Name>
-					<X>80</X><Y>220</Y>
+					<X>30</X><Y>820</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5254,13 +5819,13 @@ traceln("Savings: "  + (all_customer_distance-regular_customer_distance));
 				 	<EmbeddedIcon>false</EmbeddedIcon>				
 					<Id>1626877011018</Id>
 					<Name><![CDATA[cao]]></Name>
-					<X>200</X><Y>480</Y>
+					<X>-240</X><Y>710</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-					<BasicProperties Width="100" Height="30">
+					<BasicProperties Width="170" Height="30">
                         <EmbeddedIcon>false</EmbeddedIcon>	
 						<TextColor/>
 						<Enabled>true</Enabled>
@@ -5321,8 +5886,8 @@ traceln("Savings: "  + (all_customer_distance-regular_customer_distance));
 				<RotateAnimationTowardsMovement>true</RotateAnimationTowardsMovement>
 				<RotateAnimationVertically>false</RotateAnimationVertically>
 				<VelocityCode Class="CodeUnitValue">
-					<Code><![CDATA[2]]></Code>
-					<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
+					<Code><![CDATA[50]]></Code>
+					<Unit Class="SpeedUnits"><![CDATA[KPH]]></Unit>
 				</VelocityCode>
 				<PhysicalLength Class="CodeUnitValue">
 					<Code><![CDATA[1]]></Code>
@@ -5593,7 +6158,7 @@ customersToBeVisited.removeFirst()
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1595319603799" Target="1595319548544" Trigger="timeout">
 						<Timeout Class="CodeUnitValue">
-							<Code><![CDATA[.5]]></Code>
+							<Code><![CDATA[5]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
 						</Timeout>
 						<Condition><![CDATA[true]]></Condition>
@@ -6050,7 +6615,7 @@ moveTo(main.depot);
 				<Variable Class="PlainVariable">
 					<Id>1615370485695</Id>
 					<Name><![CDATA[cost_to_serve]]></Name>
-					<X>-220</X><Y>190</Y>
+					<X>-180</X><Y>190</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6065,7 +6630,7 @@ moveTo(main.depot);
 				<Variable Class="PlainVariable">
 					<Id>1620991711198</Id>
 					<Name><![CDATA[waiting_start_time]]></Name>
-					<X>-220</X><Y>360</Y>
+					<X>-180</X><Y>360</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6074,25 +6639,10 @@ moveTo(main.depot);
 						<Type><![CDATA[double]]></Type>        
 					</Properties>
 				</Variable>
-				<Variable Class="PlainVariable">
-					<Id>1625641699075</Id>
-					<Name><![CDATA[order_placed]]></Name>
-					<X>690</X><Y>100</Y>
-					<Label><X>10</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
-						<Type><![CDATA[boolean]]></Type>        
-						<InitialValue Class="CodeValue">
-							<Code><![CDATA[false]]></Code>
-						</InitialValue>
-					</Properties>
-				</Variable>
 				<Variable Class="Parameter">
 					<Id>1603959864740</Id>
 					<Name><![CDATA[x]]></Name>
-					<X>-220</X><Y>130</Y>
+					<X>-180</X><Y>130</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6113,7 +6663,7 @@ moveTo(main.depot);
 				<Variable Class="Parameter">
 					<Id>1603959869568</Id>
 					<Name><![CDATA[y]]></Name>
-					<X>-220</X><Y>150</Y>
+					<X>-180</X><Y>150</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6134,7 +6684,7 @@ moveTo(main.depot);
 				<Variable Class="Parameter">
 					<Id>1603959878836</Id>
 					<Name><![CDATA[demand]]></Name>
-					<X>-220</X><Y>170</Y>
+					<X>-180</X><Y>170</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6155,7 +6705,7 @@ moveTo(main.depot);
 				<Variable Class="Parameter">
 					<Id>1614857680412</Id>
 					<Name><![CDATA[id]]></Name>
-					<X>-220</X><Y>110</Y>
+					<X>-180</X><Y>110</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6176,7 +6726,7 @@ moveTo(main.depot);
 				<Variable Class="Parameter">
 					<Id>1614857700089</Id>
 					<Name><![CDATA[ready_time]]></Name>
-					<X>-220</X><Y>240</Y>
+					<X>-180</X><Y>240</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6197,7 +6747,7 @@ moveTo(main.depot);
 				<Variable Class="Parameter">
 					<Id>1614857717800</Id>
 					<Name><![CDATA[due_time]]></Name>
-					<X>-220</X><Y>260</Y>
+					<X>-180</X><Y>260</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6218,7 +6768,7 @@ moveTo(main.depot);
 				<Variable Class="Parameter">
 					<Id>1614857733541</Id>
 					<Name><![CDATA[service_time]]></Name>
-					<X>-220</X><Y>280</Y>
+					<X>-180</X><Y>280</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6366,8 +6916,7 @@ deliver("Reassign customers", ALL);]]></EntryAction>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties Width="100" Height="30">
-						<EntryAction><![CDATA[order_placed = false;
-this.order_circle.setVisible(false);]]></EntryAction>
+						<EntryAction><![CDATA[this.order_circle.setVisible(false);]]></EntryAction>
 						<FillColor/>
 					</Properties>
 				</StatechartElement>
@@ -6398,22 +6947,47 @@ this.order_circle.setVisible(false);]]></EntryAction>
 						<FillColor/>
 					</Properties>
 				</StatechartElement>
+				<StatechartElement Class="State" ParentState="ROOT_NODE">
+					<Id>1627576894637</Id>
+					<Name><![CDATA[state]]></Name>
+					<X>780</X><Y>40</Y>
+					<Label><X>10</X><Y>10</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties Width="100" Height="30">
+						<FillColor/>
+					</Properties>
+				</StatechartElement>
+				<StatechartElement Class="State" ParentState="ROOT_NODE">
+					<Id>1631172791035</Id>
+					<Name><![CDATA[deliveries_started]]></Name>
+					<X>270</X><Y>340</Y>
+					<Label><X>10</X><Y>10</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties Width="100" Height="30">
+						<EntryAction><![CDATA[this.order_circle.setFillColor(orange);
+]]></EntryAction>
+						<FillColor/>
+					</Properties>
+				</StatechartElement>
 				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
 					<Id>1603783984870</Id>
 					<Name><![CDATA[transition]]></Name>
-					<X>620</X><Y>80</Y>
+					<X>660</X><Y>70</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>70</Y></Point>
+						<Point><X>120</X><Y>-10</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
-					<Properties Source="1603783916374" Target="1603783920993" Trigger="rate">
+					<Properties Source="1603783916374" Target="1627576894637" Trigger="rate">
 						<Action><![CDATA[this.order_circle.setVisible(true);
-
 waiting_start_time = time();]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
@@ -6421,7 +6995,7 @@ waiting_start_time = time();]]></Action>
 						</Timeout>
 						<Condition><![CDATA[order_placed ]]></Condition>
 						<Rate Class="CodeUnitValue">
-							<Code><![CDATA[main.base_online_rate*main.daily_demand_schedule.getValue()*main.weekly_demand_schedule.getValue()
+							<Code><![CDATA[0.000000000000002*main.base_online_rate*main.daily_demand_schedule.getValue()*main.weekly_demand_schedule.getValue()
 ]]></Code>
 							<Unit Class="RateUnits"><![CDATA[PER_DAY]]></Unit>
 						</Rate>
@@ -6453,6 +7027,13 @@ Thus, the company isn't guaranteed to make a profit, but a significant amount of
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1603784229913" Target="1603784288994" Trigger="timeout">
+						<Action><![CDATA[//traceln("Loss aversion param:" + main.loss_aversion_parameter );
+//traceln("Incentive fixed:" + main.incentive_fixed_cost);
+//traceln("Cost to serve:" + this.cost_to_serve);
+//traceln("Should be greater than :" + main.loss_aversion_parameter * main.incentive_fixed_cost);
+
+
+]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
@@ -6460,7 +7041,7 @@ Thus, the company isn't guaranteed to make a profit, but a significant amount of
 						<Condition><![CDATA[//for simple implementation
 //this.cost_to_serve > main.incentive_offered
 //for fixed cost + variable cost implemetation
-this.cost_to_serve > main.incentive_fixed_cost]]></Condition>
+this.cost_to_serve > main.loss_aversion_parameter * main.incentive_fixed_cost]]></Condition>
 						<Rate Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="RateUnits"><![CDATA[PER_MINUTE]]></Unit>
@@ -6568,18 +7149,18 @@ this.cost_to_serve > main.incentive_fixed_cost]]></Condition>
 				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
 					<Id>1603784387299</Id>
 					<Name><![CDATA[transition7]]></Name>
-					<X>310</X><Y>450</Y>
+					<X>310</X><Y>340</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>-380</Y></Point>
-						<Point><X>100</X><Y>-380</Y></Point>
+						<Point><X>0</X><Y>-270</Y></Point>
+						<Point><X>100</X><Y>-270</Y></Point>
 					</Points>
 					<IconOffset>150.0</IconOffset>
-					<Properties Source="1625652145876" Target="1625204322871" Trigger="message">
+					<Properties Source="1631172791035" Target="1625204322871" Trigger="message">
 						<Action><![CDATA[double waiting_time = time() - waiting_start_time;
 
 main.waiting_time_dataset.add(waiting_start_time , waiting_time);
@@ -6744,6 +7325,7 @@ waiting_start_time = 0;]]></Action>
 					</Points>
 					<IconOffset>50.0</IconOffset>
 					<Properties Source="1603784288994" Target="1618316376690" Trigger="message">
+						<Action><![CDATA[//traceln("re-sort " + this);]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
@@ -6775,8 +7357,8 @@ waiting_start_time = 0;]]></Action>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1618316376690" Target="1603784229913" Trigger="timeout">
 						<Timeout Class="CodeUnitValue">
-							<Code><![CDATA[2]]></Code>
-							<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
 						</Timeout>
 						<Condition><![CDATA[true]]></Condition>
 						<Rate Class="CodeUnitValue">
@@ -6912,41 +7494,71 @@ waiting_start_time = 0;]]></Action>
 						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
 					</Properties>	
 				</StatechartElement>
-			</StatechartElements>
-			<Events>
-				<Event>
-					<Id>1625641094516</Id>
-					<Name><![CDATA[event]]></Name>
-					<X>690</X><Y>60</Y>
+				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
+					<Id>1627576930150</Id>
+					<Name><![CDATA[transition15]]></Name>
+					<X>620</X><Y>80</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Properties TriggerType="rate" Mode="userControls">
+					<ShowLabel>false</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>0</X><Y>70</Y></Point>
+					</Points>
+					<IconOffset>20.0</IconOffset>
+					<Properties Source="1603783916374" Target="1603783920993" Trigger="message">
+						<Action><![CDATA[this.order_circle.setVisible(true);
+waiting_start_time = time();
+//traceln("HERE!!!!!")]]></Action>
 						<Timeout Class="CodeUnitValue">
-							<Code><![CDATA[exponential(lambda)]]></Code>
-							<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
-						</Timeout>
-						<Rate Class="CodeUnitValue">
-							<Code><![CDATA[main.base_online_rate*main.daily_demand_schedule.getValue()*main.weekly_demand_schedule.getValue()
-]]></Code>
-							<Unit Class="RateUnits"><![CDATA[PER_DAY]]></Unit>
-						</Rate>
-						<OccurrenceAtTime>true</OccurrenceAtTime>
-						<OccurrenceDate>1625644800000</OccurrenceDate>
-						<OccurrenceTime Class="CodeUnitValue">
-							<Code><![CDATA[0]]></Code>
-							<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
-						</OccurrenceTime>
-						<RecurrenceCode Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
-						</RecurrenceCode>
-						<Condition><![CDATA[false]]></Condition>
-					</Properties>
-					<Action><![CDATA[order_placed = true;]]></Action>
-				</Event>
-			</Events>
+						</Timeout>
+						<Condition><![CDATA[true]]></Condition>
+						<Rate Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="RateUnits"><![CDATA[PER_MINUTE]]></Unit>
+						</Rate>
+						<Guard><![CDATA[main.daily_demand_schedule.getValue() != 0;]]></Guard>
+						<MessageType><![CDATA[Object]]></MessageType>
+						<DefaultTransition>true</DefaultTransition>
+						<FilterType><![CDATA[equalsTo]]></FilterType>
+						<EqualsExpression><![CDATA["Place order"]]></EqualsExpression>
+						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
+					<Id>1631172843684</Id>
+					<Name><![CDATA[transition16]]></Name>
+					<X>320</X><Y>450</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>0</X><Y>-80</Y></Point>
+					</Points>
+					<IconOffset>20.0</IconOffset>
+					<Properties Source="1625652145876" Target="1631172791035" Trigger="message">
+						<Timeout Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+						</Timeout>
+						<Condition><![CDATA[true]]></Condition>
+						<Rate Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="RateUnits"><![CDATA[PER_MINUTE]]></Unit>
+						</Rate>
+						<MessageType><![CDATA[Object]]></MessageType>
+						<DefaultTransition>true</DefaultTransition>
+						<FilterType><![CDATA[equalsTo]]></FilterType>
+						<EqualsExpression><![CDATA["Start deliveries"]]></EqualsExpression>
+						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
+					</Properties>	
+				</StatechartElement>
+			</StatechartElements>
 			<AgentLinks>
 				<AgentLink>
 					<Id>1594891881771</Id>
@@ -7007,7 +7619,7 @@ waiting_start_time = 0;]]></Action>
 				<Group>
 					<Id>1614857799278</Id>
 					<Name><![CDATA[group1]]></Name>
-					<X>-160</X><Y>180</Y>
+					<X>-120</X><Y>180</Y>
 					<Label><X>17.967</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7359,7 +7971,7 @@ waiting_start_time = 0;]]></Action>
 				<Text>
 					<Id>1603784529053</Id>
 					<Name><![CDATA[text]]></Name>
-					<X>1008</X><Y>260</Y>
+					<X>1218</X><Y>260</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7381,7 +7993,7 @@ waiting_start_time = 0;]]></Action>
 				<Text>
 					<Id>1603784638094</Id>
 					<Name><![CDATA[text1]]></Name>
-					<X>990</X><Y>370</Y>
+					<X>1200</X><Y>370</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7404,7 +8016,7 @@ make (based on my utility and incentive offered)?
 				<Text>
 					<Id>1603784777695</Id>
 					<Name><![CDATA[text2]]></Name>
-					<X>1070</X><Y>310</Y>
+					<X>1280</X><Y>310</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7449,7 +8061,7 @@ chose to accept or reject a trip. ]]></Text>
 				<Text>
 					<Id>1614857866682</Id>
 					<Name><![CDATA[text5]]></Name>
-					<X>-250</X><Y>210</Y>
+					<X>-210</X><Y>210</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7470,7 +8082,7 @@ chose to accept or reject a trip. ]]></Text>
 				<Text>
 					<Id>1615379865077</Id>
 					<Name><![CDATA[text6]]></Name>
-					<X>990</X><Y>500</Y>
+					<X>1200</X><Y>500</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7493,7 +8105,7 @@ this customer to deliver to.
 				<Text>
 					<Id>1615379914743</Id>
 					<Name><![CDATA[text7]]></Name>
-					<X>900</X><Y>420</Y>
+					<X>1110</X><Y>420</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -8164,6 +8776,7 @@ chosen by an OD yet
 			<Id>1603780994391</Id>
 			<Name><![CDATA[Occasional_Driver]]></Name>
 			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
+			<Import><![CDATA[import org.eclipse.jdt.internal.compiler.ast.ThisReference;]]></Import>
 			<Generic>false</Generic>
 			<GenericParameter>
 				<Id>1603780994389</Id>
@@ -8187,8 +8800,8 @@ chosen by an OD yet
 				<RotateAnimationTowardsMovement>true</RotateAnimationTowardsMovement>
 				<RotateAnimationVertically>false</RotateAnimationVertically>
 				<VelocityCode Class="CodeUnitValue">
-					<Code><![CDATA[.25]]></Code>
-					<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
+					<Code><![CDATA[10]]></Code>
+					<Unit Class="SpeedUnits"><![CDATA[KPH]]></Unit>
 				</VelocityCode>
 				<PhysicalLength Class="CodeUnitValue">
 					<Code><![CDATA[1]]></Code>
@@ -8322,8 +8935,8 @@ chosen by an OD yet
 				</Variable>
 				<Variable Class="PlainVariable">
 					<Id>1616049545944</Id>
-					<Name><![CDATA[time_per_distance]]></Name>
-					<X>30</X><Y>360</Y>
+					<Name><![CDATA[speed]]></Name>
+					<X>30</X><Y>400</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -8331,7 +8944,7 @@ chosen by an OD yet
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[double]]></Type>        
 						<InitialValue Class="CodeValue">
-							<Code><![CDATA[1]]></Code>
+							<Code><![CDATA[uniform(10, 10)]]></Code>
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -8346,7 +8959,7 @@ chosen by an OD yet
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[double]]></Type>        
 						<InitialValue Class="CodeValue">
-							<Code><![CDATA[uniform_discr(0, 2);]]></Code>
+							<Code><![CDATA[main.population_vot_distribution();]]></Code>
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -8372,6 +8985,21 @@ chosen by an OD yet
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1628789811097</Id>
+					<Name><![CDATA[max_time_deviation]]></Name>
+					<X>30</X><Y>310</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[uniform((10/60), (30/60))]]></Code>
+						</InitialValue>
 					</Properties>
 				</Variable>
 				<Variable Class="Parameter">
@@ -8420,28 +9048,64 @@ shapeBody.setFillColor(black);]]></EntryAction>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties Width="100" Height="30">
-						<EntryAction><![CDATA[/*
-Find all potential OD candidates
+						<EntryAction><![CDATA[//////////////////////////////////////////////////////////////
+/*I'm trying to implement this part in python.
+/
+
+**4 May 2021** 
+The python implementation is working. 
+We pass to the function:
+- The prepocessing function takes only this OD as input.
+- It returns all arguments required for trip evaluation, including:
+	-	
+//////////////////////////////////////////////////////////
 */
 
-//List<Customer> od_candidate_subpopulation = findAll(main.customers, c -> c.inState(Customer.statechart_state.OD_candidate));
-//traceln("\n\nPotential deliveries to: " + od_candidate_subpopulation);
+if(findAll(main.customers, c -> c.inState(Customer.statechart_state.CS_candidate)).size() != 0)
+{
+	String[] od_population_arguments = main.trip_evaluation_data(this);
+	main.trip_evaluation(od_population_arguments);
+
+	
+	if(trip_accepted)
+	{
+		//verification of acceptance
+		traceln("I am:" + this.getIndex());
+		traceln("Accepted: I am willing to deliver to:" + customer_to_serve);
+		traceln("I have a value of time of:" + value_of_time);
+		shapeBody.setFillColor(green);
+		
+		//send message to customer
+		send("Coming to you, my bru.", customer_to_serve);
+		
+		//calculate company savings
+		double company_savings = customer_to_serve.cost_to_serve - accepted_incentive;
+		traceln("Company saves:" + company_savings);
+		
+		
+		//update output data
+		main.accepted_incentive_dataset.add(time(), accepted_incentive);
+		main.accepted_incentives_statistics.add(accepted_incentive);
+		main.accepted_incentive_hist.add(accepted_incentive);	
+	}
+	else{
+		traceln("Rejected all delivery options");
+		
+	}
+
+}
 
 
 
-/*
-The for loops loops through the potential OD candidates randomly.
-I want them to loop from best to worst (for company)
-Once an OD accepts one, it has to exit the for loop.
-Otherwise it will replace a better one for a worse one.
+
+/*if there was a trip that had a perceived gain of > 0, the variables
+	-trip_accepted,
+	-customer_to_serve,
+	-accepted_incentive, and
+	-perceived gain 
+would have been adjusted by trip evaluation function.
 */
 
-/*
-Also, currently the OD accepts/rejects the trip immediately 
-as they leave their home. Should we pause and wait till they
-arrive at the depot? Careful that multiple ODs don't accept
-the same customer. 
-*/
 
 
 
@@ -8528,67 +9192,6 @@ for (Customer deliv: od_candidate_subpopulation)
 		
 }
 */
-
-//////////////////////////////////////////////////////////////
-/*I'm trying to implement this part in python.
-/
-
-**4 May 2021** 
-The python implementation is working. 
-We pass to the function:
-- The prepocessing function takes only this OD as input.
-- It returns all arguments required for trip evaluation, including:
-	-	
-//////////////////////////////////////////////////////////
-*/
-
-if(findAll(main.customers, c -> c.inState(Customer.statechart_state.CS_candidate)).size() != 0)
-{
-	String[] od_population_arguments = main.trip_evaluation_data(this);
-	main.trip_evaluation(od_population_arguments);
-
-	
-	if(trip_accepted)
-	{
-		//verification of acceptance
-		traceln("Accepted: I am willing to deliver to:" + customer_to_serve);
-		shapeBody.setFillColor(green);
-		
-		//send message to customer
-		send("Coming to you, my bru.", customer_to_serve);
-		
-		//calculate company savings
-		double company_savings = customer_to_serve.cost_to_serve - accepted_incentive;
-		traceln("Company saves:" + company_savings);
-		
-		
-		//update output data
-		main.accepted_incentive_dataset.add(time(), accepted_incentive);
-		main.accepted_incentives_statistics.add(accepted_incentive);
-		main.accepted_incentive_hist.add(accepted_incentive);
-				
-		main.savings_dataset.add(time(), company_savings);
-		main.savings_hist_data.add(company_savings);
-		main.savings_statistics.add(company_savings);
-		
-		
-	}
-
-}
-
-
-
-
-/*if there was a trip that had a perceived gain of > 0, the variables
-	-trip_accepted,
-	-customer_to_serve,
-	-accepted_incentive, and
-	-perceived gain 
-would have been adjusted by trip evaluation function.
-*/
-
-
-
 
 
 
@@ -8683,6 +9286,7 @@ moveTo(x_home, y_home);]]></ExitAction>
 							<Code><![CDATA[main.base_OD_rate]]></Code>
 							<Unit Class="RateUnits"><![CDATA[PER_DAY]]></Unit>
 						</Rate>
+						<Guard><![CDATA[main.depot_open.getValue()]]></Guard>
 						<MessageType><![CDATA[Object]]></MessageType>
 						<DefaultTransition>true</DefaultTransition>
 						<FilterType><![CDATA[unconditionally]]></FilterType>
@@ -8806,7 +9410,9 @@ perceived_gain = 0;]]></Action>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1603781139391" Target="1603781120805" Trigger="arrival">
-						<Action><![CDATA[trip_accepted = false;
+						<Action><![CDATA[main.temp_incentives_stats.add(accepted_incentive);
+
+trip_accepted = false;
 customer_to_serve = null;
 accepted_incentive = 0;
 perceived_gain = 0;
@@ -8950,7 +9556,7 @@ return deviation;
 					</Parameter>
 					<Body><![CDATA[//double utility = 1 - exp(-(deviation_arg)/risk_parameter_arg);
 
-double utility = value_of_time*time_per_distance*deviation_arg;
+double utility = value_of_time*(1/speed)*deviation_arg;
 
 return utility;]]></Body>
 				</Function>
@@ -9092,6 +9698,8 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<EmbeddedIcon>false</EmbeddedIcon>
 					<Z>0</Z>
 					<Rotation>180.0</Rotation>
+					<ScaleXCode><![CDATA[0.1]]></ScaleXCode>
+					<ScaleYCode><![CDATA[0.1]]></ScaleYCode>
 
 			<Presentation>
 				<Curve ControlPoints="true">
@@ -9455,7 +10063,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Group>
 					<Id>1618320544988</Id>
 					<Name><![CDATA[group6]]></Name>
-					<X>90</X><Y>380</Y>
+					<X>90</X><Y>420</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9532,8 +10140,8 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 		<Height>600</Height>
 	</Frame>
 	<Database>
-		<Logging>true</Logging>
-		<AutoExport>true</AutoExport>
+		<Logging>false</Logging>
+		<AutoExport>false</AutoExport>
 		<ShutdownCompact>true</ShutdownCompact>
 		<ImportSettings>
 		</ImportSettings>
@@ -9628,7 +10236,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 			<MaximumMemory>8192</MaximumMemory>
 			<RandomNumberGenerationType>fixedSeed</RandomNumberGenerationType>
 			<CustomGeneratorCode>new Random()</CustomGeneratorCode>
-			<SeedValue>11</SeedValue>
+			<SeedValue>3</SeedValue>
 			<SelectionModeForSimultaneousEvents>LIFO</SelectionModeForSimultaneousEvents>
 			<VmArgs><![CDATA[]]></VmArgs>
 			<LoadRootFromSnapshot>false</LoadRootFromSnapshot>
@@ -9645,9 +10253,9 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 						<Type><![CDATA[String]]></Type>        
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[//"data/json/R25.json";
-//"data/json/R101_25.json"
-//"vrp_algorithms/test_data/R101_25.json"
-"vrp_algorithms/test_data/R101.json"]]></Code>
+//"data/json/R101_25.json";
+"vrp_algorithms/test_data/R101_25.json";
+//"vrp_algorithms/test_data/R101.json"]]></Code>
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -9669,7 +10277,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Variable Class="PlainVariable">
 					<Id>1618317907185</Id>
 					<Name><![CDATA[sim_incentive_fixed]]></Name>
-					<X>-260</X><Y>360</Y>
+					<X>-260</X><Y>380</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9677,14 +10285,14 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[double]]></Type>        
 						<InitialValue Class="CodeValue">
-							<Code><![CDATA[10]]></Code>
+							<Code><![CDATA[1]]></Code>
 						</InitialValue>
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
 					<Id>1618318388932</Id>
 					<Name><![CDATA[sim_incentive_variable]]></Name>
-					<X>-260</X><Y>390</Y>
+					<X>-260</X><Y>410</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9692,7 +10300,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[double]]></Type>        
 						<InitialValue Class="CodeValue">
-							<Code><![CDATA[2]]></Code>
+							<Code><![CDATA[0.3]]></Code>
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -9707,7 +10315,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[double]]></Type>        
 						<InitialValue Class="CodeValue">
-							<Code><![CDATA[4]]></Code>
+							<Code><![CDATA[5]]></Code>
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -9729,7 +10337,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Variable Class="PlainVariable">
 					<Id>1618476643055</Id>
 					<Name><![CDATA[sim_deliveries_per_day]]></Name>
-					<X>-260</X><Y>420</Y>
+					<X>-260</X><Y>470</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9752,7 +10360,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[double]]></Type>        
 						<InitialValue Class="CodeValue">
-							<Code><![CDATA[1]]></Code>
+							<Code><![CDATA[0.25]]></Code>
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -9767,7 +10375,52 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[double]]></Type>        
 						<InitialValue Class="CodeValue">
-							<Code><![CDATA[50]]></Code>
+							<Code><![CDATA[0.6]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1628054201760</Id>
+					<Name><![CDATA[sim_loss_aversion_parameter]]></Name>
+					<X>-260</X><Y>500</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[1.5]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1629099600304</Id>
+					<Name><![CDATA[sim_incentive_max]]></Name>
+					<X>-260</X><Y>440</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[3]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1631786116687</Id>
+					<Name><![CDATA[sim_routing_heuristic]]></Name>
+					<X>-260</X><Y>350</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -9777,7 +10430,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Image>
 					<Id>1621946719729</Id>
 					<Name><![CDATA[image]]></Name>
-					<X>-40</X><Y>-20</Y>
+					<X>-140</X><Y>-20</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9800,7 +10453,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Group>
 					<Id>1618317500010</Id>
 					<Name><![CDATA[group13]]></Name>
-					<X>690</X><Y>448</Y>
+					<X>760</X><Y>300</Y>
 					<Label><X>18.623</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9827,7 +10480,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<LineColor>-16777216</LineColor>
 					<LineMaterial>null</LineMaterial>
 					<LineStyle>SOLID</LineStyle>
-					<Width>220</Width>
+					<Width>230</Width>
 					<Height>80</Height>
 					<Rotation>0.0</Rotation>
 					<FillColor>-657931</FillColor>
@@ -9847,7 +10500,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
-					<Text><![CDATA[Runtime settings]]></Text>
+					<Text><![CDATA[(B) Input data]]></Text>
 					<Font>
 						<Name>CMU Serif</Name>
 						<Size>12</Size>
@@ -9861,7 +10514,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Group>
 					<Id>1618317418713</Id>
 					<Name><![CDATA[group12]]></Name>
-					<X>930</X><Y>360</Y>
+					<X>760</X><Y>390</Y>
 					<Label><X>18.623</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9908,7 +10561,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
-					<Text><![CDATA[User input: Assumptions]]></Text>
+					<Text><![CDATA[(C) User input: Assumptions]]></Text>
 					<Font>
 						<Name>CMU Serif</Name>
 						<Size>12</Size>
@@ -9922,7 +10575,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<RoundedRectangle>
 					<Id>1618318043203</Id>
 					<Name><![CDATA[roundRectangle]]></Name>
-					<X>860</X><Y>140</Y>
+					<X>690</X><Y>170</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9946,7 +10599,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				 	<EmbeddedIcon>false</EmbeddedIcon>				
 					<Id>1603964080943</Id>
 					<Name><![CDATA[editbox]]></Name>
-					<X>620</X><Y>238</Y>
+					<X>690</X><Y>88</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9967,7 +10620,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Group>
 					<Id>1615789030540</Id>
 					<Name><![CDATA[group]]></Name>
-					<X>960</X><Y>180</Y>
+					<X>790</X><Y>210</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9996,7 +10649,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 						<DefaultValueCode><![CDATA[20]]></DefaultValueCode>
 						<Orientation>HORIZONTAL</Orientation>
 						<MinValue><![CDATA[0]]></MinValue>
-						<MaxValue><![CDATA[1.5]]></MaxValue>
+						<MaxValue><![CDATA[3]]></MaxValue>
 						<Step><![CDATA[.1]]></Step>
 						<LinkTo>true</LinkTo>
 						<Link>sim_percentage_ODs</Link>
@@ -10049,7 +10702,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1615788810143</Id>
 					<Name><![CDATA[text3]]></Name>
-					<X>0</X><Y>10</Y>
+					<X>70</X><Y>-10</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10074,7 +10727,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1615789066073</Id>
 					<Name><![CDATA[text4]]></Name>
-					<X>870</X><Y>142</Y>
+					<X>700</X><Y>172</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10084,7 +10737,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
-					<Text><![CDATA[OD-to-Online customer ratio]]></Text>
+					<Text><![CDATA[(1) OD-to-Online customer ratio]]></Text>
 					<Font>
 						<Name>CMU Serif</Name>
 						<Size>11</Size>
@@ -10095,7 +10748,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1618317557241</Id>
 					<Name><![CDATA[text5]]></Name>
-					<X>620</X><Y>218</Y>
+					<X>690</X><Y>68</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10116,7 +10769,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Group>
 					<Id>1618317649712</Id>
 					<Name><![CDATA[group14]]></Name>
-					<X>690</X><Y>540</Y>
+					<X>520</X><Y>520</Y>
 					<Label><X>18.623</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10130,7 +10783,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<RoundedRectangle>
 					<Id>1618317649714</Id>
 					<Name><![CDATA[roundRectangle15]]></Name>
-					<X>-80</X><Y>-260</Y>
+					<X>-90</X><Y>-480</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10143,8 +10796,8 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<LineColor>-16777216</LineColor>
 					<LineMaterial>null</LineMaterial>
 					<LineStyle>SOLID</LineStyle>
-					<Width>220</Width>
-					<Height>310</Height>
+					<Width>240</Width>
+					<Height>580</Height>
 					<Rotation>0.0</Rotation>
 					<FillColor>-657931</FillColor>
 					<FillMaterial>null</FillMaterial>
@@ -10153,7 +10806,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1618317649716</Id>
 					<Name><![CDATA[text15]]></Name>
-					<X>-70</X><Y>-250</Y>
+					<X>-80</X><Y>-470</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10163,7 +10816,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
-					<Text><![CDATA[User input: Decisions]]></Text>
+					<Text><![CDATA[(A) User input: Company decisions]]></Text>
 					<Font>
 						<Name>CMU Serif</Name>
 						<Size>12</Size>
@@ -10327,7 +10980,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<LineMaterial>null</LineMaterial>
 					<LineStyle>SOLID</LineStyle>
 					<Width>223.486</Width>
-					<Height>130</Height>
+					<Height>230</Height>
 					<Rotation>0.0</Rotation>
 					<FillColor>-1</FillColor>
 					<FillMaterial>null</FillMaterial>
@@ -10360,7 +11013,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Group>
 					<Id>1618318838136</Id>
 					<Name><![CDATA[group3]]></Name>
-					<X>720</X><Y>410</Y>
+					<X>550</X><Y>370</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10388,7 +11041,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<LineMaterial>null</LineMaterial>
 					<LineStyle>SOLID</LineStyle>
 					<Width>200</Width>
-					<Height>180</Height>
+					<Height>240</Height>
 					<Rotation>0.0</Rotation>
 					<FillColor>-4144960</FillColor>
 					<FillMaterial>null</FillMaterial>
@@ -10426,7 +11079,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 						<DefaultValueCode><![CDATA[20]]></DefaultValueCode>
 						<Orientation>HORIZONTAL</Orientation>
 						<MinValue><![CDATA[0]]></MinValue>
-						<MaxValue><![CDATA[20]]></MaxValue>
+						<MaxValue><![CDATA[5]]></MaxValue>
 						<Step><![CDATA[1]]></Step>
 						<LinkTo>true</LinkTo>
 						<Link>sim_incentive_fixed</Link>
@@ -10479,7 +11132,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1618318245890</Id>
 					<Name><![CDATA[text8]]></Name>
-					<X>0</X><Y>10</Y>
+					<X>70</X><Y>-10</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10514,7 +11167,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
-					<Text><![CDATA[Incentive values]]></Text>
+					<Text><![CDATA[(3) Incentive scheme parameters]]></Text>
 					<Font>
 						<Name>CMU Serif</Name>
 						<Size>11</Size>
@@ -10575,8 +11228,8 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 						<DefaultValueCode><![CDATA[20]]></DefaultValueCode>
 						<Orientation>HORIZONTAL</Orientation>
 						<MinValue><![CDATA[0]]></MinValue>
-						<MaxValue><![CDATA[10]]></MaxValue>
-						<Step><![CDATA[1]]></Step>
+						<MaxValue><![CDATA[1]]></MaxValue>
+						<Step><![CDATA[0.1]]></Step>
 						<LinkTo>true</LinkTo>
 						<Link>sim_incentive_variable</Link>
 					</ExtendedProperties>
@@ -10628,7 +11281,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1618318486182</Id>
 					<Name><![CDATA[text18]]></Name>
-					<X>0</X><Y>10</Y>
+					<X>70</X><Y>-10</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10663,7 +11316,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
-					<Text><![CDATA[Variable [$/distance unit]:]]></Text>
+					<Text><![CDATA[Variable [$/km]:]]></Text>
 					<Font>
 						<Name>CMU Serif</Name>
 						<Size>10</Size>
@@ -10677,7 +11330,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Group>
 					<Id>1618318844127</Id>
 					<Name><![CDATA[group4]]></Name>
-					<X>960</X><Y>310</Y>
+					<X>790</X><Y>340</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10743,7 +11396,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 						<DefaultValueCode><![CDATA[20]]></DefaultValueCode>
 						<Orientation>HORIZONTAL</Orientation>
 						<MinValue><![CDATA[0]]></MinValue>
-						<MaxValue><![CDATA[6]]></MaxValue>
+						<MaxValue><![CDATA[10]]></MaxValue>
 						<Step><![CDATA[1]]></Step>
 						<LinkTo>true</LinkTo>
 						<Link>sim_minimum_time_value</Link>
@@ -10796,7 +11449,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1618319037067</Id>
 					<Name><![CDATA[text23]]></Name>
-					<X>0</X><Y>10</Y>
+					<X>70</X><Y>-10</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10831,7 +11484,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
-					<Text><![CDATA[Value of time]]></Text>
+					<Text><![CDATA[(2) Value of time]]></Text>
 					<Font>
 						<Name>CMU Serif</Name>
 						<Size>11</Size>
@@ -10852,7 +11505,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
-					<Text><![CDATA[Low income [$/ time unit]]]></Text>
+					<Text><![CDATA[Low income [$/h]]]></Text>
 					<Font>
 						<Name>CMU Serif</Name>
 						<Size>10</Size>
@@ -10866,7 +11519,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Group>
 					<Id>1618384336939</Id>
 					<Name><![CDATA[group6]]></Name>
-					<X>960</X><Y>410</Y>
+					<X>790</X><Y>440</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10985,7 +11638,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1618384502994</Id>
 					<Name><![CDATA[text28]]></Name>
-					<X>0</X><Y>10</Y>
+					<X>70</X><Y>-10</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11020,7 +11673,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
-					<Text><![CDATA[Cost per unit distance]]></Text>
+					<Text><![CDATA[(3) Cost per unit distance]]></Text>
 					<Font>
 						<Name>CMU Serif</Name>
 						<Size>11</Size>
@@ -11041,7 +11694,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
-					<Text><![CDATA[Delivery vehicle [$/distance unit]]]></Text>
+					<Text><![CDATA[Delivery vehicle [$/km]]]></Text>
 					<Font>
 						<Name>CMU Serif</Name>
 						<Size>10</Size>
@@ -11056,7 +11709,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				 	<EmbeddedIcon>false</EmbeddedIcon>				
 					<Id>1618476574190</Id>
 					<Name><![CDATA[slider]]></Name>
-					<X>670</X><Y>530</Y>
+					<X>500</X><Y>200</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11078,7 +11731,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1618476589336</Id>
 					<Name><![CDATA[text35]]></Name>
-					<X>643</X><Y>509</Y>
+					<X>473</X><Y>179</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11088,7 +11741,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
-					<Text><![CDATA[Deliveries per day]]></Text>
+					<Text><![CDATA[(2) Deliveries per day]]></Text>
 					<Font>
 						<Name>CMU Serif</Name>
 						<Size>10</Size>
@@ -11099,7 +11752,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1618476777182</Id>
 					<Name><![CDATA[text36]]></Name>
-					<X>670</X><Y>560</Y>
+					<X>500</X><Y>230</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11121,7 +11774,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1618476777183</Id>
 					<Name><![CDATA[text37]]></Name>
-					<X>770</X><Y>560</Y>
+					<X>600</X><Y>230</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11143,7 +11796,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1618476777184</Id>
 					<Name><![CDATA[text38]]></Name>
-					<X>720</X><Y>560</Y>
+					<X>620</X><Y>210</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11165,7 +11818,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<RoundedRectangle>
 					<Id>1621944617420</Id>
 					<Name><![CDATA[roundRectangle4]]></Name>
-					<X>860</X><Y>420</Y>
+					<X>690</X><Y>450</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11188,7 +11841,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1621944617427</Id>
 					<Name><![CDATA[text32]]></Name>
-					<X>880</X><Y>440</Y>
+					<X>710</X><Y>470</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11209,7 +11862,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1621944617425</Id>
 					<Name><![CDATA[text31]]></Name>
-					<X>870</X><Y>422</Y>
+					<X>700</X><Y>452</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11219,7 +11872,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
-					<Text><![CDATA[Baseline shopping frequency]]></Text>
+					<Text><![CDATA[(4) Baseline shopping frequency]]></Text>
 					<Font>
 						<Name>CMU Serif</Name>
 						<Size>11</Size>
@@ -11230,7 +11883,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1621944755749</Id>
 					<Name><![CDATA[text33]]></Name>
-					<X>880</X><Y>510</Y>
+					<X>710</X><Y>540</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11252,7 +11905,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				 	<EmbeddedIcon>false</EmbeddedIcon>				
 					<Id>1621944814579</Id>
 					<Name><![CDATA[slider1]]></Name>
-					<X>910</X><Y>460</Y>
+					<X>740</X><Y>490</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11266,8 +11919,8 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 						<DefaultValueCode><![CDATA[0]]></DefaultValueCode>
 						<Orientation>HORIZONTAL</Orientation>
 						<MinValue><![CDATA[0]]></MinValue>
-						<MaxValue><![CDATA[8]]></MaxValue>
-						<Step><![CDATA[0.5]]></Step>
+						<MaxValue><![CDATA[2]]></MaxValue>
+						<Step><![CDATA[0.25]]></Step>
 						<LinkTo>true</LinkTo>
 						<Link>sim_base_online_rate</Link>
 					</ExtendedProperties>
@@ -11276,7 +11929,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				 	<EmbeddedIcon>false</EmbeddedIcon>				
 					<Id>1621944837441</Id>
 					<Name><![CDATA[slider2]]></Name>
-					<X>910</X><Y>530</Y>
+					<X>740</X><Y>560</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11290,8 +11943,8 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 						<DefaultValueCode><![CDATA[0]]></DefaultValueCode>
 						<Orientation>HORIZONTAL</Orientation>
 						<MinValue><![CDATA[0]]></MinValue>
-						<MaxValue><![CDATA[10]]></MaxValue>
-						<Step><![CDATA[1]]></Step>
+						<MaxValue><![CDATA[2]]></MaxValue>
+						<Step><![CDATA[0.1]]></Step>
 						<LinkTo>true</LinkTo>
 						<Link>sim_base_OD_rate</Link>
 					</ExtendedProperties>
@@ -11360,7 +12013,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1621945292349</Id>
 					<Name><![CDATA[text39]]></Name>
-					<X>910</X><Y>490</Y>
+					<X>740</X><Y>520</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11382,7 +12035,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1621945292350</Id>
 					<Name><![CDATA[text40]]></Name>
-					<X>1010</X><Y>490</Y>
+					<X>840</X><Y>520</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11404,7 +12057,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1621945292351</Id>
 					<Name><![CDATA[text41]]></Name>
-					<X>1030</X><Y>465</Y>
+					<X>860</X><Y>495</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11426,7 +12079,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1621945294610</Id>
 					<Name><![CDATA[text42]]></Name>
-					<X>910</X><Y>560</Y>
+					<X>740</X><Y>590</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11448,7 +12101,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1621945294611</Id>
 					<Name><![CDATA[text43]]></Name>
-					<X>1010</X><Y>560</Y>
+					<X>840</X><Y>590</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11470,7 +12123,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Text>
 					<Id>1621945294612</Id>
 					<Name><![CDATA[text44]]></Name>
-					<X>1030</X><Y>540</Y>
+					<X>860</X><Y>570</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11488,6 +12141,290 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 						<Style>0</Style>
 					</Font>
 					<Alignment>CENTER</Alignment>
+				</Text>
+				<Control Type="Slider">
+				 	<EmbeddedIcon>false</EmbeddedIcon>				
+					<Id>1628054146758</Id>
+					<Name><![CDATA[slider3]]></Name>
+					<X>499</X><Y>560</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
+					<BasicProperties Width="100" Height="30">
+                        <EmbeddedIcon>false</EmbeddedIcon>	
+						<Enabled>true</Enabled>
+					</BasicProperties>
+					<ExtendedProperties>
+						<DefaultValueCode><![CDATA[0]]></DefaultValueCode>
+						<Orientation>HORIZONTAL</Orientation>
+						<MinValue><![CDATA[0]]></MinValue>
+						<MaxValue><![CDATA[10]]></MaxValue>
+						<Step><![CDATA[0.5]]></Step>
+						<LinkTo>true</LinkTo>
+						<Link>sim_loss_aversion_parameter</Link>
+					</ExtendedProperties>
+				</Control>
+				<Text>
+					<Id>1628054146802</Id>
+					<Name><![CDATA[text45]]></Name>
+					<X>472</X><Y>539</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[(4) Loss aversion parameter]]></Text>
+					<Font>
+						<Name>CMU Serif</Name>
+						<Size>10</Size>
+						<Style>1</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
+				</Text>
+				<Text>
+					<Id>1628054364479</Id>
+					<Name><![CDATA[text]]></Name>
+					<X>499</X><Y>587</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[min]]></Text>
+					<TextCode><![CDATA[slider3.getMin()]]></TextCode>
+					<Font>
+						<Name>SansSerif</Name>
+						<Size>10</Size>
+						<Style>0</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
+				</Text>
+				<Text>
+					<Id>1628054364480</Id>
+					<Name><![CDATA[text46]]></Name>
+					<X>599</X><Y>587</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[max]]></Text>
+					<TextCode><![CDATA[slider3.getMax()]]></TextCode>
+					<Font>
+						<Name>SansSerif</Name>
+						<Size>10</Size>
+						<Style>0</Style>
+					</Font>
+					<Alignment>RIGHT</Alignment>
+				</Text>
+				<Text>
+					<Id>1628054364481</Id>
+					<Name><![CDATA[text47]]></Name>
+					<X>620</X><Y>567</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[value]]></Text>
+					<TextCode><![CDATA[slider3.getValue()]]></TextCode>
+					<Font>
+						<Name>SansSerif</Name>
+						<Size>10</Size>
+						<Style>0</Style>
+					</Font>
+					<Alignment>CENTER</Alignment>
+				</Text>
+				<Group>
+					<Id>1629099543761</Id>
+					<Name><![CDATA[group8]]></Name>
+					<X>550</X><Y>480</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+
+			<Presentation>
+				<Control Type="Slider">
+				 	<EmbeddedIcon>false</EmbeddedIcon>				
+					<Id>1629099543763</Id>
+					<Name><![CDATA[num_OD_slider5]]></Name>
+					<X>-50</X><Y>-20</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
+					<BasicProperties Width="100" Height="30">
+                        <EmbeddedIcon>false</EmbeddedIcon>	
+						<Enabled>true</Enabled>
+					</BasicProperties>
+					<ExtendedProperties>
+						<DefaultValueCode><![CDATA[20]]></DefaultValueCode>
+						<Orientation>HORIZONTAL</Orientation>
+						<MinValue><![CDATA[1]]></MinValue>
+						<MaxValue><![CDATA[10]]></MaxValue>
+						<Step><![CDATA[1]]></Step>
+						<LinkTo>true</LinkTo>
+						<Link>sim_incentive_max</Link>
+					</ExtendedProperties>
+				</Control>
+				<Text>
+					<Id>1629100289202</Id>
+					<Name><![CDATA[text48]]></Name>
+					<X>-50</X><Y>10</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[min]]></Text>
+					<TextCode><![CDATA[num_OD_slider5.getMin()]]></TextCode>
+					<Font>
+						<Name>SansSerif</Name>
+						<Size>10</Size>
+						<Style>0</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
+				</Text>
+				<Text>
+					<Id>1629100289204</Id>
+					<Name><![CDATA[text49]]></Name>
+					<X>50</X><Y>10</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[max]]></Text>
+					<TextCode><![CDATA[num_OD_slider5.getMax()]]></TextCode>
+					<Font>
+						<Name>SansSerif</Name>
+						<Size>10</Size>
+						<Style>0</Style>
+					</Font>
+					<Alignment>RIGHT</Alignment>
+				</Text>
+				<Text>
+					<Id>1629100289206</Id>
+					<Name><![CDATA[text50]]></Name>
+					<X>70</X><Y>-10</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[value]]></Text>
+					<TextCode><![CDATA[num_OD_slider5.getValue()]]></TextCode>
+					<Font>
+						<Name>SansSerif</Name>
+						<Size>10</Size>
+						<Style>0</Style>
+					</Font>
+					<Alignment>CENTER</Alignment>
+				</Text>
+			</Presentation>
+
+				</Group>
+				<Text>
+					<Id>1629099543788</Id>
+					<Name><![CDATA[text51]]></Name>
+					<X>470</X><Y>440</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[Maximum[$]:]]></Text>
+					<Font>
+						<Name>CMU Serif</Name>
+						<Size>10</Size>
+						<Style>0</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
+				</Text>
+				<Control Type="RadioButtons">
+				 	<EmbeddedIcon>false</EmbeddedIcon>				
+					<Id>1631786028913</Id>
+					<Name><![CDATA[radio]]></Name>
+					<X>480</X><Y>110</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
+					<BasicProperties Width="150" Height="50">
+                        <EmbeddedIcon>false</EmbeddedIcon>	
+						<TextColor/>
+						<Enabled>true</Enabled>
+					</BasicProperties>
+					<ExtendedProperties>
+						<Font Name="Dialog" Size="11" Style="0"/>
+						<Orientation>VERTICAL</Orientation>
+						<Button><![CDATA[Sweep algorithm]]></Button>
+						<Button><![CDATA[Savings algorithm]]></Button>
+						<LinkTo>true</LinkTo>
+						<Link>sim_routing_heuristic</Link>
+					</ExtendedProperties>
+				</Control>
+				<Text>
+					<Id>1631786062349</Id>
+					<Name><![CDATA[text52]]></Name>
+					<X>473</X><Y>89</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[(1) Routing heuristic]]></Text>
+					<Font>
+						<Name>CMU Serif</Name>
+						<Size>10</Size>
+						<Style>1</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
 				</Text>
 			</Presentation>
 
@@ -11552,6 +12489,27 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 						<Code><![CDATA[sim_base_OD_rate]]></Code>
 					</ParameterValue>
 				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[loss_aversion_parameter]]></ParameterName>
+					<ParameterValue Class="CodeValue">
+						<Code><![CDATA[sim_loss_aversion_parameter]]></Code>
+					</ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[incentive_max]]></ParameterName>
+					<ParameterValue Class="CodeValue">
+						<Code><![CDATA[sim_incentive_max]]></Code>
+					</ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[days_run]]></ParameterName>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[routing_heuristic]]></ParameterName>
+					<ParameterValue Class="CodeValue">
+						<Code><![CDATA[sim_routing_heuristic]]></Code>
+					</ParameterValue>
+				</Parameter>
 			</Parameters>			
 			<PresentationProperties>
 				<EnableZoomAndPanning>true</EnableZoomAndPanning>
@@ -11565,11 +12523,115 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<StopOption><![CDATA[Stop at specified date]]></StopOption>
 				<InitialDate><![CDATA[1612166400000]]></InitialDate>	
 				<InitialTime><![CDATA[0.0]]></InitialTime>	
-				<FinalDate><![CDATA[1616486401000]]></FinalDate>	
-				<FinalTime><![CDATA[72000.01666666666]]></FinalTime>	
+				<FinalDate><![CDATA[1616543999000]]></FinalDate>	
+				<FinalTime><![CDATA[72959.98333333334]]></FinalTime>	
 			</ModelTimeProperties>
 			<BypassInitialScreen>false</BypassInitialScreen>
 		</SimulationExperiment>
+		<!--   =========  Optimization Experiment   ========  -->
+		<OptimizationExperiment ActiveObjectClassId="1594817290082">
+			<Id>1631880254737</Id>
+			<Name><![CDATA[Optimization]]></Name>
+			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
+			<CommandLineArguments><![CDATA[]]></CommandLineArguments>
+			<MaximumMemory>512</MaximumMemory>
+			<RandomNumberGenerationType>fixedSeed</RandomNumberGenerationType>
+			<CustomGeneratorCode>new Random()</CustomGeneratorCode>
+			<SeedValue>1</SeedValue>
+			<SelectionModeForSimultaneousEvents>LIFO</SelectionModeForSimultaneousEvents>
+			<VmArgs><![CDATA[]]></VmArgs>
+			<LoadRootFromSnapshot>false</LoadRootFromSnapshot>
+
+
+			<Parameter>	
+				<Id>1603979534474</Id>
+				<Type>FIXED</Type>
+			</Parameter>
+			<Parameter>	
+				<Id>1615196221146</Id>
+				<Type>FIXED</Type>
+			</Parameter>
+			<Parameter>	
+				<Id>1615196274905</Id>
+				<Type>FIXED</Type>
+			</Parameter>
+			<Parameter>	
+				<Id>1615382356839</Id>
+				<Type>FIXED</Type>
+			</Parameter>
+			<Parameter>	
+				<Id>1615875696253</Id>
+				<Type>FIXED</Type>
+			</Parameter>
+			<Parameter>	
+				<Id>1615878954342</Id>
+				<Type>FIXED</Type>
+			</Parameter>
+			<Parameter>	
+				<Id>1618318745373</Id>
+				<Type>FIXED</Type>
+			</Parameter>
+			<Parameter>	
+				<Id>1618383844340</Id>
+				<Type>FIXED</Type>
+			</Parameter>
+			<Parameter>	
+				<Id>1618476686381</Id>
+				<Type>FIXED</Type>
+			</Parameter>
+			<Parameter>	
+				<Id>1621947315997</Id>
+				<Type>FIXED</Type>
+			</Parameter>
+			<Parameter>	
+				<Id>1621947354880</Id>
+				<Type>FIXED</Type>
+			</Parameter>
+			<Parameter>	
+				<Id>1628054249290</Id>
+				<Type>FIXED</Type>
+			</Parameter>
+			<Parameter>	
+				<Id>1629100028971</Id>
+				<Type>FIXED</Type>
+			</Parameter>
+			<Parameter>	
+				<Id>1631259873379</Id>
+				<Type>FIXED</Type>
+			</Parameter>
+			<Parameter>	
+				<Id>1631786185983</Id>
+				<Type>FIXED</Type>
+			</Parameter>
+			<ObjectiveFunctionCode><![CDATA[0]]></ObjectiveFunctionCode>
+			<Objective>MINIMIZE</Objective>
+			<AllowParallelEvaluations>true</AllowParallelEvaluations>
+			<ReplicationsProperties>
+				<UseReplication>false</UseReplication>
+				<FixedReplicationsNumber>true</FixedReplicationsNumber>
+				<ReplicationPerIteration>10</ReplicationPerIteration>
+				<MinimumReplication>2</MinimumReplication>
+				<MaximumReplication>10</MaximumReplication>
+				<ConfidenceLevel>LEVEL_80</ConfidenceLevel>
+				<ErrorPercent>0.5</ErrorPercent>
+			</ReplicationsProperties>
+			<PresentationProperties>
+				<EnableZoomAndPanning>true</EnableZoomAndPanning>
+				<Title><![CDATA[VRP_First_Moved : Optimization]]></Title>	
+				<EnableDeveloperPanel>true</EnableDeveloperPanel>
+				<ShowDeveloperPanelOnStart>false</ShowDeveloperPanelOnStart>
+			</PresentationProperties>
+			<ModelTimeProperties>
+				<StopOption><![CDATA[Stop at specified date]]></StopOption>
+				<InitialDate><![CDATA[1612166400000]]></InitialDate>	
+				<InitialTime><![CDATA[0.0]]></InitialTime>	
+				<FinalDate><![CDATA[1616543999000]]></FinalDate>	
+				<FinalTime><![CDATA[72959.98333333334]]></FinalTime>	
+				<StopAfterIterationCount>true</StopAfterIterationCount>
+				<IterationCount>500</IterationCount>
+				<AutomaticStop>false</AutomaticStop>
+			</ModelTimeProperties>
+		</OptimizationExperiment>
 		<!--   =========  Parameter Variation Experiment   ========  -->
 		<ParamVariationExperiment ActiveObjectClassId="1594817290082">
 			<Id>1618832926477</Id>
@@ -11579,7 +12641,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 			<MaximumMemory>16384</MaximumMemory>
 			<RandomNumberGenerationType>randomSeed</RandomNumberGenerationType>
 			<CustomGeneratorCode>new Random(1)</CustomGeneratorCode>
-			<SeedValue>1</SeedValue>
+			<SeedValue>2</SeedValue>
 			<SelectionModeForSimultaneousEvents>LIFO</SelectionModeForSimultaneousEvents>
 			<VmArgs><![CDATA[]]></VmArgs>
 			<LoadRootFromSnapshot>false</LoadRootFromSnapshot>
@@ -12393,11 +13455,23 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 			<FreeformParamValue>	
 				<Id>1621947354880</Id>
 			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1628054249290</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1629100028971</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1631259873379</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1631786185983</Id>
+			</FreeformParamValue>
 			<RangeVariationParamValue>	
 				<Id>1603979534474</Id>
 				<Type>FIXED</Type>
 				<Expression Class="CodeValue">
-					<Code><![CDATA["vrp_algorithms/test_data/R101_25.json"]]></Code>
+					<Code><![CDATA["data/json/R101.json"]]></Code>
 				</Expression>
 			</RangeVariationParamValue>
 			<RangeVariationParamValue>	
@@ -12412,13 +13486,13 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Id>1615382356839</Id>
 				<Type>FIXED</Type>
 				<Expression Class="CodeValue">
-					<Code><![CDATA[0]]></Code>
+					<Code><![CDATA[1]]></Code>
 				</Expression>
 				<From Class="CodeValue">
 					<Code><![CDATA[0]]></Code>
 				</From>
 				<To Class="CodeValue">
-					<Code><![CDATA[1.2]]></Code>
+					<Code><![CDATA[1.81]]></Code>
 				</To>
 				<Step Class="CodeValue">
 					<Code><![CDATA[0.3]]></Code>
@@ -12427,23 +13501,50 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 			<RangeVariationParamValue>	
 				<Id>1615875696253</Id>
 				<Type>FIXED</Type>
+				<Expression Class="CodeValue">
+					<Code><![CDATA[1.0]]></Code>
+				</Expression>
 				<From Class="CodeValue">
-					<Code><![CDATA[9]]></Code>
+					<Code><![CDATA[0]]></Code>
 				</From>
 				<To Class="CodeValue">
-					<Code><![CDATA[11]]></Code>
+					<Code><![CDATA[1.81]]></Code>
 				</To>
 				<Step Class="CodeValue">
-					<Code><![CDATA[1]]></Code>
+					<Code><![CDATA[.3]]></Code>
 				</Step>
 			</RangeVariationParamValue>
 			<RangeVariationParamValue>	
 				<Id>1615878954342</Id>
-				<Type>FIXED</Type>
+				<Type>RANGE</Type>
+				<Expression Class="CodeValue">
+					<Code><![CDATA[0.3]]></Code>
+				</Expression>
+				<From Class="CodeValue">
+					<Code><![CDATA[0]]></Code>
+				</From>
+				<To Class="CodeValue">
+					<Code><![CDATA[1.8]]></Code>
+				</To>
+				<Step Class="CodeValue">
+					<Code><![CDATA[.3]]></Code>
+				</Step>
 			</RangeVariationParamValue>
 			<RangeVariationParamValue>	
 				<Id>1618318745373</Id>
 				<Type>FIXED</Type>
+				<Expression Class="CodeValue">
+					<Code><![CDATA[5]]></Code>
+				</Expression>
+				<From Class="CodeValue">
+					<Code><![CDATA[1]]></Code>
+				</From>
+				<To Class="CodeValue">
+					<Code><![CDATA[10.1]]></Code>
+				</To>
+				<Step Class="CodeValue">
+					<Code><![CDATA[1]]></Code>
+				</Step>
 			</RangeVariationParamValue>
 			<RangeVariationParamValue>	
 				<Id>1618383844340</Id>
@@ -12451,18 +13552,24 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Expression Class="CodeValue">
 					<Code><![CDATA[2]]></Code>
 				</Expression>
+				<From Class="CodeValue">
+					<Code><![CDATA[3.5]]></Code>
+				</From>
+				<To Class="CodeValue">
+					<Code><![CDATA[4]]></Code>
+				</To>
+				<Step Class="CodeValue">
+					<Code><![CDATA[0.5]]></Code>
+				</Step>
 			</RangeVariationParamValue>
 			<RangeVariationParamValue>	
 				<Id>1618476686381</Id>
 				<Type>FIXED</Type>
-				<Expression Class="CodeValue">
-					<Code><![CDATA[3]]></Code>
-				</Expression>
 				<From Class="CodeValue">
-					<Code><![CDATA[2]]></Code>
+					<Code><![CDATA[1]]></Code>
 				</From>
 				<To Class="CodeValue">
-					<Code><![CDATA[4]]></Code>
+					<Code><![CDATA[2.1]]></Code>
 				</To>
 				<Step Class="CodeValue">
 					<Code><![CDATA[1]]></Code>
@@ -12472,31 +13579,68 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 				<Id>1621947315997</Id>
 				<Type>FIXED</Type>
 				<Expression Class="CodeValue">
-					<Code><![CDATA[0.5]]></Code>
+					<Code><![CDATA[0.25]]></Code>
 				</Expression>
 				<From Class="CodeValue">
-					<Code><![CDATA[0.5]]></Code>
+					<Code><![CDATA[0.125]]></Code>
 				</From>
 				<To Class="CodeValue">
-					<Code><![CDATA[2]]></Code>
+					<Code><![CDATA[.25]]></Code>
 				</To>
 				<Step Class="CodeValue">
-					<Code><![CDATA[0.5]]></Code>
+					<Code><![CDATA[0.125]]></Code>
 				</Step>
 			</RangeVariationParamValue>
 			<RangeVariationParamValue>	
 				<Id>1621947354880</Id>
 				<Type>FIXED</Type>
 				<Expression Class="CodeValue">
-					<Code><![CDATA[5]]></Code>
+					<Code><![CDATA[0.6]]></Code>
 				</Expression>
+				<From Class="CodeValue">
+					<Code><![CDATA[0]]></Code>
+				</From>
+				<To Class="CodeValue">
+					<Code><![CDATA[0.6]]></Code>
+				</To>
+				<Step Class="CodeValue">
+					<Code><![CDATA[0.1]]></Code>
+				</Step>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1628054249290</Id>
+				<Type>FIXED</Type>
+				<From Class="CodeValue">
+					<Code><![CDATA[0]]></Code>
+				</From>
+				<To Class="CodeValue">
+					<Code><![CDATA[6.1]]></Code>
+				</To>
+				<Step Class="CodeValue">
+					<Code><![CDATA[1.5]]></Code>
+				</Step>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1629100028971</Id>
+				<Type>FIXED</Type>
+				<Expression Class="CodeValue">
+					<Code><![CDATA[3]]></Code>
+				</Expression>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1631259873379</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1631786185983</Id>
+				<Type>FIXED</Type>
 			</RangeVariationParamValue>
 			<ModelTimeProperties>
 				<StopOption><![CDATA[Stop at specified date]]></StopOption>
 				<InitialDate><![CDATA[1612166400000]]></InitialDate>	
 				<InitialTime><![CDATA[0.0]]></InitialTime>	
-				<FinalDate><![CDATA[1616487300000]]></FinalDate>	
-				<FinalTime><![CDATA[72015.0]]></FinalTime>	
+				<FinalDate><![CDATA[1613519999000]]></FinalDate>	
+				<FinalTime><![CDATA[22559.983333333334]]></FinalTime>	
 			</ModelTimeProperties>
 			<PresentationProperties>
 				<EnableZoomAndPanning>true</EnableZoomAndPanning>
@@ -12507,7 +13651,7 @@ main.OD_value_of_time_dataset.add(base_value_of_time);
 			<ReplicationsProperties>
 				<UseReplication>true</UseReplication>
 				<FixedReplicationsNumber>true</FixedReplicationsNumber>
-				<ReplicationPerIteration>10</ReplicationPerIteration>
+				<ReplicationPerIteration>2</ReplicationPerIteration>
 				<MinimumReplication>2</MinimumReplication>
 				<MaximumReplication>10</MaximumReplication>
 				<ConfidenceLevel>LEVEL_80</ConfidenceLevel>

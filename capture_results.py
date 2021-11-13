@@ -6,12 +6,19 @@ import pandas as pd
 from utilities.utils import round_up, round_down
 from pathlib import Path
 import datetime
+import csv
 from collections import defaultdict
+
+from utilities.utils_statistical_analysis import anova_test, mannwhitneyu_func, paired_t_test, shapiro_wilk_normality, confidence_intervals
 
 from utilities.plot_utils import plot_savings_histogram, plot_waiting_time_histogram, plot_delivery_costs, \
     plot_incentives_paid, plot_cum_delivery_costs, plot_cum_incentives_paid, plot_cum_total_costs, \
     plot_ordering_time_histogram, plot_experiment_incentives_boxplot, plot_experiment_savings_boxplot, \
-    plot_experiment_waiting_time_boxplot
+    plot_experiment_waiting_time_boxplot, plot_experiment_delivery_cost_boxplot, \
+    plot_experiment_incentives_total_boxplot, plot_experiment_incentives_count_boxplot, \
+    plot_experiment_percentage_savings_boxplot, plot_incentive_time_histogram
+
+from statistics import mean, stdev, median
 
 import matplotlib as mpl
 import matplotlib.font_manager as font_manager
@@ -21,7 +28,7 @@ mpl.rcParams['font.family'] = 'serif'
 cmfont = font_manager.FontProperties(fname=mpl.get_data_path() + '/fonts/ttf/cmunrm.ttf')
 mpl.rcParams['font.serif'] = cmfont.get_name()
 mpl.rcParams['mathtext.fontset'] = 'cm'
-mpl.rcParams['font.size'] = 11
+mpl.rcParams['font.size'] = 12
 mpl.rcParams['axes.unicode_minus'] = False
 
 colors = mpl.cm.Pastel1(np.linspace(0, 1, 10))
@@ -34,15 +41,29 @@ import matplotlib.pyplot as plt
 
 def plot_experiment_order_time_average_histogram(order_time_dict, path_string_param, experiment_parameter_name=""):
     for key in order_time_dict:
-        print(path_string_param)
+        # print(path_string_param)
         path_string = path_string_param / (experiment_parameter_name + "_" + key)
         if not path_string.exists():
             os.makedirs(path_string)
-        print(path_string)
-        print("Key", key)
+        # print(path_string)
+        # print("Key", key)
         df_order_time = pd.DataFrame(order_time_dict[key], columns=["Time"])
-        print(df_order_time)
+        # print(df_order_time)
         plot_ordering_time_histogram(df_order_time, path_string)
+
+
+def plot_experiment_incentive_time_average_histogram(incentive_time_dict, path_string_param,
+                                                     experiment_parameter_name=""):
+    for key in incentive_time_dict:
+        # print(path_string_param)
+        path_string = path_string_param / (experiment_parameter_name + "_" + key)
+        if not path_string.exists():
+            os.makedirs(path_string)
+        # print(path_string)
+        # print("Key", key)
+        df_incentive_time = pd.DataFrame(incentive_time_dict[key], columns=["Time"])
+        # print(df_order_time)
+        plot_incentive_time_histogram(df_incentive_time, path_string)
 
 
 def plot_OD_VOT_histogram(df_VOT_param, path_string):
@@ -61,15 +82,12 @@ def plot_OD_VOT_histogram(df_VOT_param, path_string):
         x.tick_params(axis="both", which="both", bottom="off", top=False, labelbottom="on", left="off", right=False,
                       labelleft="on")
 
-
         # Draw horizontal axis lines
         vals = x.get_yticks()
         for tick in vals:
             x.axhline(y=tick, linestyle='dashed', alpha=0.5, color='#eeeeee', zorder=1)
 
-        x.set_xticks(range(0, 16, 2))
-        # x.set_xticklabels(['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00',
-        #                    '14:00', '16:00', '18:00', '20:00', '22:00', '24:00'])
+        # x.set_xticks(range(0, 16, 2))
 
         # Remove title
         x.set_title("")
@@ -94,15 +112,6 @@ def adjust_waiting_time(waiting_time_row):
 
     # The case where you ordered after working hours, subtract the time between next morning 8 and order time
 
-    # if order is on a Sunday
-    # if waiting_time_row['Day_of_week'] >= 6:
-    #     waiting_time = waiting_time_row['Waiting_Time'] - (32 + waiting_time_row['Time'])
-    # elif (waiting_time_row['Day_of_week'] >= 5) and (waiting_time_row['Time'] > 17):
-    #     waiting_time = waiting_time_row['Waiting_Time'] - waiting_time_row['Time'] - 8
-    # # if order is too late for delivery on a Saturday
-    # elif waiting_time_row['Waiting_Time'] > 39:
-    #     waiting_time = waiting_time_row['Waiting_Time'] - 39
-
     # if order is placed after hours on a regular day
     if waiting_time_row['Time'] > 17:
         waiting_time = waiting_time_row['Waiting_Time'] - (32 - waiting_time_row['Time'])
@@ -119,37 +128,49 @@ def adjust_waiting_time(waiting_time_row):
 # %%
 
 
-def capture_run_results(fixed_incentive_param, variable_rate_param, deliveries_per_day_param, od_percentage_param,
-                        customer_rate_param,
-                        OD_VOT_dataset, deliveries_dataset, incentives_dataset, savings_dataset, waiting_time_dataset,
+def capture_run_results(data_path_param, fixed_incentive_param, variable_rate_param, deliveries_per_day_param,
+                        od_percentage_param, min_vot_param,
+                        customer_rate_param, OD_rate_param, cost_per_distance_param, loss_aversion_param,
+                        OD_VOT_dataset, deliveries_dataset, incentives_dataset, savings_dataset, original_route_dataset,
+                        waiting_time_dataset,
                         run_duration):
     ###################################################
     # Capture input parameters
     ###################################################
+    data_path_param = data_path_param[:-5]
+    data_path_param = data_path_param.partition('/')[2]
+    data_path_param = data_path_param.partition('/')[2]
+
     stats_overall = {
         'run_end_time': datetime.datetime.now()  # enter the begin time
     }
 
     run_parameters = {
         'run_duration': run_duration * (1 / 60000),  # capture the simulation run time
-        'fixed_incentive': fixed_incentive_param,
-        'variable_incentive': variable_rate_param,
-        'deliveries_per_day': deliveries_per_day_param,
+        'dataset_code': data_path_param,
+        'fixed_incentive': round(fixed_incentive_param, 1),
+        'variable_incentive': round(variable_rate_param, 2),
+        'deliveries_per_day': round(deliveries_per_day_param),
         'od_percentage': round(od_percentage_param, 1),
-        'customer_order_rate': customer_rate_param
+        'od_min_vot': round(min_vot_param, 1),
+        'customer_order_rate': customer_rate_param,
+        'OD_arrival_rate': round(OD_rate_param, 1),
+        'cost_per_distance': round(cost_per_distance_param, 1),
+        'loss_aversion_parameter': round(loss_aversion_param, 1)
     }
 
     ###########################
     # Set results directory
     ###########################
-
+    # print(run_parameters['loss_aversion_parameter'])
     ################################################################################################
     # Change this manually for [Parameter_Variation / Sensitivity_Analysis / etc]
     ###############################################################################################
-    experiment_type = "OD_VOT_capture"
-    param_tested = run_parameters['od_percentage']  #
-    param_tested_name = "OD ratio"
-    param_pre_string = "OD_ratio"
+    # Scenario_1_savings_OD_1_5_vot_3
+    experiment_type = "variable_rate_9_sept_no_max"
+    param_tested = run_parameters['variable_incentive']
+    param_tested_name = "Variable incentive [$/km]"
+    param_pre_string = "variable_incentive"
     ###########################################################################################
     param_string = f"{param_pre_string}_{param_tested}"
 
@@ -175,15 +196,25 @@ def capture_run_results(fixed_incentive_param, variable_rate_param, deliveries_p
     deliveries_dictionary = json.loads(deliveries_dataset)
     incentives_dictionary = json.loads(incentives_dataset)
     savings_dictionary = json.loads(savings_dataset)
+    original_route_dictionary = json.loads(original_route_dataset)
     waiting_time_dictionary = json.loads(waiting_time_dataset)
 
     df_od_vot = pd.DataFrame(od_vot_dictionary["plainDataTable"], columns=['Time', 'Value_of_time'])
     df_delivery_costs = pd.DataFrame(deliveries_dictionary["plainDataTable"], columns=['Time', 'Delivery_Cost'])
     df_incentives_paid = pd.DataFrame(incentives_dictionary["plainDataTable"], columns=['Time', 'Incentives_Paid'])
     df_savings = pd.DataFrame(savings_dictionary["plainDataTable"], columns=['Time', 'Savings_Value'])
+    df_original_delivery_costs = pd.DataFrame(original_route_dictionary["plainDataTable"],
+                                              columns=['Time', 'Delivery_Cost'])
+
     df_waiting_time = pd.DataFrame(waiting_time_dictionary["plainDataTable"], columns=['Time', 'Waiting_Time'])
 
-    print(df_od_vot)
+    # drop the values from the first day (for warm-up period)
+
+    df_original_delivery_costs = df_original_delivery_costs.iloc[run_parameters["deliveries_per_day"]:]
+    df_delivery_costs = df_delivery_costs.iloc[run_parameters["deliveries_per_day"]:]
+    df_savings = df_savings.iloc[run_parameters["deliveries_per_day"]:]
+
+    # print(df_od_vot)
     # BELOW.... the +8 for all time values are because the model time starts at 08:00
     # we therefore adjust from the model's "relative" reference of time
     # to the "absolute" time
@@ -191,7 +222,7 @@ def capture_run_results(fixed_incentive_param, variable_rate_param, deliveries_p
     # this should not be done when dataset is empty
     if not df_incentives_paid.empty:
         # print("not empty")
-        df_incentives_paid['Time'] = (df_incentives_paid['Time'] + 8 * 60) * (1 / (60 * 24))
+        df_incentives_paid['Time'] = ((df_incentives_paid['Time'] + 8 * 60) * (1 / 60)) % 24
         df_incentives_paid['Cumulative_Incentives_Paid'] = df_incentives_paid['Incentives_Paid'].cumsum()
     # print("here4.25")
 
@@ -200,24 +231,29 @@ def capture_run_results(fixed_incentive_param, variable_rate_param, deliveries_p
 
     df_waiting_time['Day_of_week'] = ((df_waiting_time['Time'] + 8 * 60) * (1 / (60 * 24))) % 7
 
+    # change time from simulation time to time of day
     df_waiting_time['Time'] = ((df_waiting_time['Time'] + 8 * 60) * (1 / 60)) % 24
+    # change waiting time from minutes to hours
     df_waiting_time['Waiting_Time'] = df_waiting_time['Waiting_Time'] * (1 / 60)
-
-    # print("here4.5")
-
+    # print(df_waiting_time)
+    # adjust waiting time
     df_waiting_time['Waiting_Time_Adjusted'] = df_waiting_time.apply(lambda row:
                                                                      adjust_waiting_time(row),
                                                                      axis=1)
-    # adjust_waiting_time
-    # z['c'] = z.apply(lambda row: 0 if row['b'] in (0, 1) else row['a'] / math.log(row['b']), axis=1)
+    # print(df_waiting_time)
 
     df_delivery_costs['Cumulative_Delivery_Cost'] = df_delivery_costs['Delivery_Cost'].cumsum()
+
+    # change savings into a daily savings
+    # print(df_savings)
+    df_savings = df_savings.groupby(df_savings.index // deliveries_per_day_param).sum()
 
     # print(df_incentives_paid.head(5))
     # print(df_delivery_costs.head(5))
     # print(df_savings.head(5))
-    print(df_waiting_time.head(5))
-    print(df_waiting_time.tail(5))
+
+    # print(df_waiting_time.head(5))
+    # print(df_waiting_time.tail(5))
     # print("here5")
 
     # %%
@@ -236,19 +272,18 @@ def capture_run_results(fixed_incentive_param, variable_rate_param, deliveries_p
     with open(path_results / "run_output.json", 'w') as fp:
         json.dump(run_output, fp)
 
-    # %%
-    ###################################################
-    # Append to experiment results
-    ###################################################
-    # for combined results (each run will add to existing dictionary
-
-    run_order_time_dict = {param_tested: df_waiting_time["Time"].to_list()}
-    run_savings_dict = {param_tested: df_savings["Savings_Value"].to_list()}
-    run_waiting_time_dict = {param_tested: df_waiting_time["Waiting_Time_Adjusted"].to_list()}
-    run_incentive_dict = {param_tested: df_incentives_paid["Incentives_Paid"].to_list()}
+    # %% Append to experiment results
+    run_order_time_dict = {f"{param_tested}": df_waiting_time["Time"].to_list()}
+    run_incentive_time_dict = {f"{param_tested}": df_incentives_paid["Time"].to_list()}
+    run_savings_dict = {f"{param_tested}": df_savings["Savings_Value"].to_list()}
+    run_waiting_time_dict = {f"{param_tested}": df_waiting_time["Waiting_Time_Adjusted"].to_list()}
+    run_incentive_dict = {f"{param_tested}": df_incentives_paid["Incentives_Paid"].to_list()}
 
     if not experiment_combined_data_path.exists():
         os.makedirs(experiment_combined_data_path)
+        # regular results
+        with open(experiment_combined_data_path / "run_incentive_time_results.json", 'w') as fp:
+            json.dump(run_incentive_time_dict, fp, indent=4)
         with open(experiment_combined_data_path / "run_order_time_results.json", 'w') as fp:
             json.dump(run_order_time_dict, fp, indent=4)
         with open(experiment_combined_data_path / "run_savings_results.json", 'w') as fp:
@@ -258,70 +293,346 @@ def capture_run_results(fixed_incentive_param, variable_rate_param, deliveries_p
         with open(experiment_combined_data_path / "run_incentives_results.json", 'w') as fp:
             json.dump(run_incentive_dict, fp, indent=4)
 
+        # means results
+        with open(experiment_combined_data_path / "experiment_incentive_means.json", 'w') as fp:
+            json.dump({f"{param_tested}": [df_incentives_paid["Incentives_Paid"].mean()]}, fp, indent=4)
+        with open(experiment_combined_data_path / "experiment_incentive_totals.json", 'w') as fp:
+            json.dump({f"{param_tested}": [df_incentives_paid["Incentives_Paid"].sum()]}, fp, indent=4)
+        with open(experiment_combined_data_path / "experiment_incentive_count.json", 'w') as fp:
+            json.dump({f"{param_tested}": [len(df_incentives_paid["Incentives_Paid"])]}, fp, indent=4)
+        with open(experiment_combined_data_path / "experiment_waiting_time_means.json", 'w') as fp:
+            json.dump({f"{param_tested}": [df_waiting_time["Waiting_Time_Adjusted"].mean()]}, fp, indent=4)
+        with open(experiment_combined_data_path / "experiment_delivery_cost_sum.json", 'w') as fp:
+            json.dump({f"{param_tested}": [df_delivery_costs['Cumulative_Delivery_Cost'].iloc[-1]]}, fp, indent=4)
+        with open(experiment_combined_data_path / "experiment_savings_sum.json", 'w') as fp:
+            json.dump({f"{param_tested}": [df_savings["Savings_Value"].sum()]}, fp, indent=4)
 
+
+        with open(experiment_combined_data_path / "experiment_savings_percentage.json", 'w') as fp:
+            json.dump({f"{param_tested}": [
+                (df_savings["Savings_Value"].sum() / df_original_delivery_costs['Delivery_Cost'].sum()) * 100]}, fp,
+                indent=4)
+        with open(experiment_combined_data_path / "total_orders.json", 'w') as fp:
+            json.dump({f"{param_tested}": [len(df_waiting_time["Waiting_Time_Adjusted"])]}, fp, indent=4)
 
     else:
         # append to combined run reults
-        with open(experiment_combined_data_path / "run_order_time_results.json", 'r+') as file:
+        # with open(experiment_combined_data_path / "run_incentive_time_results.json", 'r+') as file:
+        #     data = json.load(file)
+        #     if f"{param_tested}" in data:
+        #         data[f"{param_tested}"].extend(df_incentives_paid["Time"].to_list())
+        #     else:
+        #         data.update(run_incentive_time_dict)
+        #     file.seek(0)
+        #     json.dump(data, file, indent=4)
+
+        # with open(experiment_combined_data_path / "run_order_time_results.json", 'r+') as file:
+        #     data = json.load(file)
+        #     if f"{param_tested}" in data:
+        #         data[f"{param_tested}"].extend(df_waiting_time["Time"].to_list())
+        #     else:
+        #         data.update(run_order_time_dict)
+        #     file.seek(0)
+        #     json.dump(data, file, indent=4)
+
+        # with open(experiment_combined_data_path / "run_savings_results.json", 'r+') as file:
+        #     data = json.load(file)
+        #     if f"{param_tested}" in data:
+        #         data[f"{param_tested}"].extend(df_savings["Savings_Value"].to_list())
+        #     else:
+        #         data.update(run_savings_dict)
+        #     file.seek(0)
+        #     json.dump(data, file, indent=4)
+
+        # with open(experiment_combined_data_path / "run_waiting_time_results.json", 'r+') as file:
+        #     data = json.load(file)
+        #     if f"{param_tested}" in data.keys():
+        #         data[f"{param_tested}"].extend(df_waiting_time["Waiting_Time_Adjusted"].to_list())
+        #     else:
+        #         data.update(run_waiting_time_dict)
+        #     file.seek(0)
+        #     json.dump(data, file, indent=4)
+
+        # with open(experiment_combined_data_path / "run_incentives_results.json", 'r+') as file:
+        #     data = json.load(file)
+        #     if f"{param_tested}" in data.keys():
+        #         data[f"{param_tested}"].extend(df_incentives_paid["Incentives_Paid"].to_list())
+        #     else:
+        #         data.update(run_incentive_dict)
+        #     file.seek(0)
+        #     json.dump(data, file, indent=4)
+
+        # statistics data
+        experiment_meta_data_keys = ['n', 'mean', 'standard_dev', 'median']
+
+
+        ###################################################################################################################################
+        ## Total orders
+        ###################################################################################################################################
+
+        print("Checkpoint 1")
+
+        with open(experiment_combined_data_path / "total_orders.json", 'r') as file:
             data = json.load(file)
-            if f"{param_tested}" in data:
-                data[f"{param_tested}"].extend(df_waiting_time["Time"].to_list())
-            else:
-                data.update(run_order_time_dict)
-            file.seek(0)
+
+        if f"{param_tested}" in data.keys():
+            data[f"{param_tested}"].extend([len(df_waiting_time["Waiting_Time_Adjusted"])])
+        else:
+            data.update({f"{param_tested}": [len(df_waiting_time["Waiting_Time_Adjusted"])]})
+
+        with open(experiment_combined_data_path / "total_orders.json", 'w') as file:
             json.dump(data, file, indent=4)
 
-        with open(experiment_combined_data_path / "run_savings_results.json", 'r+') as file:
+        df_total_orders_meta_data = pd.DataFrame(np.nan, columns=data.keys(), index=experiment_meta_data_keys)
+        for column in df_total_orders_meta_data.columns:
+            if len(data[column]) > 1:
+                df_total_orders_meta_data[column]['n'] = len(data[column])
+                df_total_orders_meta_data[column]['mean'] = mean(data[column])
+                df_total_orders_meta_data[column]['standard_dev'] = stdev(data[column])
+                df_total_orders_meta_data[column]['median'] = median(data[column])
+        df_total_orders_meta_data = df_total_orders_meta_data.reindex(sorted(df_total_orders_meta_data.columns), axis=1)
+        df_total_orders_meta_data.to_csv(
+            experiment_combined_data_path / "meta_data_total_orders.csv", index=True)
+
+        ###################################################################################################################################
+        ## Incentive Means
+        ###################################################################################################################################
+        print("Checkpoint 2")
+
+        with open(experiment_combined_data_path / "experiment_incentive_means.json", 'r') as file:
             data = json.load(file)
-            data.update(run_savings_dict)
-            file.seek(0)
+
+        if f"{param_tested}" in data.keys():
+            data[f"{param_tested}"].extend([df_incentives_paid["Incentives_Paid"].mean()])
+        else:
+            data.update({f"{param_tested}": [df_incentives_paid["Incentives_Paid"].mean()]})
+
+        with open(experiment_combined_data_path / "experiment_incentive_means.json", 'w') as file:
             json.dump(data, file, indent=4)
 
-        with open(experiment_combined_data_path / "run_waiting_time_results.json", 'r+') as file:
+        ###################################################################################################################################
+        ## Incentive totals
+        ###################################################################################################################################
+        print("Checkpoint 3")
+
+        with open(experiment_combined_data_path / "experiment_incentive_totals.json", 'r+') as file:
+            data = json.load(file)
+        if f"{param_tested}" in data.keys():
+            data[f"{param_tested}"].extend([df_incentives_paid["Incentives_Paid"].sum()])
+        else:
+            data.update({f"{param_tested}": [df_incentives_paid["Incentives_Paid"].sum()]})
+        with open(experiment_combined_data_path / "experiment_incentive_totals.json", 'w') as file:
+            json.dump(data, file, indent=4)
+
+        df_incentive_totals_meta_data = pd.DataFrame(np.nan, columns=data.keys(), index=experiment_meta_data_keys)
+        for column in df_incentive_totals_meta_data.columns:
+            if len(data[column]) > 1:
+                df_incentive_totals_meta_data[column]['n'] = len(data[column])
+                df_incentive_totals_meta_data[column]['mean'] = mean(data[column])
+                df_incentive_totals_meta_data[column]['standard_dev'] = stdev(data[column])
+                df_incentive_totals_meta_data[column]['median'] = median(data[column])
+        df_incentive_totals_meta_data = df_incentive_totals_meta_data.reindex(
+            sorted(df_incentive_totals_meta_data.columns), axis=1)
+        df_incentive_totals_meta_data.to_csv(
+            experiment_combined_data_path / "meta_data_incentive_totals.csv", index=True)
+
+        ###################################################################################################################################
+        ## Incentive count
+        ###################################################################################################################################
+        print("Checkpoint 4")
+
+        with open(experiment_combined_data_path / "experiment_incentive_count.json", 'r+') as file:
             data = json.load(file)
             if f"{param_tested}" in data.keys():
-                data[f"{param_tested}"].extend(df_waiting_time["Waiting_Time_Adjusted"].to_list())
+                data[f"{param_tested}"].extend([len(df_incentives_paid["Incentives_Paid"])])
             else:
-                data.update(run_waiting_time_dict)
+                data.update({f"{param_tested}": [len(df_incentives_paid["Incentives_Paid"])]})
             file.seek(0)
             json.dump(data, file, indent=4)
-        with open(experiment_combined_data_path / "run_incentives_results.json", 'r+') as file:
+
+        ###################################################################################################################################
+        ## Waiting times
+        ###################################################################################################################################
+
+        print("Checkpoint 4")
+        with open(experiment_combined_data_path / "experiment_waiting_time_means.json", 'r') as file:
             data = json.load(file)
-            data.update(run_incentive_dict)
-            file.seek(0)
+        if f"{param_tested}" in data.keys():
+            data[f"{param_tested}"].extend([df_waiting_time["Waiting_Time_Adjusted"].mean()])
+        else:
+            data.update({f"{param_tested}": [df_waiting_time["Waiting_Time_Adjusted"].mean()]})
+        with open(experiment_combined_data_path / "experiment_waiting_time_means.json", 'w') as file:
             json.dump(data, file, indent=4)
 
-        # try adding to existing data
+        df_waiting_time_meta_data = pd.DataFrame(np.nan, columns=data.keys(), index=experiment_meta_data_keys)
+        for column in df_waiting_time_meta_data.columns:
+            if len(data[column]) > 1:
+                df_waiting_time_meta_data[column]['n'] = len(data[column])
+                df_waiting_time_meta_data[column]['mean'] = mean(data[column])
+                df_waiting_time_meta_data[column]['standard_dev'] = stdev(data[column])
+                df_waiting_time_meta_data[column]['median'] = median(data[column])
+        df_waiting_time_meta_data = df_waiting_time_meta_data.reindex(sorted(df_waiting_time_meta_data.columns), axis=1)
+        df_waiting_time_meta_data.to_csv(
+            experiment_combined_data_path / "meta_data_waiting_time.csv", index=True)
 
-    # %%
+        df_waiting_time_means = pd.DataFrame.from_dict(data, orient='index')
+        df_waiting_time_means = df_waiting_time_means.transpose()
+        df_waiting_time_means.to_csv(experiment_combined_data_path / "experiment_waiting_time_means.csv", index=False)
 
-    ###################################################
-    # Plot results
-    ###################################################
+        ###################################################################################################################################
+        ## Delivery cost
+        ###################################################################################################################################
 
-    plot_waiting_time_histogram(df_waiting_time, path_results)
+        print("Checkpoint 5")
+
+        with open(experiment_combined_data_path / "experiment_delivery_cost_sum.json", 'r+') as file:
+            data = json.load(file)
+        if f"{param_tested}" in data.keys():
+            data[f"{param_tested}"].extend([df_delivery_costs['Cumulative_Delivery_Cost'].iloc[-1]])
+        else:
+            data.update({f"{param_tested}": [df_delivery_costs['Cumulative_Delivery_Cost'].iloc[-1]]})
+        with open(experiment_combined_data_path / "experiment_delivery_cost_sum.json", 'w') as file:
+            json.dump(data, file, indent=4)
+
+        df_delivery_cost_meta_data = pd.DataFrame(np.nan, columns=data.keys(), index=experiment_meta_data_keys)
+        for column in df_delivery_cost_meta_data.columns:
+            if len(data[column]) > 1:
+                df_delivery_cost_meta_data[column]['n'] = len(data[column])
+                df_delivery_cost_meta_data[column]['mean'] = mean(data[column])
+                df_delivery_cost_meta_data[column]['standard_dev'] = stdev(data[column])
+                df_delivery_cost_meta_data[column]['median'] = median(data[column])
+        df_delivery_cost_meta_data = df_delivery_cost_meta_data.reindex(sorted(df_delivery_cost_meta_data.columns),
+                                                                        axis=1)
+        df_delivery_cost_meta_data.to_csv(
+            experiment_combined_data_path / "meta_data_delivery_cost.csv", index=True)
+
+        ###################################################################################################################################
+        ## Savings
+        ###################################################################################################################################
+
+        # print("Checkpoint 6")
+
+        with open(experiment_combined_data_path / "experiment_savings_sum.json", 'r') as file:
+            data = json.load(file)
+        if f"{param_tested}" in data.keys():
+            data[f"{param_tested}"].extend([df_savings["Savings_Value"].sum()])
+        else:
+            data.update({f"{param_tested}": [df_savings["Savings_Value"].sum()]})
+        with open(experiment_combined_data_path / "experiment_savings_sum.json", 'w') as file:
+            json.dump(data, file, indent=4)
+
+        savings_sum_meta_data = dict.fromkeys(data.keys())
+
+        for key in savings_sum_meta_data:
+            if len(data[key]) > 1:
+                savings_sum_meta_data[key] = {'n': len(data[key]), 'mean': mean(data[key]), 'stdev': stdev(data[key])}
+
+        print(savings_sum_meta_data)
+
+
+
+        df_savings_sum = pd.DataFrame.from_dict(data, orient='index')
+        df_savings_sum = df_savings_sum.transpose()
+        df_savings_sum.to_csv(experiment_combined_data_path / "experiment_savings_sum.csv", index=False)
+
+        ###################################################################################################################################
+        ## Savings percentage
+        ###################################################################################################################################
+
+        print("Checkpoint 7")
+
+        with open(experiment_combined_data_path / "experiment_savings_percentage.json", 'r') as file:
+            data = json.load(file)
+        if f"{param_tested}" in data.keys():
+            data[f"{param_tested}"].extend(
+                [(df_savings["Savings_Value"].sum() / df_original_delivery_costs['Delivery_Cost'].sum()) * 100])
+        else:
+            data.update({f"{param_tested}": [
+                (df_savings["Savings_Value"].sum() / df_original_delivery_costs['Delivery_Cost'].sum()) * 100]})
+        with open(experiment_combined_data_path / "experiment_savings_percentage.json", 'w') as file:
+            json.dump(data, file, indent=4)
+
+        df_percentage_savings_meta_data = pd.DataFrame(np.nan, columns=data.keys(), index=experiment_meta_data_keys)
+        for column in df_percentage_savings_meta_data.columns:
+            if len(data[column]) > 1:
+                df_percentage_savings_meta_data[column]['n'] = len(data[column])
+                df_percentage_savings_meta_data[column]['mean'] = mean(data[column])
+                df_percentage_savings_meta_data[column]['standard_dev'] = stdev(data[column])
+                df_percentage_savings_meta_data[column]['median'] = median(data[column])
+
+        df_percentage_savings_meta_data = df_percentage_savings_meta_data.reindex(
+            sorted(df_percentage_savings_meta_data.columns), axis=1)
+        df_percentage_savings_meta_data.to_csv(
+            experiment_combined_data_path / "meta_data_experiment_savings_percentage.csv", index=True)
+        print(df_percentage_savings_meta_data)
+
+        print("Checkpoint 8")
+
+        df_perc_savings = pd.DataFrame.from_dict(data, orient='index')
+        df_perc_savings = df_perc_savings.transpose()
+        df_perc_savings.to_csv(experiment_combined_data_path / "experiment_savings_percentage.csv", index=False)
+
+        kpi_json_files = {"savings_percentage": "experiment_savings_percentage.json",
+                          "waiting_time": "experiment_waiting_time_means.json"}
+
+        print("Checkpoint 9")
+        if len(data[column]) > 1:
+            for kpi in kpi_json_files:
+                anova_test(kpi_json_files[kpi], experiment_combined_data_path, kpi)
+                mannwhitneyu_func(kpi_json_files[kpi], experiment_combined_data_path, kpi)
+                paired_t_test(kpi_json_files[kpi], experiment_combined_data_path, kpi)
+                shapiro_wilk_normality(kpi_json_files[kpi], experiment_combined_data_path, kpi)
+                confidence_intervals(kpi_json_files[kpi], experiment_combined_data_path, kpi)
+
+    # %% Summarise results
+
+    # %% Plot results
+
+    # plot_waiting_time_histogram(df_waiting_time, path_results)
     plot_ordering_time_histogram(df_waiting_time, path_results)
-    plot_delivery_costs(df_delivery_costs, path_results)
-    plot_cum_delivery_costs(df_delivery_costs, path_results)
+    # plot_delivery_costs(df_delivery_costs, path_results)
+    # plot_cum_delivery_costs(df_delivery_costs, path_results)
 
-    if not df_incentives_paid.empty:
-        plot_OD_VOT_histogram(df_od_vot, path_results)
-        plot_savings_histogram(df_savings, path_results)
-        plot_incentives_paid(df_incentives_paid, path_results)
-        plot_cum_incentives_paid(df_incentives_paid, path_results)
-        plot_cum_total_costs(df_delivery_costs, df_incentives_paid, path_results)
+    # if not df_incentives_paid.empty:
+    #     plot_incentive_time_histogram(df_incentives_paid, path_results)
+    #
+    #     with open(experiment_combined_data_path / "run_incentive_time_results.json", 'r') as file:
+    #         data = json.load(file)
+    #         plot_experiment_incentive_time_average_histogram(data, experiment_combined_data_path, param_pre_string)
+
+    # plot_OD_VOT_histogram(df_od_vot, path_results)
+    # plot_savings_histogram(df_savings, path_results)
+    # plot_incentives_paid(df_incentives_paid, path_results)
+    # plot_cum_incentives_paid(df_incentives_paid, path_results)
+    # plot_cum_total_costs(df_delivery_costs, df_incentives_paid, path_results)
 
     # combined results plot
 
-    with open(experiment_combined_data_path / "run_savings_results.json", 'r') as file:
+    with open(experiment_combined_data_path / "experiment_delivery_cost_sum.json", 'r') as file:
+        data = json.load(file)
+        plot_experiment_delivery_cost_boxplot(data, experiment_combined_data_path, param_tested_name)
+
+    with open(experiment_combined_data_path / "experiment_savings_sum.json", 'r') as file:
         data = json.load(file)
         plot_experiment_savings_boxplot(data, experiment_combined_data_path, param_tested_name)
 
-    with open(experiment_combined_data_path / "run_waiting_time_results.json", 'r') as file:
+    with open(experiment_combined_data_path / "experiment_savings_percentage.json", 'r') as file:
+        data = json.load(file)
+        plot_experiment_percentage_savings_boxplot(data, experiment_combined_data_path, param_tested_name)
+
+    with open(experiment_combined_data_path / "experiment_waiting_time_means.json", 'r') as file:
         data = json.load(file)
         plot_experiment_waiting_time_boxplot(data, experiment_combined_data_path, param_tested_name)
 
-    with open(experiment_combined_data_path / "run_incentives_results.json", 'r') as file:
+    with open(experiment_combined_data_path / "experiment_incentive_totals.json", 'r') as file:
+        data = json.load(file)
+        plot_experiment_incentives_total_boxplot(data, experiment_combined_data_path, param_tested_name)
+
+    with open(experiment_combined_data_path / "experiment_incentive_count.json", 'r') as file:
+        data = json.load(file)
+        plot_experiment_incentives_count_boxplot(data, experiment_combined_data_path, param_tested_name)
+
+    with open(experiment_combined_data_path / "experiment_incentive_means.json", 'r') as file:
         data = json.load(file)
         plot_experiment_incentives_boxplot(data, experiment_combined_data_path, param_tested_name)
 
@@ -332,10 +643,12 @@ def capture_run_results(fixed_incentive_param, variable_rate_param, deliveries_p
     # plt.show()
 
 
-# %%
+# %% main
 
 def main():
     """main()"""
+
+    data_path_test = "vrp_algorithms/test_data/R101_25.json"
 
     OD_VOT_data_test = '{"ymax": 5.799459197011004, "ymin": 3.7348358362285627, "xmax": 71097.41725401909, ' \
                        '"xmin": 69481.88504756276, "capacity": 100, "ymedian": 4.836125667268682,"plainDataTable": [[' \
@@ -391,24 +704,20 @@ def main():
                        '[71082.58822220283, 4.795961169113754], [71097.41725401909, 3.94581937823182]], "xmedian": ' \
                        '70760.39563655383, "xmean": 70548.25630528998, "ymean": 4.875195125102574, "version": 3519} '
 
-    run_deliveries_data_test = '{"ymax":218.18729597692945,"ymin":41.23105625617661,"xmin":60.274873708374514,' \
-                               '"xmax":19146.48523200577,"capacity":100,"plainDataTable":[[60.274873708374514,' \
-                               '41.23105625617661],[424.4297934262649,178.2755266323646],[1506.9558951993922,' \
-                               '172.18723752238083],[1862.5024775988081,144.7014410977794],[2944.77519990449,' \
-                               '129.18101249933676],[3302.259915356244,128.03467138081032],[4387.178530961281,' \
-                               '192.54458157036063],[4744.0300563079745,146.7698442852575],[5824.359424993008,' \
-                               '150.63721436309586],[6180.4,60.0],[7266.232300711186,192.42255333905015],' \
-                               '[7622.229618127332,80.21645711795972],[8706.263343751136,194.75078133495245],' \
-                               '[9067.37951714674,194.27517430594338],[10146.603478451572,180.12156364292102],' \
-                               '[10506.527379681309,200.733815985537],[11583.42501734616,155.55664084966108],' \
-                               '[11945.01736447219,162.48267530162119],[13026.760092747862,218.18729597692945],' \
-                               '[13383.709062161131,158.17966208479749],[14466.287699591927,201.57746939422157],' \
-                               '[14822.84274727645,136.76155848828353],[15904.162266900597,158.21103720716138],' \
-                               '[16262.027154523377,102.53168682113882],[17346.818762539984,199.40228806668688],' \
-                               '[17702.331913910974,73.57388321059432],[18783.664847983215,142.891355118501],' \
-                               '[19146.48523200577,208.75308020772187]],"xmean":9604.497641670883,' \
-                               '"xmedian":9606.991497799158,"ymean":153.72112728790165,"ymedian":158.19534964597943,' \
-                               '"version":29} '
+    run_deliveries_data_test = '{"xmax":19260.0,"ymin":16.72,"xmin":540.0,"ymax":70.7,"capacity":10000,' \
+                               '"plainDataTable":[[540.0,16.72],[1980.0,47.84],[3420.0,68.84],[4860.0,51.74],[6300.0,' \
+                               '69.34],[7740.0,57.4],[9180.0,63.839999999999996],[10620.0,66.56],[12060.0,70.7],' \
+                               '[13500.0,62.599999999999994],[14940.0,49.339999999999996],[16380.0,50.3],[17820.0,' \
+                               '59.22],[19260.0,56.85999999999999]],"ymean":56.52142857142858,"ymedian":58.31,' \
+                               '"xmedian":9900.0,"xmean":9900.0,"version":15} '
+
+    original_route_data_test = '{"xmax": 19260.0, "ymin": 29.439999999999998, "xmin": 540.0, "ymax": 70.7, ' \
+                               '"capacity": 100000, "plainDataTable": [[540.0, 29.439999999999998], [1980.0, 63.84], ' \
+                               '[3420.0, 68.84], [4860.0, 67.22], [6300.0, 69.34], [7740.0, 68.02], [9180.0, ' \
+                               '63.839999999999996], [10620.0, 66.56], [12060.0, 70.7], [13500.0, ' \
+                               '62.599999999999994], [14940.0, 49.339999999999996], [16380.0, 50.3], [17820.0, ' \
+                               '59.22], [19260.0, 56.85999999999999]], "ymean": 60.43714285714286, "ymedian": 63.84, ' \
+                               '"xmedian": 9900.0, "xmean": 9900.0, "version": 15} '
 
     incentives_paid_data_test = '{"ymax":19.731510111959906,"ymin":10.013453073980195,"xmin":331.93229801878203,' \
                                 '"xmax":18861.275641070668,"capacity":100,"plainDataTable":[[331.93229801878203,' \
@@ -440,35 +749,15 @@ def main():
                                 '12.491468375796359]],"xmean":8426.347467280162,"xmedian":7433.984463795617,' \
                                 '"ymean":12.89076599602024,"ymedian":12.491468375796359,"version":52} '
 
-    run_savings_data_test = '{"ymax":77.39346686297449,"ymin":-7.161668375796359,"xmin":331.93229801878203,' \
-                            '"xmax":18861.275641070668,"capacity":10000,"plainDataTable":[[331.93229801878203,' \
-                            '77.39346686297449],[414.2385468203655,5.468766808923714],[497.5134215969183,' \
-                            '-3.4887070381051384],[1694.2338356244024,5.521568543353656],[1792.7458752349517,' \
-                            '9.540214302083402],[1956.3339799561297,26.88487415651739],[2923.8851851621507,' \
-                            '6.157651234439946],[3050.306027510304,2.049331624203642],[3063.319200818182,' \
-                            '21.035766391017752],[3254.829652220737,34.1721913099589],[3393.500692931511,' \
-                            '2.5620559014244275],[4363.652455817007,29.32381490404144],[4364.13683941769,' \
-                            '8.957074156517386],[4549.005005375919,8.432892961894861],[4582.828263442435,' \
-                            '72.79981886752046],[4635.216621326971,2.5302149040414417],[5780.3852296402465,' \
-                            '7.011731624203641],[5784.83388579554,27.857466862974498],[5937.778689497238,' \
-                            '61.95043684959099],[6004.360882142183,50.87905123443995],[6012.890806430829,' \
-                            '32.567699747354304],[7222.413716242576,32.5426668629745],[7223.06840883155,' \
-                            '19.446255901424426],[7225.139244385013,8.047256668864353],[7374.70167116465,' \
-                            '42.384166808923716],[7433.984463795617,35.157036849590995],[7582.561525923297,' \
-                            '-3.6941258434826114],[7691.790196499514,-2.173707038105137],[7714.487934935005,' \
-                            '3.13960351313985],[8964.446087807464,6.814766391017756],[9035.571547521558,' \
-                            '14.639899747354299],[10084.346599584183,47.389814904041444],[10517.661944128131,' \
-                            '5.521568543353656],[11545.130451303981,34.8063913099589],[11563.681787223948,' \
-                            '0.3954099136918039],[11663.187500559083,12.605018867520467],[11723.351916812868,' \
-                            '10.168966391017754],[11781.06577780825,48.255636849591],[11794.677314116889,' \
-                            '10.596162900345629],[12026.110418530941,48.562568543353656],[13421.780496397845,' \
-                            '0.5604512344399453],[13482.200481557995,33.0275469260198],[14403.52958988309,' \
-                            '45.593856668864355],[14404.217534668604,34.8063913099589],[16028.92363689442,' \
-                            '41.194489888040096],[16117.883980898256,0.3696997473543],[16172.209528912601,' \
-                            '38.1235763243852],[17307.99184461961,-0.6674331910762845],[17352.4081010834,' \
-                            '43.436409913691804],[17635.994093346613,-0.1893265368617989],[18861.275641070668,' \
-                            '-7.161668375796359]],"xmean":8426.347467280162,"xmedian":7433.984463795617,' \
-                            '"ymean":21.437386945156227,"ymedian":12.605018867520467,"version":52} '
+    run_savings_data_test = '{"ymax":0.0,"xmax":29340.0,"xmin":180.0,"ymin":0.0,"capacity":100000,"xmean":14760.0,"xmedian":14760.0,"ymean":0.0,"ymedian":0.0,"plainDataTable":[[180.0,0.0],[540.0,0.0],[1620.0,0.0],[1980.0,0.0],[3060.0,0.0],[3420.0,0.0],[4500.0,0.0],[4860.0,0.0],[5940.0,0.0],[6300.0,0.0],[7380.0,0.0],[7740.0,0.0],[8820.0,0.0],[9180.0,0.0],[10260.0,0.0],[10620.0,0.0],[11700.0,0.0],[12060.0,0.0],[13140.0,0.0],[13500.0,0.0],[14580.0,0.0],[14940.0,0.0],[16020.0,0.0],[16380.0,0.0],[17460.0,0.0],[17820.0,0.0],[18900.0,0.0],[19260.0,0.0],[20340.0,0.0],[20700.0,0.0],[21780.0,0.0],[22140.0,0.0],[23220.0,0.0],[23580.0,0.0],[24660.0,0.0],[25020.0,0.0],[26100.0,0.0],[26460.0,0.0],[27540.0,0.0],[27900.0,0.0],[28980.0,0.0],[29340.0,0.0]],"version":43}'
+
+    # '{"ymin":0.0,"xmax":35099.4,"ymax":5.8102598376454395,"xmin":539.4,"capacity":100000,' \
+    # '"plainDataTable":[[539.4,5.8102598376454395],[1979.4,6.0],[3419.4,3.0],[4859.4,0.0],' \
+    # '[6299.4,0.0],[7739.4,7.0],[9179.4,0.0],[10619.4,0.0],[12059.4,0.0],[13499.4,0.0],' \
+    # '[14939.4,0.0],[16379.4,9.0],[17819.4,1.0],[19259.4,2.0],[20699.4,3.0],[22139.4,4.0],' \
+    # '[23579.4,5.0],[25019.4,6.0],[26459.4,7.0],[27899.4,8.0],[29339.4,0.0],[30779.4,0.0],' \
+    # '[32219.4,0.0],[33659.4,0.0],[35099.4,0.0]],"ymean":0.23241039350581758,' \
+    # '"xmedian":17819.4,"ymedian":0.0,"xmean":17819.4,"version":26} '
 
     # ########################################################################################################################
     # # Uncomment to test for no incentives or savings
@@ -608,13 +897,20 @@ def main():
     variable_rate_test = 2.0
     deliveries_per_day_test = 2.0
     od_percentage_test = 1.2
-    customer_order_rate_test = 1.5
+    min_vot_test = 5.0
+    customer_order_rate_test = 3.0
+    OD_arrival_rate_test = 1.0
+    cost_per_distance_test = 2.0
+    loss_aversion_parameter_test = 7
     run_duration_test = 24772
 
-    capture_run_results(fixed_incentive_test, variable_rate_test, deliveries_per_day_test, od_percentage_test,
-                        customer_order_rate_test,
+    capture_run_results(data_path_test, fixed_incentive_test, variable_rate_test, deliveries_per_day_test,
+                        od_percentage_test, min_vot_test,
+                        customer_order_rate_test, OD_arrival_rate_test, cost_per_distance_test,
+                        loss_aversion_parameter_test,
                         OD_VOT_data_test, run_deliveries_data_test,
-                        incentives_paid_data_test, run_savings_data_test, waiting_time_data_test, run_duration_test)
+                        incentives_paid_data_test, run_savings_data_test, original_route_data_test,
+                        waiting_time_data_test, run_duration_test)
 
 
 if __name__ == '__main__':

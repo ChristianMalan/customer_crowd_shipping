@@ -28,7 +28,7 @@
             "y": 0.0
         },
         {
-            "demand": 50.0,
+            "demand": 20.0,
             "due_time": 429.0,
             "id": 4,
             "ready_time": 384.0,

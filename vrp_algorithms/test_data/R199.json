@@ -234,7 +234,7 @@
         "x": 35.0,
         "y": 35.0
     },
-    "instance_name": "R101_25",
-    "max_vehicle_number": 50,
-    "vehicle_capacity": 100.0
+    "instance_name": "R199",
+    "max_vehicle_number": 25,
+    "vehicle_capacity": 200.0
 }

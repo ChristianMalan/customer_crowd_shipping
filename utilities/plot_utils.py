@@ -6,11 +6,12 @@ from matplotlib.patches import Rectangle
 
 import matplotlib as mpl
 import matplotlib.font_manager as font_manager
+
 mpl.rcParams['font.family'] = 'serif'
 cmfont = font_manager.FontProperties(fname=mpl.get_data_path() + '/fonts/ttf/cmunrm.ttf')
 mpl.rcParams['font.serif'] = cmfont.get_name()
 mpl.rcParams['mathtext.fontset'] = 'cm'
-mpl.rcParams['font.size'] = 11
+mpl.rcParams['font.size'] = 13
 mpl.rcParams['axes.unicode_minus'] = False
 
 colors = mpl.cm.Pastel1(np.linspace(0, 1, 10))
@@ -43,6 +44,9 @@ def plot_ordering_time_histogram(df_waiting_time_param, path_string):
         x.set_xticklabels(['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00',
                            '14:00', '16:00', '18:00', '20:00', '22:00', '24:00'])
 
+        # remove after verification
+        # x.set_ylim([0, 800])
+
         # Draw horizontal axis lines
         vals = x.get_yticks()
         for tick in vals:
@@ -62,6 +66,56 @@ def plot_ordering_time_histogram(df_waiting_time_param, path_string):
     # plt.show()
     plt.savefig(path_string / "ordering_time_histogram.pdf")
     # plt.show()
+
+
+def plot_incentive_time_histogram(df_waiting_time_param, path_string):
+    df_waiting_time_param.fillna(0)
+    ax = df_waiting_time_param.hist(column='Time',
+                                    bins=range(int(round_down(df_waiting_time_param['Time'].min(), 0)),
+                                               int(round_up(df_waiting_time_param['Time'].max(),
+                                                            0) + 1),
+                                               1),
+                                    grid=False, figsize=(6.29921, 4.19947), color='lightgrey',
+                                    zorder=2, rwidth=0.9, density=False)
+
+    ax = ax[0]
+    for x in ax:
+        # Despine
+        x.spines['right'].set_visible(False)
+        x.spines['top'].set_visible(False)
+        x.spines['left'].set_visible(False)
+
+        # Switch off ticks
+        x.tick_params(axis="both", which="both", bottom="off", top=False, labelbottom="on", left="off", right=False,
+                      labelleft="on")
+
+        x.set_xticks(range(7, 19, 2))
+        x.set_xticklabels(['07:00', '09:00', '11:00',
+                           '13:00', '15:00', '17:00'])
+
+        # remove after verification
+        # x.set_ylim([0, 800])
+
+        # Draw horizontal axis lines
+        vals = x.get_yticks()
+        for tick in vals:
+            x.axhline(y=tick, linestyle='dashed', alpha=0.5, color='#eeeeee', zorder=1)
+
+        # Remove title
+        x.set_title("")
+
+        # Set x-axis label
+        x.set_xlabel("Time of day [h]", labelpad=5)
+
+        # Set x-axis label
+        x.set_ylabel("Order frequency", labelpad=10)
+
+        # Format y-axis label
+        # x.yaxis.set_major_formatter(StrMethodFormatter('{x:,g}'))
+    # plt.show()
+    plt.savefig(path_string / "incentive_time_histogram.pdf")
+    # plt.show()
+
 
 def plot_savings_histogram(df_savings_param, path_string):
     ax = df_savings_param.hist(column='Savings_Value',
@@ -148,7 +202,8 @@ def plot_waiting_time_histogram(df_waiting_time_param, path_string):
                   alpha=0.6,
                   color='black')
 
-        x.plot([], [], ' ', label=f"Maximum waiting time = {round(df_waiting_time_param['Waiting_Time_Adjusted'].max(), 2)}h")
+        x.plot([], [], ' ',
+               label=f"Maximum waiting time = {round(df_waiting_time_param['Waiting_Time_Adjusted'].max(), 2)}h")
 
         x.legend()
 
@@ -186,6 +241,8 @@ def plot_waiting_time_histogram(df_waiting_time_param, path_string):
         # get yticks
         vals = ax.get_yticks()
 
+        # x.set_ylim([0,70])
+
         # set yticks at correct position
         ax.set_yticks(vals)
 
@@ -209,7 +266,7 @@ def plot_waiting_time_histogram(df_waiting_time_param, path_string):
 
 
 def plot_delivery_costs(df_delivery_cost_param, path_string):
-    ax = df_delivery_cost_param.plot(x='Time', y='Delivery_Cost', kind='line',
+    ax = df_delivery_cost_param.plot(x='Time', y='Delivery_Cost', marker='v',
                                      grid=False, figsize=(6.29921, 4.19947), color='lightgrey',
                                      zorder=2, label='Delivery vehicle cost')
     # Despine
@@ -222,6 +279,8 @@ def plot_delivery_costs(df_delivery_cost_param, path_string):
                    labelleft="on")
 
     ax.set_xticks(range(0, int(round_up(df_delivery_cost_param['Time'].max(), 0) + 1), 1))
+
+    ax.set_ylim([0, 70])
 
     # get yticks
     vals = ax.get_yticks()
@@ -304,7 +363,10 @@ def plot_cum_delivery_costs(df_delivery_cost_param, path_string):
     ax.set_xticks(range(0, int(round_up(df_delivery_cost_param['Time'].max(), 0) + 1), 1))
 
     # set yticks at correct position
-    ax.set_yticks(range(0, int(round_up(df_delivery_cost_param['Cumulative_Delivery_Cost'].max(), 0)) + 2000, 2000))
+
+    # put back after verification
+    # ax.set_yticks(range(0, int(round_up(df_delivery_cost_param['Cumulative_Delivery_Cost'].max(), 0)) + 2000, 2000))
+    ax.set_ylim([0, 400])
 
     vals = ax.get_yticks()
 
@@ -365,6 +427,7 @@ def plot_cum_incentives_paid(df_incentives_paid_param, path_string):
 
     plt.savefig(path_string / "cumulative_incentives_paid.pdf")
 
+
 def plot_cum_total_costs(df_delivery_cost_param, df_incentives_paid_param, path_string):
     x1, y1 = df_delivery_cost_param['Time'], df_delivery_cost_param['Cumulative_Delivery_Cost']
     x2, y2 = df_incentives_paid_param['Time'], df_incentives_paid_param['Cumulative_Incentives_Paid']
@@ -401,10 +464,10 @@ def plot_cum_total_costs(df_delivery_cost_param, df_incentives_paid_param, path_
     #                                  zorder=2, drawstyle="steps-post", label='Cumulative delivery cost')
 
     df_delivery_cost_param.plot(ax=ax, x='Time', y='Cumulative_Delivery_Cost',
-                                label=f'Cumulative delivery vehicle cost ({round(df_delivery_cost_param["Cumulative_Delivery_Cost"].max()/df_total_costs["Total_Cost"].max()*100, 1)}%)')
+                                label=f'Cumulative delivery vehicle cost ({round(df_delivery_cost_param["Cumulative_Delivery_Cost"].max() / df_total_costs["Total_Cost"].max() * 100, 1)}%)')
 
     df_incentives_paid_param.plot(ax=ax, x='Time', y='Cumulative_Incentives_Paid',
-                                  label=f'Cumulative incentives paid ({round(df_incentives_paid_param["Cumulative_Incentives_Paid"].max()/df_total_costs["Total_Cost"].max()*100,1)}%)')
+                                  label=f'Cumulative incentives paid ({round(df_incentives_paid_param["Cumulative_Incentives_Paid"].max() / df_total_costs["Total_Cost"].max() * 100, 1)}%)')
 
     # Despine
     ax.spines['right'].set_visible(False)
@@ -443,42 +506,106 @@ def plot_cum_total_costs(df_delivery_cost_param, df_incentives_paid_param, path_
     plt.savefig(path_string / "cumulative_total_cost.pdf", bbox_inches='tight')
 
 
+# %% Plot combined results of experiments
 
-
-
-
-#%% Plot combined results of experiments
-
-def plot_experiment_incentives_boxplot(savings_dict, path_string, experiment_parameter_name=""):
+def plot_experiment_incentives_count_boxplot(incentive_totals_dict, path_string, experiment_parameter_name=""):
     fig, ax = plt.subplots(figsize=(6.29921, 4.19947))
 
-    bplot = ax.boxplot(savings_dict.values(), patch_artist=True, medianprops=dict(linewidth=1.5, color='grey'))
-    ax.set_xticklabels(savings_dict.keys())
+    incentive_totals_dict = dict(sorted(incentive_totals_dict.items()))
+
+    bplot = ax.boxplot(incentive_totals_dict.values(), patch_artist=True, showmeans=True,
+                       meanprops={"markerfacecolor": "grey", "markeredgecolor": "black"},
+                       medianprops=dict(linewidth=1.5, color='grey'))
+    ax.set_xticklabels(incentive_totals_dict.keys())
 
     # set labels
-    ax.set_ylabel("Incentives paid [$]", labelpad=10)
+    ax.set_ylabel("Total accepted incentives", labelpad=10)
     ax.set_xlabel(experiment_parameter_name, labelpad=10)
     ax.yaxis.grid(True)
-
 
     for patch, color in zip(bplot['boxes'], colors):
         patch.set_facecolor(color)
 
-    plt.savefig(path_string / "incentives_boxplot.pdf", bbox_inches='tight')
+    plt.savefig(path_string / "incentive_count_boxplot.pdf", bbox_inches='tight')
 
+def plot_experiment_incentives_total_boxplot(incentive_totals_dict, path_string, experiment_parameter_name=""):
+    fig, ax = plt.subplots(figsize=(6.29921, 4.19947))
+
+    incentive_totals_dict = dict(sorted(incentive_totals_dict.items()))
+
+    bplot = ax.boxplot(incentive_totals_dict.values(), patch_artist=True, showmeans=True,
+                       meanprops={"markerfacecolor": "grey", "markeredgecolor": "black"},
+                       medianprops=dict(linewidth=1.5, color='grey'))
+    ax.set_xticklabels(incentive_totals_dict.keys())
+
+    # set labels
+    ax.set_ylabel("Total incentives paid [$]", labelpad=10)
+    ax.set_xlabel(experiment_parameter_name, labelpad=10)
+    ax.yaxis.grid(True)
+
+    for patch, color in zip(bplot['boxes'], colors):
+        patch.set_facecolor(color)
+
+    plt.savefig(path_string / "incentive_totals_boxplot.pdf", bbox_inches='tight')
+
+
+def plot_experiment_incentives_boxplot(incentives_dict, path_string, experiment_parameter_name=""):
+
+    incentives_dict = dict(sorted(incentives_dict.items()))
+
+    fig, ax = plt.subplots(figsize=(6.29921, 4.19947))
+
+    bplot = ax.boxplot(incentives_dict.values(), patch_artist=True, showmeans=True,
+                       meanprops={"markerfacecolor": "grey", "markeredgecolor": "black"},
+                       medianprops=dict(linewidth=1.5, color='grey'))
+    ax.set_xticklabels(incentives_dict.keys())
+
+    # set labels
+    ax.set_ylabel("Average incentive paid [$]", labelpad=10)
+    ax.set_xlabel(experiment_parameter_name, labelpad=10)
+    ax.yaxis.grid(True)
+
+    for patch, color in zip(bplot['boxes'], colors):
+        patch.set_facecolor(color)
+
+    plt.savefig(path_string / "incentive_means_boxplot.pdf", bbox_inches='tight')
+
+
+def plot_experiment_delivery_cost_boxplot(delievry_cost_dict, path_string, experiment_parameter_name=""):
+    fig, ax = plt.subplots(figsize=(6.29921, 4.19947))
+
+    delievry_cost_dict = dict(sorted(delievry_cost_dict.items()))
+
+    bplot = ax.boxplot(delievry_cost_dict.values(), patch_artist=True, showmeans=True,
+                       meanprops={"markerfacecolor": "grey", "markeredgecolor": "black"},
+                       medianprops=dict(linewidth=1.5, color='grey'))
+    ax.set_xticklabels(delievry_cost_dict.keys())
+
+    # set labels
+    ax.set_ylabel("Total delivery cost [$]", labelpad=10)
+    ax.set_xlabel(experiment_parameter_name, labelpad=10)
+    ax.yaxis.grid(True)
+
+    for patch, color in zip(bplot['boxes'], colors):
+        patch.set_facecolor(color)
+
+    plt.savefig(path_string / "delivery_cost_boxplot.pdf", bbox_inches='tight')
 
 
 def plot_experiment_savings_boxplot(savings_dict, path_string, experiment_parameter_name=""):
     fig, ax = plt.subplots(figsize=(6.29921, 4.19947))
 
-    bplot = ax.boxplot(savings_dict.values(), patch_artist=True, medianprops=dict(linewidth=1.5, color='grey'))
+    savings_dict = dict(sorted(savings_dict.items()))
+
+    bplot = ax.boxplot(savings_dict.values(), patch_artist=True, showmeans=True,
+                       meanprops={"markerfacecolor": "grey", "markeredgecolor": "black"},
+                       medianprops=dict(linewidth=1.5, color='grey'))
     ax.set_xticklabels(savings_dict.keys())
 
     # set labels
-    ax.set_ylabel("Savings [$]", labelpad=10)
+    ax.set_ylabel("Total savings [$]", labelpad=10)
     ax.set_xlabel(experiment_parameter_name, labelpad=10)
     ax.yaxis.grid(True)
-
 
     for patch, color in zip(bplot['boxes'], colors):
         patch.set_facecolor(color)
@@ -486,15 +613,40 @@ def plot_experiment_savings_boxplot(savings_dict, path_string, experiment_parame
     plt.savefig(path_string / "savings_boxplot.pdf", bbox_inches='tight')
 
 
+def plot_experiment_percentage_savings_boxplot(savings_percentage_dict, path_string, experiment_parameter_name=""):
+    fig, ax = plt.subplots(figsize=(6.29921, 4.19947))
+
+    savings_percentage_dict = dict(sorted(savings_percentage_dict.items()))
+
+    bplot = ax.boxplot(savings_percentage_dict.values(), patch_artist=True, showmeans=True,
+                       meanprops={"markerfacecolor": "grey", "markeredgecolor": "black"},
+                       medianprops=dict(linewidth=1.5, color='grey'))
+    ax.set_xticklabels(savings_percentage_dict.keys())
+
+    # set labels
+    ax.set_ylabel("Savings [%]", labelpad=10)
+    ax.set_xlabel(experiment_parameter_name, labelpad=10)
+    ax.yaxis.grid(True)
+
+    for patch, color in zip(bplot['boxes'], colors):
+        patch.set_facecolor(color)
+
+    plt.savefig(path_string / "percentage_savings_boxplot.pdf", bbox_inches='tight')
+
 
 def plot_experiment_waiting_time_boxplot(waiting_time_dict, path_string, experiment_parameter_name=""):
     fig, ax = plt.subplots(figsize=(6.29921, 4.19947))
 
-    bplot = ax.boxplot(waiting_time_dict.values(), patch_artist=True, medianprops=dict(linewidth=1.5, color='grey'))
+    waiting_time_dict = dict(sorted(waiting_time_dict.items()))
+
+
+    bplot = ax.boxplot(waiting_time_dict.values(), patch_artist=True, showmeans=True,
+                       meanprops={"markerfacecolor": "grey", "markeredgecolor": "black"},
+                       medianprops=dict(linewidth=1.5, color='grey'))
     ax.set_xticklabels(waiting_time_dict.keys())
 
     # set labels
-    ax.set_ylabel("Waiting Time [h]", labelpad=10)
+    ax.set_ylabel("Average waiting time [h]", labelpad=10)
     ax.set_xlabel(experiment_parameter_name, labelpad=10)
     ax.yaxis.grid(True)
 
@@ -502,6 +654,3 @@ def plot_experiment_waiting_time_boxplot(waiting_time_dict, path_string, experim
         patch.set_facecolor(color)
 
     plt.savefig(path_string / "waiting_time_boxplot.pdf", bbox_inches='tight')
-
-
-

@@ -105,3 +105,30 @@ def text2json(customize=False):
         make_dirs_for_file(path=json_file)
         with io.open(json_file, 'wt', newline='') as file_object:
             dump(json_data, file_object, sort_keys=True, indent=4, separators=(',', ': '))
+
+
+def routes2sol(routes):
+    """Concatenates a list of routes to a solution. Routes may or may not have
+    visits to the depot (node 0), but the procedure will make sure that
+    the solution leaves from the depot, returns to the depot, and that the
+    routes are separated by a visit to the depot."""
+    if not routes:
+        return None
+
+    sol = [0]
+    for r in routes:
+        if r:
+            if r[0] == 0:
+                sol += r[1:]
+            else:
+                sol += r
+            if sol[-1] != 0:
+                sol += [0]
+    return sol
+
+
+def objf(sol, D):
+    """A quick procedure for calclulating the quality of an solution (or a
+    route). Assumes that the solution (or the route) contains all visits (incl.
+    the first and the last) to the depot."""
+    return sum((D[sol[i - 1], sol[i]] for i in range(1, len(sol))))

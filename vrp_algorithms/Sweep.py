@@ -262,7 +262,7 @@ def travelling_salesman_problem(distanceMatrix):
             for node in range(0, len(route_list) - 1):
                 # print(route_list[node], route_list[node + 1])
                 # print(distanceMatrix[route_list[node]][route_list[node + 1]])
-                route_distance += round(distanceMatrix[route_list[node]][route_list[node + 1]], 4)
+                route_distance += round(distanceMatrix[route_list[node]][route_list[node + 1]], 1)
 
             # print("Manual route distance = ", route_distance)
             # print_solution_tsp(manager, routing, assignment)
@@ -286,9 +286,10 @@ def plot_routes(final_routes_var, route_distance_par=0.0):
         os.makedirs(path_results)
 
     markers = ["-o", "-x", "-^", "-s", "-+", "-D", "-<", "-*", '-1']
-    # markers = ["o", "x", "^", "s", "+", "D", "<", "*", '1']
+    # markers = ["o", "x", "^", "s", "+", "D", "<", "*", '1', ">"]
 
     for single_route in final_routes_var:
+        print(single_route)
         route_number = final_routes_var.index(single_route)
         x_values, y_values = zip(*[(float(i.pos.x), float(i.pos.y)) for i in single_route])
         plt.plot(x_values, y_values, markers[route_number], label=route_number + 1)
@@ -455,6 +456,7 @@ def run_vehicle_routing_sweep(customerData, vehicleCapacityData, depotData):
     # PLOT #
     ########
 
+    # print(final_routes)
     # plot_routes(final_routes, total_vrp_distance)
 
     return list_of_route_dicts_json
@@ -469,7 +471,7 @@ def run_vehicle_routing_sweep(customerData, vehicleCapacityData, depotData):
 
 def main():
     """main()"""
-    with open("test_data/R101_25.json") as inputFile:
+    with open("test_data/RC101.json") as inputFile:
         data = json.load(inputFile)
 
     customer_data_test = data["customers"]  # this will be replaced with the customer data rec
