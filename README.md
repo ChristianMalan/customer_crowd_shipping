@@ -32,16 +32,6 @@ This project forms part of a Master's Thesis in Industrial Engineering.
 - [Pip][pip]
 - [Virtualenv][virtualenv]
 
-### Installing with Virtualenv
-On Unix, Linux, BSD, macOS, and Cygwin:
-
-```sh
-git clone https://github.com/iRB-Lab/py-ga-VRPTW.git
-cd py-ga-VRPTW
-virtualenv --python=python3 venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
 
 ### Installing Pypeline on AnyLogic
 Clone the Pypeline repository onto your local device: https://github.com/t-wolfeadam/AnyLogic-Pypeline. 
@@ -64,7 +54,6 @@ Under *"Python executable path"*, provide the path to the `python.exe` file in y
 
 
 ## Model Quick Start
-See [sample codes](#sample-codes).
 
 ### Data preparation
 
