@@ -21,9 +21,6 @@ This project forms part of a Master's Thesis in Industrial Engineering.
             - [Supported File Format](#supported-file-format)
             - [Directory Set-up](#directory-set-up)
             - [Convert `*.txt` to `*.json`](#convert-txt-to-json)
-- [GA Implementation](#ga-implementation)
-
-- [References](#references)
 
 
 ## Installation
@@ -204,7 +201,6 @@ python text2json_customize.py
 ## References
 1. [Solomon's VRPTW Benchmark Problems][solomon]
 2. [100 Customers Instance Definitions][100-customers]
-3. [Distributed Evolutionary Algorithms in Python (DEAP)][deap-pypi]
 
 ## License
 [python]: https://docs.python.org/ "Python"
@@ -215,6 +211,3 @@ python text2json_customize.py
 [100-customers]: http://www.sintef.no/projectweb/top/vrptw/solomon-benchmark/100-customers/ "100 Customers Instance Definitions"
 [100-customers-zip]: http://www.sintef.no/globalassets/project/top/vrptw/solomon/solomon-100.zip "100 Customers Instance Definitions (Zip)"
 
-[deap-docs]: http://deap.readthedocs.org/ "Distributed Evolutionary Algorithms in Python (DEAP) Docs"
-[deap-github]: https://github.com/deap/deap/ "Distributed Evolutionary Algorithms in Python (DEAP) GitHub"
-[deap-pypi]: https://pypi.python.org/pypi/deap/ "Distributed Evolutionary Algorithms in Python (DEAP) PyPI"
