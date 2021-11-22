@@ -169,8 +169,8 @@ def plot_routes(final_routes_var, customer_object_list, route_distance_par=0.0):
     if not path_results.exists():
         os.makedirs(path_results)
 
-    markers = ["-o", "-x", "-^", "-s", "-+", "-D", "-<", "-*", '-1']
-    # markers = ["o", "x", "^", "s", "+", "D", "<", "*", '1']
+    markers = ["-o", "-x", "-^", "-s", "-+", "-distance_matrix_input", "-<", "-*", '-1']
+    # markers = ["o", "x", "^", "s", "+", "distance_matrix_input", "<", "*", '1']
 
     print(customer_object_list)
     for single_route in final_routes_var:
@@ -219,7 +219,7 @@ def clarke_wright_savings_function(D):
     return savings
 
 
-def parallel_savings_init(D, d, C, L=None, minimize_K=False,
+def parallel_savings_init(distance_matrix_input, demand_list, vehicle_capacity, max_allowable_distance=None,
                           savings_callback=clarke_wright_savings_function):
     """
     Implementation of the basic savings algorithm / construction heuristic for
@@ -229,28 +229,11 @@ def parallel_savings_init(D, d, C, L=None, minimize_K=False,
     parallel making always the best possible merge (according to varied savings
     criteria, see below).
 
-    * D is a numpy ndarray (or equvalent) of the full 2D distance matrix.
-    * d is a list of demands. d[0] should be 0.0 as it is the depot.
-    * C is the capacity constraint limit for the identical vehicles.
-    * L is the optional constraint for the maximum route length/duration/cost.
+    * distance_matrix_input the full 2D distance matrix.
+    * demand_list is a list of demands. demand_list[0] should be 0.0 as it is the depot.
+    * vehicle_capacity is the capacity constraint limit for the identical vehicles.
+    * max_allowable_distance is the optional constraint for the maximum route length/duration/cost.
 
-    * minimize_K sets the primary optimization objective. If set to True, it is
-       the minimum number of routes. If set to False (default) the algorithm
-       optimizes for the mimimum solution/routing cost. In savings algorithms
-       this is done by ignoring a merge that would increase the total distance.
-       WARNING: This only works when the solution from the savings algorithm is
-       final. With postoptimimization this non-improving move might have still
-       led to improved solution.
-
-    * optional savings_callback is a function of the signature:
-        sorted([(s_11,x_11,i_1,j_1)...(s_ij,x_ij,i,j)...(s_nn,x_nn,n,n) ]) =
-            savings_callback(D)
-      where the returned (sorted!) list contains savings (that is, how much
-       solution cost approximately improves if a route merge with an edge
-       (i,j) is made). This should be calculated for each i \in {1..n},
-       j \in {i+1..n}, where n is the number of customers. The x is a secondary
-       sorting criterion but otherwise ignored by the savings heuristic.
-      The default is to use the Clarke Wright savings criterion.
 
     See clarke_wright_savings.py, gaskell_savings.py, yellow_savings.py etc.
     to find specific savings variants. They all use this implementation to do
@@ -262,21 +245,21 @@ def parallel_savings_init(D, d, C, L=None, minimize_K=False,
      depot to a number of delivery points. Operations Research, 12, 568-81.
     """
 
-    # print("Distance matrix:\n", D)
-    # print("Demands:", d)
-    # print("Homogeneous capacity: ", C)
+    # print("Distance matrix:\n", distance_matrix_input)
+    # print("Demands:", demand_list)
+    # print("Homogeneous capacity: ", vehicle_capacity)
 
-    N = len(D)
-    ignore_negative_savings = not minimize_K
+    N = len(distance_matrix_input)
+    ignore_negative_savings = not False
 
     ## 1. make route for each customer
     routes = [[i] for i in range(1, N)]
-    route_demands = d[1:] if C else [0] * N
-    if L: route_costs = [D[0, i] + D[i, 0] for i in range(1, N)]
+    route_demands = demand_list[1:] if vehicle_capacity else [0] * N
+    if max_allowable_distance: route_costs = [distance_matrix_input[0, i] + distance_matrix_input[i, 0] for i in range(1, N)]
 
     try:
         ## 2. compute initial savings
-        savings = savings_callback(D)
+        savings = savings_callback(distance_matrix_input)
 
         # zero based node indexing!
         endnode_to_route = [0] + list(range(0, N - 1))
@@ -289,7 +272,7 @@ def parallel_savings_init(D, d, C, L=None, minimize_K=False,
                 log(DEBUG - 1, "Popped savings s_{%d,%d}=%.2f" % (i, j, best_saving))
 
             if ignore_negative_savings:
-                cw_saving = D[i, 0] + D[0, j] - D[i, j]
+                cw_saving = distance_matrix_input[i, 0] + distance_matrix_input[0, j] - distance_matrix_input[i, j]
                 if cw_saving < 0.0:
                     break
 
@@ -309,27 +292,27 @@ def parallel_savings_init(D, d, C, L=None, minimize_K=False,
                     (right_route, str(routes[right_route])))
 
             # check capacity constraint validity
-            if C:
+            if vehicle_capacity:
                 merged_demand = route_demands[left_route] + route_demands[right_route]
-                if merged_demand - C_EPS > C:
+                if merged_demand - C_EPS > vehicle_capacity:
                     if __debug__:
                         log(DEBUG - 1, "Reject merge due to " +
                             "capacity constraint violation")
                     continue
             # if there are route cost constraint, check its validity
-            if L:
-                merged_cost = route_costs[left_route] - D[0, i] + \
-                              route_costs[right_route] - D[0, j] + \
-                              D[i, j]
-                if merged_cost - S_EPS > L:
+            if max_allowable_distance:
+                merged_cost = route_costs[left_route] - distance_matrix_input[0, i] + \
+                              route_costs[right_route] - distance_matrix_input[0, j] + \
+                              distance_matrix_input[i, j]
+                if merged_cost - S_EPS > max_allowable_distance:
                     if __debug__:
                         log(DEBUG - 1, "Reject merge due to " +
                             "maximum route length constraint violation")
                     continue
 
             # update bookkeeping only on the recieving (left) route
-            if C: route_demands[left_route] = merged_demand
-            if L: route_costs[left_route] = merged_cost
+            if vehicle_capacity: route_demands[left_route] = merged_demand
+            if max_allowable_distance: route_costs[left_route] = merged_cost
 
             # merging is done based on the joined endpoints, reverse the
             #  merged routes as necessary
@@ -354,7 +337,7 @@ def parallel_savings_init(D, d, C, L=None, minimize_K=False,
             if __debug__:
                 dbg_sol = routes2sol(routes)
                 log(DEBUG - 1, "Merged, resulting solution is %s (%.2f)" %
-                    (str(dbg_sol), objf(dbg_sol, D)))
+                    (str(dbg_sol), objf(dbg_sol, distance_matrix_input)))
 
     except KeyboardInterrupt:  # or SIGINT
         interrupted_sol = routes2sol(routes)
